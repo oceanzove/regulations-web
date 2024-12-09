@@ -1,0 +1,14 @@
+src/components/constructor
+src/components/Modal.ts
+src/components/svg.tsx
+src/shared/fonts
+src/helpers
+#src/hooks/useValidation.ts
+src/hooks
+src/image
+src/styles
+src/helper.ts
+src/index.tsx
+src/react-app-env.d.ts
+docs/assets/search.js
+docs/assets/main.js
