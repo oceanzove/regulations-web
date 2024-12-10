@@ -1,0 +1,17 @@
+.wrapper {
+
+}
+
+.inputField {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: var(--font-size-m);
+  background-color: transparent;
+
+  &::placeholder {
+    color: var(--input-placeholder-color);
+    font-size: var(--font-size-m);
+  }
+}
+

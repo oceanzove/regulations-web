@@ -1,0 +1,16 @@
+.label {
+  font-size: var(--font-size-m);
+  color: var(--label-color);
+  padding: var(--label-padding);
+}
+
+.children {
+  display: block;
+  align-items: center;
+  border: var(--default-border);
+  border-radius: var(--input-border-radius);
+  background-color: var(--block-bg-color);
+  padding: var(--input-padding);
+  gap: var(--input-gap);
+  width: var(--input-width);
+}

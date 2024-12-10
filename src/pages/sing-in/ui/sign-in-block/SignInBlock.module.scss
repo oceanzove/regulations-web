@@ -1,0 +1,17 @@
+.wrapper {
+  width: 361px;
+  height: 333px;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: var(--default-padding);
+  background: var(--default-bg-color);
+  margin: var(--default-center-margin);
+  border-radius: var(--sign-in-border-radius);
+}
+
+.title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-sb);
+}
