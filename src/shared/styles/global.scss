@@ -23,8 +23,11 @@
   --white-font-color: #FFFFFF;
   --black-font-color: #000000;
 
-  // * Sign In
-  --sign-in-border-radius: 12px;
+  // * Button
+  --main-button-bg-color: #F91F71;
+  --main-button-bg-hover-color: #db3070;
+  --main-button-border-radius: 8px;
+  --main-button-padding: 10px 15px 10px 15px;
 
   // * Label
   --label-color: #A0ABBE;
@@ -36,4 +39,9 @@
   --input-gap: 10px;
   --input-width: 100%;
   --input-placeholder-color: #8692A7;
+
+  // * Sign In
+  --sign-in-border-radius: 12px;
+
+
 }
