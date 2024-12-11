@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {signInActions, signInSelectors} from "../slices/signInSlice.ts";
+import {signInActions} from "../slices/signInSlice.ts";
 import {RootState} from "../../../../../app/reducers.ts";
 
 export const useSignIn = () => {
