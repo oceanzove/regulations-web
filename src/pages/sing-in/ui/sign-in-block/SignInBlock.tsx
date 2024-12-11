@@ -3,9 +3,9 @@ import {Label} from "../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../shared/ui/input/input.tsx";
 import {MainButton} from "../../../../shared/ui/button/button.tsx";
 import {useSignIn} from "../../../../entities/user/auth/model/hooks/useSignIn.ts";
-import {useNavigate} from "react-router-dom";
 import {authAPI} from "../../../../entities/user/auth/api/api.ts";
 import {ISignInRequest} from "../../../../entities/user/auth/api/types.ts";
+import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 
 export const SignInBlock = () => {
     const {
@@ -14,14 +14,14 @@ export const SignInBlock = () => {
         updatePassword,
         resetCredentials,
     } = useSignIn();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
 
     const authorizationData: ISignInRequest = {
         email: signInState.email,
         password: signInState.password,
     };
-    const [signIn, { isLoading }] = authAPI.useSignInMutation();
+    const [signIn] = authAPI.useSignInMutation();
 
     const onSignIn = async () => {
         try {
@@ -33,12 +33,12 @@ export const SignInBlock = () => {
             localStorage.setItem('token', accessToken);
 
             resetCredentials();
-        } catch (error: any) {
-            if (error.status === 401) {
+        } catch (error) {
+            if ((error as FetchBaseQueryError).status === 401) {
                 console.error(
                     'Ошибка авторизации, Пароль введен неверно. Пожалуйста, убедитесь в правильности ввода и повторите попытку.',
                 );
-            } else if (error.status === 404) {
+            } else if ((error as FetchBaseQueryError).status === 404) {
                 console.error(
                     'Ошибка авторизации, Аккаунт не найден. Проверьте данные или зарегистрируйтесь.',
                 );

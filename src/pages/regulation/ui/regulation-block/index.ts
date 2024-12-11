@@ -1,0 +1,1 @@
+export { RegulationBlock } from './RegulationBlock.tsx';
