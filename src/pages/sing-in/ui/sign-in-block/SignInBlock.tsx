@@ -27,7 +27,11 @@ export const SignInBlock = () => {
         try {
             const res = await signIn(authorizationData)
                 .unwrap();
-            console.log(res);
+
+            const { accessToken } = res;
+
+            localStorage.setItem('token', accessToken);
+
             resetCredentials();
         } catch (error: any) {
             if (error.status === 401) {
@@ -49,11 +53,19 @@ export const SignInBlock = () => {
     return (
         <div className={css.wrapper}>
             <div className={css.title}>Войти</div>
-            <Label label="Логин">
-                <Input placeholder="Введите почту" onChange={updateEmail}/>
+            <Label label="Почта">
+                <Input
+                    placeholder="Введите почту"
+                    value={signInState.email}
+                    onChange={updateEmail}
+                />
             </Label>
             <Label label="Пароль">
-                <Input placeholder="Введите пароль" onChange={updatePassword}/>
+                <Input
+                    placeholder="Введите пароль"
+                    value={signInState.password}
+                    onChange={updatePassword}
+                />
             </Label>
             <MainButton text={'Войти'} onClick={onSignIn}/>
         </div>

@@ -23,12 +23,8 @@ export const signInSlice = createSlice({
         clearCredentials(state) {
             state.email = '';
             state.password = '';
-        }
+        },
     },
-    // selectors: {
-    //     getEmail: (state) => state.email,
-    //     getPassword: (state) => state.password,
-    // }
 });
 
 export const {

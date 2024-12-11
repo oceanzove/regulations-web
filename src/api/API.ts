@@ -10,7 +10,7 @@ class DAL {
 
     constructor() {
         // Получаем переменную окружения для Vite
-        const serverEnvironment = import.meta.env.VITE_ENVIRONMENT_SERVER;
+        // const serverEnvironment = import.meta.env.VITE_ENVIRONMENT_SERVER;
         // Выбор URL в зависимости от среды
         // switch (serverEnvironment) {
         //     // case SERVER_ENVIRONMENT_RELEASE:

@@ -5,6 +5,7 @@ interface InputProps {
     width?: number;
     height?: number;
     id?: string;
+    value?: string;
     onChange?: (value: string) => void;
 }
 
@@ -14,6 +15,7 @@ export const Input = (props: InputProps) => {
         width,
         height,
         id,
+        value,
         onChange,
     } = props;
 
@@ -25,6 +27,7 @@ export const Input = (props: InputProps) => {
                     className={css.inputField}
                     placeholder={placeholder}
                     style={{ height }}
+                    value={value}
                     onChange={(e) => onChange?.(e.target.value)}
                 />
             </div>
