@@ -1,6 +1,6 @@
-import { BaseQueryFn, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { v4 as uuid } from 'uuid';
-import { SERVER_ENVIRONMENT_DEV, SERVER_ENVIRONMENT_RELEASE, SERVER_ENVIRONMENT_TEST } from '../../api/API';
+import { SERVER_ENVIRONMENT_DEV } from '../../api/API';
 
 
 // const BASE_API_URL_PRODUCTION = 'https://wakadoo.ru/api/';
@@ -48,12 +48,14 @@ export const baseQuery = fetchBaseQuery({
     paramsSerializer,
     credentials: 'include',
     prepareHeaders: (headers) => {
-        const authorization = localStorage.getItem('authorization')
-            ? localStorage.getItem('authorization')
-            : sessionStorage.getItem('authorization');
+        const authorization = localStorage.getItem('token')
+            ? localStorage.getItem('token')
+            : sessionStorage.getItem('token');
+
+        const token = `Bearer ${authorization}`
 
         headers.set('Client-Request-Id', uuid());
-        headers.set('Authorization', authorization || '');
+        headers.set('Authorization', token || '');
 
         return headers;
     },

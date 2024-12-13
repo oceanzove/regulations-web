@@ -6,6 +6,7 @@ import {useSignIn} from "../../../../entities/user/auth/model/hooks/useSignIn.ts
 import {authAPI} from "../../../../entities/user/auth/api/api.ts";
 import {ISignInRequest} from "../../../../entities/user/auth/api/types.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
+import {useNavigate} from "react-router-dom";
 
 export const SignInBlock = () => {
     const {
@@ -14,9 +15,8 @@ export const SignInBlock = () => {
         updatePassword,
         resetCredentials,
     } = useSignIn();
-    // const navigate = useNavigate();
-
-
+    const navigate = useNavigate();
+    
     const authorizationData: ISignInRequest = {
         email: signInState.email,
         password: signInState.password,
@@ -28,11 +28,14 @@ export const SignInBlock = () => {
             const res = await signIn(authorizationData)
                 .unwrap();
 
-            const { accessToken } = res;
-
-            localStorage.setItem('token', accessToken);
-
-            resetCredentials();
+            const { access_token } = res;
+            if (access_token) {
+                localStorage.setItem('token', access_token); // Сохраняем токен в localStorage
+                navigate('./regulation');
+                resetCredentials();
+            } else {
+                console.error('Токен не найден в ответе от сервера.');
+            }
         } catch (error) {
             if ((error as FetchBaseQueryError).status === 401) {
                 console.error(

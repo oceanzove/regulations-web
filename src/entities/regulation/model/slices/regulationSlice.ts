@@ -15,11 +15,11 @@ interface IRegulationState {
 const initialState: IRegulationState = {
     activeRegulation:  "123",
     regulations: [
-        { id: "123", title: "Привет", content: "Text Align" },
-        { id: "124", title: "Добро пожаловать", content: "Содержимое второго элемента" },
-        { id: "125", title: "Инструкция", content: "Описание инструкции" },
-        { id: "126", title: "Правила", content: "Правила использования приложения" },
-        { id: "127", title: "Заключение", content: "Заключительный текст" },
+        // { id: "123", title: "Привет", content: "Text Align" },
+        // { id: "124", title: "Добро пожаловать", content: "Содержимое второго элемента" },
+        // { id: "125", title: "Инструкция", content: "Описание инструкции" },
+        // { id: "126", title: "Правила", content: "Правила использования приложения" },
+        // { id: "127", title: "Заключение", content: "Заключительный текст" },
     ]
 };
 
@@ -27,12 +27,6 @@ export const regulationSlice = createSlice({
     name: 'regulation',
     initialState,
     reducers: {
-        // regulationsMove(state, action: PayloadAction<string>) {
-        //     const oldIndex = competencies.indexOf(active.id as string);
-        //     const newIndex = competencies.indexOf(over.id as string);
-        //     setCompetencies(arrayMove(competencies, oldIndex, newIndex));
-        // },
-
         setRegulations(state, action: PayloadAction<IRegulation[]>) {
             state.regulations = action.payload;
         },
@@ -40,6 +34,20 @@ export const regulationSlice = createSlice({
             const updatedRegulations = state.regulations.map(reg =>
                 reg.id === action.payload.id
                     ? { ...reg, content: action.payload.content }
+                    : reg
+            );
+
+            return {
+                ...state,
+                regulations: updatedRegulations,
+            };
+        },
+        setTitle(state, action: PayloadAction<{id: string; title: string}>) {
+            console.log(state.regulations);
+            console.log(action.payload);
+            const updatedRegulations = state.regulations.map(reg =>
+                reg.id === action.payload.id
+                    ? { ...reg, title: action.payload.title }
                     : reg
             );
 

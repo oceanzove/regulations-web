@@ -11,7 +11,6 @@ interface IRegulationList {
     regulations: IRegulation[];
     updateRegulations: (regulations: IRegulation[]) => void;
     updateActiveRegulation: (id: string) => void;
-
 }
 
 export const RegulationList = (props: IRegulationList) => {
@@ -21,7 +20,6 @@ export const RegulationList = (props: IRegulationList) => {
         updateActiveRegulation,
     } = props;
 
-    console.log(regulations);
     // Настройка сенсоров
     const sensors = useSensors(
         useSensor(PointerSensor, {
