@@ -47,7 +47,9 @@ export const RegulationList = (props: IRegulationList) => {
             <div className={css.header}>
                 <img src={OptionIcon} alt="Option icon"/>
                 <div>Регламенты</div>
-                <MainButton text={'Создать'} />
+                <MainButton
+                    text={'Создать'}
+                />
             </div>
             <DndContext
                 sensors={sensors}

@@ -8,7 +8,13 @@
 .header {
   display: flex;
   flex-direction: row;
+
   align-items: center;
   color: var(--regulation-list-header-color);
   padding: var(--regulation-item-padding);
+
+}
+
+.header button {
+  margin-left: 150px; /* Перемещаем кнопку вправо */
 }
