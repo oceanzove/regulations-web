@@ -14,6 +14,17 @@ export const regulationApi = createApi({
                 method: 'GET',
             }),
         }),
+        update: builder.mutation<void, { regulation: string, title: string, content: string }>({
+            query: ({
+                        regulation,
+                        title,
+                        content,
+                    }) => ({
+                url: `${URI_REGULATION}/${regulation}`,
+                method: 'PUT',
+                body: { title, content },
+            }),
+        }),
         // resendCode: builder.mutation<void, { email: string }>({
         //     query: ({ email }) => ({
         //         url: URI_SEND_CODE,

@@ -1,9 +1,11 @@
 import css from './RegulationEditor.module.scss';
 import MDEditor from "@uiw/react-md-editor";
-import React, {useRef} from "react";
+import React, {useEffect, useState} from "react";
 import {IRegulation} from "../../../../../entities/regulation/model/slices/regulationSlice.ts";
 import {Label} from "../../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../../shared/ui/input/input.tsx";
+import {MainButton} from "../../../../../shared/ui/button/button.tsx";
+import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,
@@ -13,35 +15,44 @@ interface IRegulationEditorProps {
 export const RegulationEditor = (props: IRegulationEditorProps) => {
     const { activeRegulation, updateContent, updateTitle } = props;
 
-    // Используем useRef для хранения состояния контента и избегания ненужных перерисовок
-    const editorRef = useRef<string>(activeRegulation.content);
+    const [localTitle, setLocalTitle] = useState(activeRegulation.title);
+    const [localContent, setLocalContent] = useState(activeRegulation.content);
 
-    const onContentChange = (content: string | undefined) => {
-        if (content) {
-            if (content !== editorRef.current) {
-                editorRef.current = content;
-                updateContent(activeRegulation.id, content);
-            }
+    useEffect(() => {
+        setLocalTitle(activeRegulation.title);
+        setLocalContent(activeRegulation.content);
+    }, [activeRegulation]);
+
+    const [update] = regulationApi.useUpdateMutation();
+
+    const onSaveClick = () => {
+        if (localTitle !== activeRegulation.title) {
+            updateTitle(activeRegulation.id, localTitle);
         }
-    };
-
-    const onTitleChange = (title: string) => {
-        updateTitle(activeRegulation.id, title);
+        if (localContent !== activeRegulation.content) {
+            updateContent(activeRegulation.id, localContent);
+        }
+        if (localTitle !== activeRegulation.title || localContent !== activeRegulation.content) {
+            update({ regulation: activeRegulation.id, title: localTitle, content: localContent})
+        }
     };
 
     return (
         <div className={css.wrapper}>
-            <Label label={'Название'}>
-                <Input
-                    value={activeRegulation.title}
-                    onChange={onTitleChange}
+            <div className={css.container}>
+                <Label label={'Название'}>
+                    <Input
+                        value={localTitle}
+                        onChange={(content) => setLocalTitle(content || '')}
+                    />
+                </Label>
+                <MDEditor
+                    data-color-mode="light"
+                    value={localContent}
+                    onChange={(content) => setLocalContent(content || '')}
                 />
-            </Label>
-            <MDEditor
-                data-color-mode="light"
-                value={activeRegulation.content}
-                onChange={onContentChange}
-            />
+                <MainButton text={'Сохранить'} onClick={onSaveClick}/>
+            </div>
         </div>
     );
 };

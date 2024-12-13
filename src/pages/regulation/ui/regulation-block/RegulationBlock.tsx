@@ -15,19 +15,19 @@ export const RegulationBlock = () => {
     } = useRegulation()
 
     const { data } = regulationApi.useGetQuery();
-    const [isDataLoaded, setIsDataLoaded] = useState(false); // новое состояние
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
 
     useEffect(() => {
         if (data && !isDataLoaded) {
             updateRegulation(data.regulations);
-            setIsDataLoaded(true); // установим флаг, что данные загружены
+            setIsDataLoaded(true);
         }
     }, [data, isDataLoaded, updateRegulation]);
 
-    console.log(regulationState.regulations);
     const activeRegulation = regulationState.regulations.find(
         (reg) => reg.id === regulationState.activeRegulation
     );
+    console.log(activeRegulation);
 
     return (
         <div className={css.wrapper}>
