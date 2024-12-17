@@ -4,7 +4,10 @@ export interface IGetRegulationsResponse {
     regulations: IRegulation[];
 }
 
-export interface IGetRegulationRequest {
-    email: string | null;
+export interface ICreateRegulationResponse {
+    id: string;
+    title: string;
+    content: string;
 }
+
 

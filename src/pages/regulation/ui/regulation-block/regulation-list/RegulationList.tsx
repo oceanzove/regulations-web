@@ -1,11 +1,12 @@
 import css from './RegulationList.module.scss';
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
-import React from "react";
+import React, {useCallback} from "react";
 import {IRegulation} from "../../../../../entities/regulation/model/slices/regulationSlice.ts";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {RegulationItem} from "./regulation-item";
 import OptionIcon from "../../../../../shared/assets/images/option_icon.svg";
 import {MainButton} from "../../../../../shared/ui/button/button.tsx";
+import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 
 interface IRegulationList {
     regulations: IRegulation[];
@@ -42,6 +43,25 @@ export const RegulationList = (props: IRegulationList) => {
         }
     };
 
+
+    const [createRegulation] = regulationApi.useCreateMutation();
+
+    // Обработчик нажатия на кнопку "Создать"
+    const onCreateClick = useCallback(async () => {
+        try {
+            // Вызываем мутацию для создания нового регламента
+            const newRegulation = await createRegulation().unwrap();
+
+            // Добавляем новый регламент в начало списка
+            updateRegulations([newRegulation, ...regulations]);
+
+            // Дополнительная логика, например, выделение только что созданного регламента
+            updateActiveRegulation(newRegulation.id);
+        } catch (error) {
+            console.error("Error creating regulation:", error);
+        }
+    }, [createRegulation, regulations, updateRegulations, updateActiveRegulation]);
+
     return (
         <div className={css.wrapper}>
             <div className={css.header}>
@@ -49,6 +69,7 @@ export const RegulationList = (props: IRegulationList) => {
                 <div>Регламенты</div>
                 <MainButton
                     text={'Создать'}
+                    onClick={onCreateClick}
                 />
             </div>
             <DndContext
@@ -58,9 +79,9 @@ export const RegulationList = (props: IRegulationList) => {
             >
                 <SortableContext items={regulations} strategy={verticalListSortingStrategy}>
                     <div className={css.competencies}>
-                        {regulations.map((regulation) => (
+                        {regulations.map((regulation, index) => (
                             <RegulationItem
-                                key={regulation.id}
+                                key={regulation.id || index}
                                 id={regulation.id}
                                 title={regulation.title}
                                 onClick={() => updateActiveRegulation(regulation.id)}

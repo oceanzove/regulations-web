@@ -22,6 +22,9 @@ export const useRegulation = () => {
         dispatch(regulationActions.setActiveRegulation(id));
     };
 
+    const createRegulation = (regulation: IRegulation) => {
+      dispatch(regulationActions.addRegulation(regulation));
+    };
 
     //
     // const updatePassword = (password: string) => {
@@ -35,10 +38,11 @@ export const useRegulation = () => {
 
 
     return {
-        updateContent,
         updateTitle,
+        updateContent,
         regulationState,
         updateRegulation,
+        createRegulation,
         updateActiveRegulation,
         // updatePassword,
         // resetCredentials,

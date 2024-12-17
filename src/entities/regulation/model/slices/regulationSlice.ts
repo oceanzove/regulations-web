@@ -27,6 +27,9 @@ export const regulationSlice = createSlice({
     name: 'regulation',
     initialState,
     reducers: {
+        addRegulation(state, action: PayloadAction<IRegulation>) {
+            state.regulations.push(action.payload);
+        },
         setRegulations(state, action: PayloadAction<IRegulation[]>) {
             state.regulations = action.payload;
         },
@@ -59,13 +62,6 @@ export const regulationSlice = createSlice({
         setActiveRegulation(state, action: PayloadAction<string>) {
             state.activeRegulation = action.payload;
         },
-        // setPassword(state, action: PayloadAction<string>) {
-        //     state.password = action.payload;
-        // },
-        // clearCredentials(state) {
-        //     state.email = '';
-        //     state.password = '';
-        // },
     },
 });
 
