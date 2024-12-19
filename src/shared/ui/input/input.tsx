@@ -1,6 +1,6 @@
 import css from './input.module.scss';
 
-interface InputProps {
+interface IInputProps {
     placeholder?: string;
     width?: number;
     height?: number;
@@ -9,7 +9,7 @@ interface InputProps {
     onChange?: (value: string) => void;
 }
 
-export const Input = (props: InputProps) => {
+export const Input = (props: IInputProps) => {
     const {
         placeholder,
         width,

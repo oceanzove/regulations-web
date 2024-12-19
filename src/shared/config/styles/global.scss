@@ -23,6 +23,12 @@
   --white-font-color: #FFFFFF;
   --black-font-color: #000000;
 
+  // * Navbar
+  --navbar-navlink-active-color: #F91F71;
+  --navbar-height: 84px;
+  --navbar-border-radius: 0 0 16px 16px;
+  --navbar-padding: 0 0 0 20px;
+
   // * Button
   --main-button-bg-color: #F91F71;
   --main-button-bg-hover-color: #db3070;
@@ -46,6 +52,6 @@
   --regulation-list-header-color: #8692A7;
 
   --regulation-item-width: 100%;
-  --regulation-item-padding: 15px 5px 15px 10px;
+  --regulation-item-padding: 10px 15px;
   --regulation-item-border: 1px solid #EEF2F8;
 }

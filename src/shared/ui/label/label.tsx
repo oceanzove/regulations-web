@@ -1,7 +1,7 @@
 import React from 'react';
 import css from './label.module.scss';
 
-interface InputLabelProps {
+interface ILabelProps {
     label?: string;
     fontSize?: string;
     color?: string;
@@ -9,7 +9,7 @@ interface InputLabelProps {
     id?: string;
 }
 
-export const Label = (props: InputLabelProps) => {
+export const Label = (props: ILabelProps) => {
     const {
         label,
         fontSize,

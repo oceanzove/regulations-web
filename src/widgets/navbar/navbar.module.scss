@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  background: var(--default-bg-color);
+  height: var(--navbar-height);
+  border-radius: var(--navbar-border-radius);
+  padding: var(--navbar-padding);
+}
+
+
+.navbar_start,
+.navbar_center,
+.navbar_end {
+  display: flex;
+  align-items: center;
+}
+
+.navbar_link {
+  text-decoration: none;
+  color: var(--black-font-color);
+  padding: 15px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+
+.navbar_link.active {
+  color: var(--navbar-navlink-active-color);
+}

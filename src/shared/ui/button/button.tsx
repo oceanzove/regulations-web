@@ -1,7 +1,7 @@
 import React from 'react';
 import css from './button.module.scss';
 
-interface MainButtonProps {
+interface IMainButtonProps {
     text: string;
     width?: number;
     height?: number;
@@ -9,7 +9,7 @@ interface MainButtonProps {
     onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export const MainButton = (props: MainButtonProps) => {
+export const MainButton = (props: IMainButtonProps) => {
     const {
         text, width, height, onClick, disabled,
     } = props;
