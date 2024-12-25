@@ -1,12 +1,12 @@
 import css from './RegulationList.module.scss';
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import React, {useCallback} from "react";
-import {IRegulation} from "../../../../../entities/regulation/model/slices/regulationSlice.ts";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {RegulationItem} from "./regulation-item";
 import OptionIcon from "../../../../../shared/assets/images/option_icon.svg";
 import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
+import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 
 interface IRegulationList {
     regulations: IRegulation[];

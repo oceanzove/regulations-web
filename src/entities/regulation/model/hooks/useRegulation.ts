@@ -1,6 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from "../../../../app/reducers.ts";
-import {IRegulation, regulationActions} from "../slices/regulationSlice.ts";
+import {regulationActions} from "../slices/regulationSlice.ts";
+import {IRegulation} from "../../api/types.ts";
 
 export const useRegulation = () => {
     const dispatch = useDispatch();
@@ -26,17 +27,6 @@ export const useRegulation = () => {
       dispatch(regulationActions.addRegulation(regulation));
     };
 
-    //
-    // const updatePassword = (password: string) => {
-    //     dispatch(signInActions.setPassword(password));
-    // };
-    //
-    // const resetCredentials = () => {
-    //     dispatch(signInActions.clearCredentials());
-    // };
-
-
-
     return {
         updateTitle,
         updateContent,
@@ -44,7 +34,5 @@ export const useRegulation = () => {
         updateRegulation,
         createRegulation,
         updateActiveRegulation,
-        // updatePassword,
-        // resetCredentials,
     };
 };

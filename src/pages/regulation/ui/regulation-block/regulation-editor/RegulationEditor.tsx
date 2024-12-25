@@ -1,11 +1,11 @@
 import css from './RegulationEditor.module.scss';
 import MDEditor from "@uiw/react-md-editor";
 import React, {useEffect, useState} from "react";
-import {IRegulation} from "../../../../../entities/regulation/model/slices/regulationSlice.ts";
 import {Label} from "../../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../../shared/ui/input/input.tsx";
 import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
+import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,

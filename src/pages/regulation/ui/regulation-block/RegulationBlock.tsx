@@ -27,7 +27,6 @@ export const RegulationBlock = () => {
     const activeRegulation = regulationState.regulations.find(
         (reg) => reg.id === regulationState.activeRegulation
     );
-    console.log(activeRegulation);
 
     return (
         <div className={css.wrapper}>
@@ -44,7 +43,7 @@ export const RegulationBlock = () => {
                 />
             ) : (
                 <div className={css.placeholder}>
-                    Выберите или создайте правило для редактирования
+                    Выберите или создайте регламент для редактирования
                 </div>
             )}
         </div>

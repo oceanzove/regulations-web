@@ -1,4 +1,9 @@
-import {IRegulation} from "../model/slices/regulationSlice.ts";
+
+export interface IRegulation {
+    id: string,
+    title: string,
+    content: string,
+}
 
 export interface IGetRegulationsResponse {
     regulations: IRegulation[];

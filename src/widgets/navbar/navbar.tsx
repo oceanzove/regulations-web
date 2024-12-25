@@ -14,7 +14,7 @@ export const Navbar = (props: INavbarProps) => {
         <div className={css.navbar}>
             { a }
             <NavLink
-                to="/processes"
+                to="/process"
                 className={`${css.navbar_link} ${location.pathname === '/processes' ? css.active : ''}`}
             >
                 Процессы

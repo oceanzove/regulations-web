@@ -1,11 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-// import {arrayMove} from "@dnd-kit/sortable";
-
-export interface IRegulation {
-    id: string,
-    title: string,
-    content: string,
-}
+import {IRegulation} from "../../api/types.ts";
 
 interface IRegulationState {
     activeRegulation: string | null;
@@ -13,14 +7,8 @@ interface IRegulationState {
 }
 
 const initialState: IRegulationState = {
-    activeRegulation:  "123",
-    regulations: [
-        // { id: "123", title: "Привет", content: "Text Align" },
-        // { id: "124", title: "Добро пожаловать", content: "Содержимое второго элемента" },
-        // { id: "125", title: "Инструкция", content: "Описание инструкции" },
-        // { id: "126", title: "Правила", content: "Правила использования приложения" },
-        // { id: "127", title: "Заключение", content: "Заключительный текст" },
-    ]
+    activeRegulation:  "",
+    regulations: []
 };
 
 export const regulationSlice = createSlice({

@@ -1,0 +1,21 @@
+.wrapper {
+  background: var(--default-bg-color);
+  width: var(--regulation-list-width);
+  min-height: 100vh;
+
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+
+  gap: 5px;
+  align-items: center;
+  color: var(--regulation-list-header-color);
+  padding: var(--regulation-item-padding);
+
+}
+
+.header button {
+  margin-left: auto;
+}
