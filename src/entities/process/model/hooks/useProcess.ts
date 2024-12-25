@@ -15,23 +15,25 @@ export const useProcess = () => {
         dispatch(processActions.setActiveProcess(id));
     };
 
-    // const updateContent = (id: string, content: string) => {
-    //     dispatch(regulationActions.setContent({id, content}));
-    // };
-    //
-    // const updateTitle = (id: string, title: string) => {
-    //     dispatch(regulationActions.setTitle({id, title}));
-    // };
-    //
+    const createProcess = (process: IProcess) => {
+        dispatch(processActions.addProcess(process));
+    };
+    const updateDescription = (id: string, description: string) => {
+        dispatch(processActions.setDescription({id, description}));
+    };
 
-    //
-    // const createRegulation = (regulation: IRegulation) => {
-    //     dispatch(regulationActions.addRegulation(regulation));
-    // };
+    const updateTitle = (id: string, title: string) => {
+        dispatch(processActions.setTitle({id, title}));
+    };
+
+
 
     return {
+        updateTitle,
         processState,
+        createProcess,
         updateProcesses,
+        updateDescription,
         updateActiveProcess,
     };
 };

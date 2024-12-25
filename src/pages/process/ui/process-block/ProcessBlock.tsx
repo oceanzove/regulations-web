@@ -11,6 +11,8 @@ export const ProcessBlock = () => {
         processState,
         updateActiveProcess,
         updateProcesses,
+        updateDescription,
+        updateTitle
     } = useProcess()
 
     const { data } = processApi.useGetQuery();
@@ -37,6 +39,8 @@ export const ProcessBlock = () => {
             {activeProcess ? (
                 <ProcessEditor
                     activeProcess={activeProcess}
+                    updateTitle={updateTitle}
+                    updateDescription={updateDescription}
                 />
             ) : (
                 <div className={css.placeholder}>

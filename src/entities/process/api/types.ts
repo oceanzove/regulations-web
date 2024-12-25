@@ -8,3 +8,9 @@ export interface IProcess {
 export interface IGetProcessResponse {
     processes: IProcess[];
 }
+
+export interface ICreateProcessResponse {
+    id: string;
+    title: string;
+    description: string;
+}

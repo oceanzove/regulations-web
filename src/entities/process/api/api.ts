@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {baseQuery} from "../../../shared/api/api.ts";
-import {IGetProcessResponse} from "./types.ts";
+import {ICreateProcessResponse, IGetProcessResponse} from "./types.ts";
 import {URI_PROCESS} from "./consts.ts";
 
 export const processApi = createApi({
@@ -12,6 +12,23 @@ export const processApi = createApi({
             query: () => ({
                 url: URI_PROCESS,
                 method: 'GET',
+            }),
+        }),
+        update: builder.mutation<void, { process: string, title: string, description: string }>({
+            query: ({
+                        process,
+                        title,
+                        description,
+                    }) => ({
+                url: `${URI_PROCESS}/${process}`,
+                method: 'PUT',
+                body: { title, description },
+            }),
+        }),
+        create: builder.mutation<ICreateProcessResponse, void>({
+            query: () => ({
+                url: URI_PROCESS,
+                method: 'POST',
             }),
         }),
     }),

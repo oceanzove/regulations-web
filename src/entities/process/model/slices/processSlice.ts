@@ -15,38 +15,36 @@ export const processSlice = createSlice({
     name: 'regulation',
     initialState,
     reducers: {
-        // addRegulation(state, action: PayloadAction<IRegulation>) {
-        //     state.regulations.push(action.payload);
-        // },
+        addProcess(state, action: PayloadAction<IProcess>) {
+            state.processes.push(action.payload);
+        },
         setProcesses(state, action: PayloadAction<IProcess[]>) {
             state.processes = action.payload;
         },
-        // setContent(state, action: PayloadAction<{ id: string; content: string }>) {
-        //     const updatedRegulations = state.regulations.map(reg =>
-        //         reg.id === action.payload.id
-        //             ? { ...reg, content: action.payload.content }
-        //             : reg
-        //     );
-        //
-        //     return {
-        //         ...state,
-        //         regulations: updatedRegulations,
-        //     };
-        // },
-        // setTitle(state, action: PayloadAction<{id: string; title: string}>) {
-        //     console.log(state.regulations);
-        //     console.log(action.payload);
-        //     const updatedRegulations = state.regulations.map(reg =>
-        //         reg.id === action.payload.id
-        //             ? { ...reg, title: action.payload.title }
-        //             : reg
-        //     );
-        //
-        //     return {
-        //         ...state,
-        //         regulations: updatedRegulations,
-        //     };
-        // },
+        setDescription(state, action: PayloadAction<{ id: string; description: string }>) {
+            const updatedProcesses = state.processes.map(process =>
+                process.id === action.payload.id
+                    ? { ...process, description: action.payload.description }
+                    : process
+            );
+
+            return {
+                ...state,
+                process: updatedProcesses,
+            };
+        },
+        setTitle(state, action: PayloadAction<{id: string; title: string}>) {
+            const updatedProcesses = state.processes.map(process =>
+                process.id === action.payload.id
+                    ? { ...process, title: action.payload.title }
+                    : process
+            );
+
+            return {
+                ...state,
+                process: updatedProcesses,
+            };
+        },
         setActiveProcess(state, action: PayloadAction<string>) {
             state.activeProcess = action.payload;
         },
