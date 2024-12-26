@@ -9,6 +9,11 @@ interface IProcessState {
 const initialState: IProcessState = {
     activeProcess:  "",
     processes: []
+    process: {
+        title: '',
+        description: '',
+        steps: IStep[],
+    }
 };
 
 export const processSlice = createSlice({

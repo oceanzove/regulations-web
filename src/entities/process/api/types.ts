@@ -5,6 +5,13 @@ export interface IProcess {
     description: string,
 }
 
+export interface IStep {
+    id: string,
+    name: string,
+    description: string,
+    order: number,
+}
+
 export interface IGetProcessResponse {
     processes: IProcess[];
 }
