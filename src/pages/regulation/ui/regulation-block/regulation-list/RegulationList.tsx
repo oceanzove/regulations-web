@@ -7,6 +7,7 @@ import OptionIcon from "../../../../../shared/assets/images/option_icon.svg";
 import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
+import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
 
 interface IRegulationList {
     regulations: IRegulation[];
@@ -57,7 +58,10 @@ export const RegulationList = (props: IRegulationList) => {
 
             // Дополнительная логика, например, выделение только что созданного регламента
             updateActiveRegulation(newRegulation.id);
+
+            notificationSuccess('Создание', 'Регламент успешно создан');
         } catch (error) {
+            notificationError('Создание', 'Не удалось создать регламент');
             console.error("Error creating regulation:", error);
         }
     }, [createRegulation, regulations, updateRegulations, updateActiveRegulation]);

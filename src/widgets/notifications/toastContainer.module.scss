@@ -1,0 +1,94 @@
+.ToastifyToastSuccess {
+  border: 2px solid #249C5C;
+}
+.ToastifyToastError {
+  border: 2px solid #FF3636 !important;
+}
+.ToastifyToastWarning {
+  border: 2px solid #F2B519 !important;
+}
+.ToastifyToastInfo {
+  border: 2px solid #0075FF !important;
+}
+
+.ToastifyToastWarning,
+.ToastifyToastError,
+.ToastifyToastSuccess {
+  border-radius: 4px !important;
+}
+.ToastifyCloseButton {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  transform: scale(1.2);
+  right: 5px;
+  top: 5px;
+}
+.ToastifyToast {
+  padding: 0 !important;
+}
+
+/* Локальные стили */
+.ToastFilledWarning {
+  background-color: #F2B519 !important;
+}
+.ToastFilledSuccess {
+  background-color: #249C5C !important;
+}
+.ToastFilledError {
+  background-color: #FF3636 !important;
+}
+.ToastFilledInfo {
+  background-color: #0075FF !important;
+}
+
+.ToastBottom {
+  border-radius: 4px !important;
+  margin: 0 !important;
+  margin-bottom: 10px !important;
+  border: 1px solid #BEBEBE !important;
+  background: #F4F3FE !important;
+  min-height: 0 !important;
+  padding: 6px !important;
+
+  .ToastifyToast {
+    padding: 0 !important;
+    background: #F4F3FE !important;
+    border-radius: 4px !important;
+  }
+
+  .ToastifyToastBody {
+    padding: 0 !important;
+    border-radius: 4px !important;
+    margin: 0;
+
+    div {
+      .NotificationsWrapper {
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        div {
+          .NotificationsDescription {
+            display: none;
+          }
+
+          .NotificationsTitle {
+            font-family: 'Inter', sans-serif !important;
+            font-style: normal !important;
+            font-weight: 400 !important;
+            font-size: 16px !important;
+            color: #212121 !important;
+            margin-bottom: 0;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .NotificationsPicture {
+      display: none;
+    }
+  }
+}

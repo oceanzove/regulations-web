@@ -6,6 +6,7 @@ import {Input} from "../../../../../shared/ui/input/input.tsx";
 import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
+import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,
@@ -18,14 +19,18 @@ export const RegulationEditor = (props: IRegulationEditorProps) => {
     const [localTitle, setLocalTitle] = useState(activeRegulation.title);
     const [localContent, setLocalContent] = useState(activeRegulation.content);
 
+    const isChanged = localTitle !== activeRegulation.title || localContent !== activeRegulation.content;
+
     useEffect(() => {
         setLocalTitle(activeRegulation.title);
         setLocalContent(activeRegulation.content);
     }, [activeRegulation]);
 
-    const [update] = regulationApi.useUpdateMutation();
+    const [update, { isLoading }] = regulationApi.useUpdateMutation();
 
     const onSaveClick = () => {
+        if (!isChanged) return;
+
         if (localTitle !== activeRegulation.title) {
             updateTitle(activeRegulation.id, localTitle);
         }
@@ -33,7 +38,12 @@ export const RegulationEditor = (props: IRegulationEditorProps) => {
             updateContent(activeRegulation.id, localContent);
         }
         if (localTitle !== activeRegulation.title || localContent !== activeRegulation.content) {
-            update({ regulation: activeRegulation.id, title: localTitle, content: localContent})
+            try {
+                update({ regulation: activeRegulation.id, title: localTitle, content: localContent});
+                notificationSuccess('Сохранение', 'Регламент успешно сохранен');
+            } catch {
+                notificationError('Сохранение', 'Не удалось сохранить регламент');
+            }
         }
     };
 
@@ -43,7 +53,7 @@ export const RegulationEditor = (props: IRegulationEditorProps) => {
                 <Label label={'Название'}>
                     <Input
                         value={localTitle}
-                        onChange={(content) => setLocalTitle(content || '')}
+                        onChange={(e) => setLocalTitle(e.target.value || '')}
                     />
                 </Label>
                 <MDEditor
@@ -51,7 +61,11 @@ export const RegulationEditor = (props: IRegulationEditorProps) => {
                     value={localContent}
                     onChange={(content) => setLocalContent(content || '')}
                 />
-                <MainButton text={'Сохранить'} onClick={onSaveClick}/>
+                <MainButton
+                    text={'Сохранить'}
+                    onClick={onSaveClick}
+                    disabled={!isChanged || isLoading}
+                />
             </div>
         </div>
     );

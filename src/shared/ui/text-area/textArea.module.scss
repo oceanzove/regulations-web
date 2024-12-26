@@ -1,0 +1,20 @@
+.textAreaField {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: var(--font-size-m);
+  background-color: transparent;
+  min-height: 80px; // Minimum height for the textarea
+  padding: 8px; // Add padding as needed
+  line-height: 1.5; // Increased line height for better readability
+  transition: height 0.2s ease; // Smooth transition when height changes
+  resize: none; // Prevent manual resizing
+
+  &::placeholder {
+    color: var(--text-area-placeholder-color);
+    font-size: var(--font-size-m);
+  }
+
+  /* Optional: Add box-sizing to include padding in height calculations */
+  box-sizing: border-box;
+}

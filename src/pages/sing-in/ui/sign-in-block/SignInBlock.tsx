@@ -7,6 +7,7 @@ import {authAPI} from "../../../../entities/user/auth/api/api.ts";
 import {ISignInRequest} from "../../../../entities/user/auth/api/types.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {useNavigate} from "react-router-dom";
+import {notificationError} from "../../../../widgets/notifications/callNotification.tsx";
 
 export const SignInBlock = () => {
     const {
@@ -38,20 +39,13 @@ export const SignInBlock = () => {
             }
         } catch (error) {
             if ((error as FetchBaseQueryError).status === 401) {
-                console.error(
-                    'Ошибка авторизации, Пароль введен неверно. Пожалуйста, убедитесь в правильности ввода и повторите попытку.',
-                );
+                notificationError('Ошибка авторизации', 'Пожалуйста, убедитесь в правильности ввода и повторите попытку.')
             } else if ((error as FetchBaseQueryError).status === 404) {
-                console.error(
-                    'Ошибка авторизации, Аккаунт не найден. Проверьте данные или зарегистрируйтесь.',
-                );
+                notificationError('Ошибка авторизации', 'Проверьте данные или зарегистрируйтесь.')
             } else {
-                console.error(
-                    'Ошибка! Произошла ошибка при авторизации. Пожалуйста, попробуйте еще раз позже.', error
-                );
+                notificationError('Ошибка авторизации', 'Пожалуйста, попробуйте еще раз позже.')
             }
         }
-        // navigate('/');
     };
     return (
         <div className={css.wrapper}>
@@ -60,14 +54,14 @@ export const SignInBlock = () => {
                 <Input
                     placeholder="Введите почту"
                     value={signInState.email}
-                    onChange={updateEmail}
+                    onChange={(e) => updateEmail(e.target.value)}
                 />
             </Label>
             <Label label="Пароль">
                 <Input
                     placeholder="Введите пароль"
                     value={signInState.password}
-                    onChange={updatePassword}
+                    onChange={(e) => updatePassword(e.target.value)}
                 />
             </Label>
             <MainButton text={'Войти'} onClick={onSignIn}/>

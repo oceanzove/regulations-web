@@ -7,6 +7,7 @@ import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {RegulationItem} from "../../../../regulation/ui/regulation-block/regulation-list/regulation-item";
 import {IProcess} from "../../../../../entities/process/api/types.ts";
 import {processApi} from "../../../../../entities/process/api/api.ts";
+import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
 
 interface IProcessList {
     processes: IProcess[];
@@ -57,7 +58,9 @@ export const ProcessList = (props: IProcessList) => {
 
             // Дополнительная логика, например, выделение только что созданного регламента
             updateActiveProcess(newProcess.id);
+            notificationSuccess('Создание', 'Процесс успешно создан');
         } catch (error) {
+            notificationError('Создание', 'Не удалось создать процесс');
             console.error("Error creating regulation:", error);
         }
     }, [createProcess, processes, updateProcesses, updateActiveProcess]);

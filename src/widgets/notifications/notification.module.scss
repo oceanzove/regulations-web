@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  align-items: start;
+  padding: 4px;
+}
+
+.picture {
+  margin-right: 10px;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 18px;
+  color: black;
+}
+
+.description {
+  color: gray;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.title, .description {
+  font-family: Inter, sans-serif;
+  word-wrap: break-word;
+  width: 350px;
+  line-height: 1.3;
+}

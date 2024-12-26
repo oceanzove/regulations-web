@@ -1,4 +1,5 @@
 import css from './input.module.scss';
+import React from "react";
 
 interface IInputProps {
     placeholder?: string;
@@ -6,7 +7,7 @@ interface IInputProps {
     height?: number;
     id?: string;
     value?: string;
-    onChange?: (value: string) => void;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Input = (props: IInputProps) => {
@@ -26,9 +27,9 @@ export const Input = (props: IInputProps) => {
                     id={id}
                     className={css.inputField}
                     placeholder={placeholder}
-                    style={{ height }}
+                    style={{height}}
                     value={value}
-                    onChange={(e) => onChange?.(e.target.value)}
+                    onChange={onChange}
                 />
             </div>
 

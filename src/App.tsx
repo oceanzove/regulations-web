@@ -2,6 +2,7 @@ import React from 'react';
 import Router from './app/router/Router';
 import {useLocation} from "react-router-dom";
 import {Navbar} from "./widgets/navbar/navbar.tsx";
+import {ToastContainer} from "react-toastify";
 
 const App = () => {
     const location = useLocation();
@@ -14,6 +15,7 @@ const App = () => {
         <>
             {!shouldHideNavbar && <Navbar />}
             <Router />
+            <ToastContainer />
         </>
     );
 };

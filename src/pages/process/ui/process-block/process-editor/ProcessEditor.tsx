@@ -5,6 +5,7 @@ import {Input} from "../../../../../shared/ui/input/input.tsx";
 import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {IProcess} from "../../../../../entities/process/api/types.ts";
 import {processApi} from "../../../../../entities/process/api/api.ts";
+import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
 
 interface IProcessEditorProps {
     activeProcess: IProcess,
@@ -18,14 +19,18 @@ export const ProcessEditor = (props: IProcessEditorProps) => {
     const [localTitle, setLocalTitle] = useState(activeProcess.title);
     const [localDescription, setLocalDescription] = useState(activeProcess.description);
 
+    const isChanged = localTitle !== activeProcess.title || localDescription !== activeProcess.description;
+
     useEffect(() => {
         setLocalTitle(activeProcess.title);
         setLocalDescription(activeProcess.description);
     }, [activeProcess]);
 
-    const [update] = processApi.useUpdateMutation();
+    const [update, { isLoading }] = processApi.useUpdateMutation();
 
     const onSaveClick = () => {
+        if (!isChanged) return;
+
         if (localTitle !== activeProcess.title) {
             updateTitle(activeProcess.id, localTitle);
         }
@@ -33,7 +38,12 @@ export const ProcessEditor = (props: IProcessEditorProps) => {
             updateDescription(activeProcess.id, localDescription);
         }
         if (localTitle !== activeProcess.title || localDescription !== activeProcess.description) {
-            update({ process: activeProcess.id, title: localTitle, description: localDescription})
+            try {
+                update({ process: activeProcess.id, title: localTitle, description: localDescription})
+                notificationSuccess('Сохранение', 'Процесс успешно сохранен');
+            } catch {
+                notificationError('Сохранение', 'Не удалось сохранить процесс');
+            }
         }
     };
 
@@ -43,16 +53,28 @@ export const ProcessEditor = (props: IProcessEditorProps) => {
                 <Label label={'Название'}>
                     <Input
                         value={localTitle}
-                        onChange={(content) => setLocalTitle(content || '')}
+                        onChange={(e) => setLocalTitle(e.target.value || '')}
                     />
                 </Label>
                 <Label label={'Описание'}>
                     <Input
                         value={localDescription}
-                        onChange={(content) => setLocalDescription(content || '')}
+                        onChange={(e) => setLocalDescription(e.target.value || '')}
                     />
                 </Label>
-                <MainButton text={'Сохранить'} onClick={onSaveClick}/>
+                <Label label={'Шаги'}>
+                    <div className={css.steps}>
+                        <div className={css.step}> Шаг 1 Сжать кулак</div>
+                        <div className={css.step}> Шаг 2 Найти Лешу</div>
+                        <div className={css.step}> Шаг 3 Хлебный крошик</div>
+                        <button className={css.addStep}>Добавить шаг</button>
+                    </div>
+                </Label>
+                <MainButton
+                    text={'Сохранить'}
+                    onClick={onSaveClick}
+                    disabled={!isChanged || isLoading}
+                />
             </div>
         </div>
     );
