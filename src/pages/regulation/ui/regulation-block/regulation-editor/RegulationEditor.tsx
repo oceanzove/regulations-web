@@ -1,4 +1,4 @@
-import css from './RegulationEditor.module.scss';
+import styles from './RegulationEditor.module.scss';
 import MDEditor from "@uiw/react-md-editor";
 import React, {useEffect, useState} from "react";
 import {Label} from "../../../../../shared/ui/label/label.tsx";
@@ -7,6 +7,7 @@ import {MainButton} from "../../../../../shared/ui/button/button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
+import RegulationIcon from "../../../../../shared/assets/images/regulation_icon.svg";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,
@@ -48,11 +49,32 @@ export const RegulationEditor = (props: IRegulationEditorProps) => {
     };
 
     return (
-        <div className={css.wrapper}>
-            <div className={css.container}>
+        <div className={styles.wrapper}>
+            <div className={styles.header}>
+                <img src={RegulationIcon} alt="Regulation icon"/>
+                <div>{localTitle}</div>
+            </div>
+            <div className={styles.imageBlock}>
+                <div className={styles.images}>
+                    <img src='https://i.pinimg.com/736x/fa/68/26/fa68266e4bcac979a85327dfe621938c.jpg'/>
+                    <img src='https://i.pinimg.com/736x/fa/68/26/fa68266e4bcac979a85327dfe621938c.jpg'/>
+                    <img src='https://i.pinimg.com/736x/fa/68/26/fa68266e4bcac979a85327dfe621938c.jpg'/>
+                </div>
+                <div>
+                    Загрузите изображение
+                    <MainButton text={'Загрузить фото'} onClick={() => {}}/>
+                </div>
+            </div>
+            <div className={styles.container}>
                 <Label label={'Название'}>
                     <Input
                         value={localTitle}
+                        onChange={(e) => setLocalTitle(e.target.value || '')}
+                    />
+                </Label>
+                <Label label={'Категория'}>
+                    <Input
+                        value={"Регламент"}
                         onChange={(e) => setLocalTitle(e.target.value || '')}
                     />
                 </Label>
