@@ -78,11 +78,24 @@ export const RegulationEditor = (props: IRegulationEditorProps) => {
                         onChange={(e) => setLocalTitle(e.target.value || '')}
                     />
                 </Label>
-                <MDEditor
-                    data-color-mode="light"
-                    value={localContent}
-                    onChange={(content) => setLocalContent(content || '')}
-                />
+                <Label label={'Набор файлов'}>
+                    <div>
+                        doc 2024-12-17.pdf
+                    </div>
+                    <div>
+                        Приложение 1.doc
+                    </div>
+                </Label>
+                <Label label={'Содержание документа'}>
+                    <MainButton text={'Создать'}/>
+                </Label>
+                <Label label={'Описание'}>
+                    <MDEditor
+                        data-color-mode="light"
+                        value={localContent}
+                        onChange={(content) => setLocalContent(content || '')}
+                    />
+                </Label>
                 <MainButton
                     text={'Сохранить'}
                     onClick={onSaveClick}
