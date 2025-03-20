@@ -1,27 +1,24 @@
-import * as React from "react";
-import { Editor } from "draft-js";
-import { BLOCK_RENDER_MAP, CUSTOM_STYLE_MAP } from "./config";
-import { useEditorApi } from "./context";
-import cn from "classnames";
+import type { FC } from 'react';
 
-export type TextEditorProps = {
-    className?: string;
-};
+interface ITextEditorProps {
+    isInvalid?: boolean;
+}
 
-const TextEditor: React.FC<TextEditorProps> = ({ className }) => {
-    const editorApi = useEditorApi();
+export const TextEditor: FC<ITextEditorProps> = (props) => {
+    const {
+        isInvalid = false
+    } = props;
 
     return (
-        <div className={cn("text-editor", className)}>
-            <Editor
-                spellCheck
-                customStyleMap={CUSTOM_STYLE_MAP}
-                blockRenderMap={BLOCK_RENDER_MAP}
-                editorState={editorApi.state}
-                onChange={editorApi.onChange}
-            />
-        </div>
-    );
-};
+        <>
+        </>
+    )
+}
 
-export default TextEditor;
+// type TTextEditorProps = {
+//     isInvalid?: boolean;
+// }
+//
+// export const TextEditor: FC<TTextEditorProps> = (props) => {
+//
+// }

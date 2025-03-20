@@ -8,6 +8,7 @@ import {ProcessPage} from "../../pages/process";
 const Router = () => (
     <div className={css.router}>
         <Routes>
+            {/*<Route path="/" element={<RegulationPage />} />*/}
             <Route path="/" element={<SignInPage />} />
             <Route path="/regulation" element={<RegulationPage />} />
             <Route path="/process" element={<ProcessPage />} />
