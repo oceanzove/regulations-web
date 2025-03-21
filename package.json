@@ -15,6 +15,7 @@
     "@types/react-beautiful-dnd": "^13.1.8",
     "@uiw/react-md-editor": "^4.0.4",
     "classnames": "^2.5.1",
+    "clsx": "^2.1.1",
     "draft-convert": "^2.1.13",
     "draft-js": "^0.11.7",
     "react": "^18.3.1",
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@eslint/js": "^9.15.0",
     "@reduxjs/toolkit": "^2.4.0",
+    "@types/draft-convert": "^2.1.8",
     "@types/draft-js": "^0.11.18",
     "@types/node-sass": "^4.11.8",
     "@types/react": "^18.3.12",
