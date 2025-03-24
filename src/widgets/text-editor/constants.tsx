@@ -27,3 +27,15 @@ export const TEXT_EDITOR_CUSTOM_STYLES = {
         color: "blue",
     }
 };
+
+export const TEXT_EDITOR_BLOCK_TYPES = [
+    {label: "H2", style: "header-two", icon: "H2", size: 'extra-small' },
+    {label: "OL", style: "ordered-list-item", icon: "OL", size: 'medium' },
+    {label: "UL", style: "unordered-list-item", icon: "UL", size: 'medium' },
+];
+
+export const TEXT_EDITOR_INLINE_TYPES = [
+    {label: "Bold", style: "BOLD", icon: "Bold", size: 'extra-small' },
+    {label: "Underline", style: "UNDERLINE", icon: "Underline", size: 'extra-small' },
+    {label: "Highlight", style: "HIGHLIGHT", icon: "Highlight", size: 'small' },
+];

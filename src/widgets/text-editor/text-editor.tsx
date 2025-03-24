@@ -5,6 +5,10 @@ import {Editor} from "react-draft-wysiwyg";
 import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./constants.tsx";
 import {TTextEditorTextStyle} from "./types.ts";
 import {convertToHTML} from "draft-convert";
+import {BlockStyleControls} from "./format-button/block-style-controls/block-style-controls.tsx";
+import {InlineStyleControls} from "./format-button/inline-style-controls/inline-style-controls.tsx";
+
+import style from './text-editor.module.scss';
 
 type TClasses = {
   textEditor?: string;
@@ -80,11 +84,11 @@ export const TextEditor: FC<ITextEditorProps> = (props) => {
     }
 
     return (
-        <div className={clsx('TextEditor', classes?.textEditor)}>
+        <div className={clsx('TextEditor', style.TextEditor, classes?.textEditor)}>
             <div className="TextEditor-Title">
                 {title}
             </div>
-            <div className={clsx("TextEditor-Area", {
+            <div className={clsx("TextEditor-Area", style.TextEditorArea, {
                 "TextEditor-Area__isFocused" : isFocused ||contentState.hasText(),
                 "TextEditor-Area__isInvalid" : isInvalid,
             })}
@@ -100,6 +104,18 @@ export const TextEditor: FC<ITextEditorProps> = (props) => {
                         onEditorStateChange={handleChangeText}
                         customBlockRenderFunc={getBlockStyle}
                         // onChange={handleChangeText}
+                    />
+                </div>
+                <div className={style.TextEditorSub}>
+                    <BlockStyleControls editorState={editorState} onToggle={(blockType) => {
+                        const newState = RichUtils.toggleBlockType(editorState, blockType);
+                        setEditorState(newState);
+                    }}
+                    />
+                    <InlineStyleControls editorState={editorState} onToggle={(inlineStyle) => {
+                        const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
+                        setEditorState(newState);
+                    }}
                     />
                 </div>
             </div>
