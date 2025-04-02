@@ -6,7 +6,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { IRegulation } from '../../../../../entities/regulation/api/types.ts';
 import { regulationApi } from '../../../../../entities/regulation/api/api.ts';
 import { notificationError, notificationSuccess } from '../../../../../widgets/notifications/callNotification.tsx';
-import {TextEditor} from "../../../../../widgets/text-editor";
+import {TextEditor} from "../../../../../widgets/TextEditor";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,
@@ -36,9 +36,9 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = ({ activeRegul
         }
     }, [activeRegulation]);
 
-    const handleEditorChange = (state: EditorState) => {
-        setEditorState(state);
-    };
+    // const handleEditorChange = (state: EditorState) => {
+    //     setEditorState(state);
+    // };
 
     const handleSave = async () => {
         try {
@@ -54,7 +54,8 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = ({ activeRegul
         <div className={styles.wrapper}>
             <div className={styles.container}>
                 <TextEditor
-                    
+                    title="Регламент"
+                    placeholder="test"
                 />
                 {/*<Editor*/}
                 {/*    editorState={editorState}*/}
