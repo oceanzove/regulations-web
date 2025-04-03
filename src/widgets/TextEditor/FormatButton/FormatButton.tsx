@@ -1,22 +1,20 @@
-import { type FC, memo } from "react";
-// import { IconButton } from "../../Button";
-// import type { IconType } from "../../Icon/IconType";
+import React, { type FC, memo } from "react";
 import type { TFormatButtonProps } from "./types";
-import "./FormatButton.scss";
-
+import styles from './format-button.module.scss';
+import {IconButton} from "../../../shared/ui/icon-button/icon-button.tsx";
+import {IconType} from "../../../shared/ui/icon/IconType.tsx";
 const FormatButtonComponent: FC<TFormatButtonProps> = ({ isActive, onToggle, style, typeIcon }) => {
   return (
     <div
-      className="FormatButton"
+      className={`${styles.formatButton}`}
       onMouseDown={(event) => {
         event.preventDefault();
         onToggle?.(style);
       }}
     >
         <>
-            {style}
+            <IconButton isActive={isActive} typeIcon={typeIcon as IconType} />
         </>
-      {/*<MainButton isActive={isActive} typeIcon={typeIcon as IconType} />*/}
     </div>
   );
 };

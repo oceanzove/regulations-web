@@ -12,6 +12,8 @@ export const TEXT_EDITOR_STYLE_TO_HTML = (style: TTextEditorTextStyle) => {
       return <ul />;
     case "BOLD":
       return <strong />;
+    case "ITALIC":
+      return <i />;
     case "UNDERLINE":
       return <u />;
     case "HIGHLIGHT":
@@ -36,6 +38,7 @@ export const TEXT_EDITOR_BLOCK_TYPES = [
 
 export const TEXT_EDITOR_INLINE_STYLES = [
   { label: "Bold", style: "BOLD", icon: "Bold", size: "extra-small" },
+  { label: "Italic", style: "ITALIC", icon: "Italic", size: "extra-small" },
   { label: "Underline", style: "UNDERLINE", icon: "Underline", size: "extra-small" },
-  { label: "Highlight", style: "HIGHLIGHT", icon: "Highlight", size: "small" },
+  // { label: "Highlight", style: "HIGHLIGHT", icon: "Highlight", size: "small" },
 ];

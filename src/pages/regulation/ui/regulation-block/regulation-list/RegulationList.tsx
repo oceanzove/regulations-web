@@ -4,7 +4,7 @@ import React, {useCallback} from "react";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {RegulationItem} from "./regulation-item";
 import OptionIcon from "../../../../../shared/assets/images/option_icon.svg";
-import {MainButton} from "../../../../../shared/ui/button/button.tsx";
+import {MainButton} from "../../../../../shared/ui/main-button/main-button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";

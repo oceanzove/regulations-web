@@ -1,4 +1,4 @@
-export type TTextEditorTextStyle = "H1" | "H2" | "OL" | "UL" | "BOLD" | "UNDERLINE" | "HIGHLIGHT";
+export type TTextEditorTextStyle = "H1" | "H2" | "OL" | "UL" | "BOLD" | "ITALIC" | "UNDERLINE" | "HIGHLIGHT";
 
 type TClasses = {
   textEditor?: string;

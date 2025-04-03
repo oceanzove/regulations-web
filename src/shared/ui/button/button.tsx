@@ -1,28 +1,49 @@
-import React from 'react';
-import css from './button.module.scss';
+import {memo, type FC, type DetailedHTMLProps, type ButtonHTMLAttributes, type MouseEvent} from "react";
+import styles from './button.module.scss';
+import {IconType} from "../icon/IconType.tsx";
+import {Icon} from "../icon";
 
-interface IMainButtonProps {
-    text: string;
-    width?: number;
-    height?: number;
-    disabled?: boolean;
-    onClick?: React.MouseEventHandler<HTMLButtonElement>;
+export type TButton = "button" | "reset" | "submit";
+
+export interface IButtonProps
+    extends DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
+  className?: string;
+  dataTestId?: string;
+  isActive?: boolean;
+  isDisabled?: boolean;
+  onClick?: (event: MouseEvent) => void;
+  type?: TButton;
+  typeIcon?: IconType;
 }
 
-export const MainButton = (props: IMainButtonProps) => {
-    const {
-        text, width, height, onClick, disabled,
-    } = props;
-    return (
-        <button
-            className={`${css.main_button} ${disabled ? css.disabled : ''}`}
-            type="button"
-            onClick={onClick}
-            style={{
-                width, height,
-            }}
-        >
-            {text}
-        </button>
-    );
+const ButtonComponent: FC<IButtonProps> = ({
+  className,
+  children,
+  isActive = false,
+  isDisabled = false,
+  onClick,
+  type = "button",
+  typeIcon,
+  ...rest
+}) => {
+  return (
+    <button
+      // className={clsx("Button", className, {
+      //   Button__isDisabled: isDisabled,
+      //   Button__isActive: isActive,
+      // })}
+        className={`${styles.button} ${className} ${isActive ? styles.active : ''}`}
+      disabled={isDisabled}
+      onClick={onClick}
+      type={type}
+      {...rest}
+    >
+      {typeIcon && <Icon type={typeIcon} />}
+      <span className={`${typeIcon ? styles.buttonText : ""}`}>{children}</span>
+    </button>
+  );
 };
+
+ButtonComponent.displayName = "Button";
+
+export const Button = memo(ButtonComponent);

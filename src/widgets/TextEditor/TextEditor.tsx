@@ -10,8 +10,6 @@ import { InlineStyleControls } from "./InlineStyleControls";
 import type { TTextEditorProps, TTextEditorTextStyle } from "./types";
 import styles from './text-editor.module.scss';
 
-import "./TextEditor.scss";
-
 const TextEditorComponent: FC<TTextEditorProps> = ({
   classes,
   htmlText,
@@ -23,16 +21,17 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
   const [isFocused, setFocused] = useState(false);
   const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
 
-  // let wrapperClassName = "TextEditor-Wrapper";
   const contentState = editorState.getCurrentContent();
   const wrapperClassName = clsx(styles.TextEditorWrapper, {
     [styles.TextEditorWrapperHidePlaceholder]:
     !contentState.hasText() &&
     contentState.getBlockMap().first().getType() !== "unstyled",
   });
+
   const options = {
     styleToHTML: (style: string) => TEXT_EDITOR_STYLE_TO_HTML(style as TTextEditorTextStyle),
   };
+
   const convertMessageToHtml = convertToHTML(options);
 
   const convertHtmlToRaw = (html: string): EditorState => {
@@ -99,6 +98,22 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
               })}
               onClick={handleChangeFocus}
           >
+              <div className={styles.textEditorSub}>
+                  <InlineStyleControls
+                      editorState={editorState}
+                      onToggle={(inlineStyle) => {
+                          const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
+                          setEditorState(newState);
+                      }}
+                  />
+                  {/*<BlockStyleControls*/}
+                  {/*    editorState={editorState}*/}
+                  {/*    onToggle={(blockType) => {*/}
+                  {/*        const newState = RichUtils.toggleBlockType(editorState, blockType);*/}
+                  {/*        setEditorState(newState);*/}
+                  {/*    }}*/}
+                  {/*/>*/}
+              </div>
               <div className={wrapperClassName}>
                   <Editor
                       blockRendererFn={getBlockStyle}
@@ -108,22 +123,6 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
                       onBlur={handleChangeBlur}
                       onChange={handleChangeText}
                       placeholder={placeholder}
-                  />
-              </div>
-              <div className={styles.textEditorSub}>
-                  <BlockStyleControls
-                      editorState={editorState}
-                      onToggle={(blockType) => {
-                          const newState = RichUtils.toggleBlockType(editorState, blockType);
-                          setEditorState(newState);
-                      }}
-                  />
-                  <InlineStyleControls
-                      editorState={editorState}
-                      onToggle={(inlineStyle) => {
-                          const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
-                          setEditorState(newState);
-                      }}
                   />
               </div>
           </div>

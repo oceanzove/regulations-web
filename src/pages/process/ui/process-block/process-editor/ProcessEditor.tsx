@@ -2,7 +2,7 @@ import css from './ProcessEditor.module.scss';
 import React, {useEffect, useState} from "react";
 import {Label} from "../../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../../shared/ui/input/input.tsx";
-import {MainButton} from "../../../../../shared/ui/button/button.tsx";
+import {MainButton} from "../../../../../shared/ui/main-button/main-button.tsx";
 import {IProcess} from "../../../../../entities/process/api/types.ts";
 import {processApi} from "../../../../../entities/process/api/api.ts";
 import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
