@@ -106,13 +106,13 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
                           setEditorState(newState);
                       }}
                   />
-                  {/*<BlockStyleControls*/}
-                  {/*    editorState={editorState}*/}
-                  {/*    onToggle={(blockType) => {*/}
-                  {/*        const newState = RichUtils.toggleBlockType(editorState, blockType);*/}
-                  {/*        setEditorState(newState);*/}
-                  {/*    }}*/}
-                  {/*/>*/}
+                  <BlockStyleControls
+                      editorState={editorState}
+                      onToggle={(blockType) => {
+                          const newState = RichUtils.toggleBlockType(editorState, blockType);
+                          setEditorState(newState);
+                      }}
+                  />
               </div>
               <div className={wrapperClassName}>
                   <Editor
