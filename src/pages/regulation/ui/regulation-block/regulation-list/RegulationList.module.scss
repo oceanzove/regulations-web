@@ -1,21 +1,19 @@
 .wrapper {
   background: var(--default-bg-color);
-  width: var(--regulation-list-width);
-  min-height: 100vh;
 
+  width: 100%;
+  max-width: 250px;
+
+  //padding: 10px 0 10px 10px;
+
+  border-right: 1px solid #EBEDEF;
 }
 
 .header {
-  display: flex;
-  flex-direction: row;
-
-  gap: 5px;
   align-items: center;
-  color: var(--regulation-list-header-color);
-  padding: var(--regulation-item-padding);
+  color: #020914;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 0 10px 5px;
 
-}
-
-.header button {
-  margin-left: auto;
 }

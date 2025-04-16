@@ -41,6 +41,7 @@ export const ProcessBlock = () => {
                     activeProcess={activeProcess}
                     updateTitle={updateTitle}
                     updateDescription={updateDescription}
+                    steps={processState.processSteps}
                 />
             ) : (
                 <div className={css.placeholder}>

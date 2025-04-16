@@ -7,7 +7,7 @@ export interface IProcess {
 
 export interface IStep {
     id: string,
-    name: string,
+    title: string,
     description: string,
     order: number,
 }

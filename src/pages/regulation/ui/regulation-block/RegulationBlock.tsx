@@ -4,6 +4,7 @@ import {useRegulation} from "../../../../entities/regulation/model/hooks/useRegu
 import {RegulationEditor} from "./regulation-editor";
 import {useEffect, useState} from "react";
 import {regulationApi} from "../../../../entities/regulation/api/api.ts";
+import {IRegulation} from "../../../../entities/regulation/api/types.ts";
 
 export const RegulationBlock = () => {
     const {
@@ -27,25 +28,37 @@ export const RegulationBlock = () => {
     const activeRegulation = regulationState.regulations.find(
         (reg) => reg.id === regulationState.activeRegulation
     );
+    // console.log(regulationState.regulations)
 
+    const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
     return (
         <div className={css.wrapper}>
+            {/*<RegulationList*/}
+            {/*    regulations={regulationState.regulations}*/}
+            {/*    updateRegulations={updateRegulation}*/}
+            {/*    updateActiveRegulation={updateActiveRegulation}*/}
+            {/*/>*/}
+            {/*{activeRegulation ? (*/}
+            {/*    <RegulationEditor*/}
+            {/*        activeRegulation={activeRegulation}*/}
+            {/*        updateContent={updateContent}*/}
+            {/*        updateTitle={updateTitle}*/}
+            {/*    />*/}
+            {/*) : (*/}
+            {/*    <div className={css.placeholder}>*/}
+            {/*        Выберите или создайте регламент для редактирования*/}
+            {/*    </div>*/}
+            {/*)}*/}
             <RegulationList
                 regulations={regulationState.regulations}
                 updateRegulations={updateRegulation}
                 updateActiveRegulation={updateActiveRegulation}
             />
-            {activeRegulation ? (
-                <RegulationEditor
-                    activeRegulation={activeRegulation}
-                    updateContent={updateContent}
-                    updateTitle={updateTitle}
-                />
-            ) : (
-                <div className={css.placeholder}>
-                    Выберите или создайте регламент для редактирования
-                </div>
-            )}
+            <RegulationEditor
+                activeRegulation={testRegulation}
+                updateContent={updateContent}
+                updateTitle={updateTitle}
+            />
         </div>
     )
 };

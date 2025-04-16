@@ -1,9 +1,9 @@
-import css from './RegulationPage.module.scss';
+import styles from './RegulationPage.module.scss';
 import {RegulationBlock} from "./regulation-block";
 
 export const RegulationPage = () => {
     return (
-        <div className={css.wrapper}>
+        <div className={styles.wrapper}>
             <RegulationBlock />
         </div>
     )

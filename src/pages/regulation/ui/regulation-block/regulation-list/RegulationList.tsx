@@ -22,27 +22,27 @@ export const RegulationList = (props: IRegulationList) => {
         updateActiveRegulation,
     } = props;
 
-    // Настройка сенсоров
-    const sensors = useSensors(
-        useSensor(PointerSensor, {
-            activationConstraint: {
-                distance: 5,
-            },
-        }),
-    );
-
-    // Обработка завершения перетаскивания
-    const handleDragEnd = (event: DragEndEvent) => {
-        const { active, over } = event;
-        if (over && active.id !== over.id) {
-            const oldIndex = regulations.findIndex(regulation => regulation.id === active.id);
-            const newIndex = regulations.findIndex(regulation => regulation.id === over.id);
-
-            if (oldIndex !== -1 && newIndex !== -1) {
-                updateRegulations(arrayMove(regulations, oldIndex, newIndex));
-            }
-        }
-    };
+    // // Настройка сенсоров
+    // const sensors = useSensors(
+    //     useSensor(PointerSensor, {
+    //         activationConstraint: {
+    //             distance: 5,
+    //         },
+    //     }),
+    // );
+    //
+    // // Обработка завершения перетаскивания
+    // const handleDragEnd = (event: DragEndEvent) => {
+    //     const { active, over } = event;
+    //     if (over && active.id !== over.id) {
+    //         const oldIndex = regulations.findIndex(regulation => regulation.id === active.id);
+    //         const newIndex = regulations.findIndex(regulation => regulation.id === over.id);
+    //
+    //         if (oldIndex !== -1 && newIndex !== -1) {
+    //             updateRegulations(arrayMove(regulations, oldIndex, newIndex));
+    //         }
+    //     }
+    // };
 
 
     const [createRegulation] = regulationApi.useCreateMutation();
@@ -69,31 +69,22 @@ export const RegulationList = (props: IRegulationList) => {
     return (
         <div className={css.wrapper}>
             <div className={css.header}>
-                <img src={OptionIcon} alt="Option icon"/>
-                <div>Регламенты</div>
-                <MainButton
-                    text={'Создать'}
-                    onClick={onCreateClick}
-                />
+                <div>Подберите шаблоны, разделы и модули</div>
             </div>
-            <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}
-            >
-                <SortableContext items={regulations} strategy={verticalListSortingStrategy}>
-                    <div className={css.competencies}>
-                        {regulations.map((regulation, index) => (
-                            <RegulationItem
-                                key={regulation.id || index}
-                                id={regulation.id}
-                                title={regulation.title}
-                                onClick={() => updateActiveRegulation(regulation.id)}
-                            />
-                        ))}
-                    </div>
-                </SortableContext>
-            </DndContext>
+            <div className={css.competencies}>
+                {regulations.map((regulation, index) => (
+                    <RegulationItem
+                        key={regulation.id || index}
+                        id={regulation.id}
+                        title={regulation.title}
+                        onClick={() => updateActiveRegulation(regulation.id)}
+                    />
+                ))}
+            </div>
+            <MainButton
+                text={'Создать'}
+                onClick={onCreateClick}
+            />
         </div>
     )
 };

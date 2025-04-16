@@ -3,18 +3,20 @@ import React, {useEffect, useState} from "react";
 import {Label} from "../../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../../shared/ui/input/input.tsx";
 import {MainButton} from "../../../../../shared/ui/main-button/main-button.tsx";
-import {IProcess} from "../../../../../entities/process/api/types.ts";
+import {IProcess, IStep} from "../../../../../entities/process/api/types.ts";
 import {processApi} from "../../../../../entities/process/api/api.ts";
 import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
+import {StepList} from "./steps-list";
 
 interface IProcessEditorProps {
     activeProcess: IProcess,
+    steps: IStep[],
     updateTitle: (id: string, title: string) => void,
     updateDescription: (id: string , description: string) => void,
 }
 
 export const ProcessEditor = (props: IProcessEditorProps) => {
-    const { activeProcess, updateTitle, updateDescription } = props;
+    const { activeProcess, steps, updateTitle, updateDescription } = props;
 
     const [localTitle, setLocalTitle] = useState(activeProcess.title);
     const [localDescription, setLocalDescription] = useState(activeProcess.description);
@@ -63,12 +65,10 @@ export const ProcessEditor = (props: IProcessEditorProps) => {
                     />
                 </Label>
                 <Label label={'Шаги'}>
-                    <div className={css.steps}>
-                        <div className={css.step}> Шаг 1 Сжать кулак</div>
-                        <div className={css.step}> Шаг 2 Найти Лешу</div>
-                        <div className={css.step}> Шаг 3 Хлебный крошик</div>
-                        <button className={css.addStep}>Добавить шаг</button>
-                    </div>
+                   <StepList
+                       steps={steps}
+                       updateSteps={() => {}}
+                   />
                 </Label>
                 <MainButton
                     text={'Сохранить'}
