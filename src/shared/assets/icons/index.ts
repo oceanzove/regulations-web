@@ -4,3 +4,6 @@ export * from './underline-icon';
 export * from './ordered-list-icon';
 export * from './unordered-list-icon';
 export * from './search-icon';
+export * from './arrow-down-icon';
+export * from './arrow-right-icon';
+export * from './drag-point-icon';

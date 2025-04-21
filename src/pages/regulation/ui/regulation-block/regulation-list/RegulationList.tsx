@@ -1,6 +1,6 @@
 import styles from './RegulationList.module.scss';
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {RegulationItem} from "./regulation-item";
 import OptionIcon from "../../../../../shared/assets/images/option_icon.svg";
@@ -12,9 +12,12 @@ import {SearchIcon} from "../../../../../shared/assets/icons";
 import Textarea from "@uiw/react-md-editor/lib/components/TextArea/Textarea";
 import {TextArea} from "../../../../../shared/ui/text-area/textArea.tsx";
 import css from "../../../../../shared/ui/text-area/textArea.module.scss";
+import {DropdownMenuData} from "../RegulationBlock.tsx";
+import {DropdownMenu} from "../../../../../widgets/dropdown-menu/ui/DropdownMenu.tsx";
+import {IDropdownMenuData} from "../../../../../widgets/dropdown-menu/types.ts";
 
 interface IRegulationList {
-    regulations: IRegulation[];
+    regulations: IDropdownMenuData;
     updateRegulations: (regulations: IRegulation[]) => void;
     updateActiveRegulation: (id: string) => void;
 }
@@ -49,26 +52,26 @@ export const RegulationList = (props: IRegulationList) => {
     // };
 
 
-    const [createRegulation] = regulationApi.useCreateMutation();
+    // const [createRegulation] = regulationApi.useCreateMutation();
 
-    // Обработчик нажатия на кнопку "Создать"
-    const onCreateClick = useCallback(async () => {
-        try {
-            // Вызываем мутацию для создания нового регламента
-            const newRegulation = await createRegulation().unwrap();
-
-            // Добавляем новый регламент в начало списка
-            updateRegulations([newRegulation, ...regulations]);
-
-            // Дополнительная логика, например, выделение только что созданного регламента
-            updateActiveRegulation(newRegulation.id);
-
-            notificationSuccess('Создание', 'Регламент успешно создан');
-        } catch (error) {
-            notificationError('Создание', 'Не удалось создать регламент');
-            console.error("Error creating regulation:", error);
-        }
-    }, [createRegulation, regulations, updateRegulations, updateActiveRegulation]);
+    // // Обработчик нажатия на кнопку "Создать"
+    // const onCreateClick = useCallback(async () => {
+    //     try {
+    //         // Вызываем мутацию для создания нового регламента
+    //         const newRegulation = await createRegulation().unwrap();
+    //
+    //         // Добавляем новый регламент в начало списка
+    //         updateRegulations([newRegulation, ...regulations]);
+    //
+    //         // Дополнительная логика, например, выделение только что созданного регламента
+    //         updateActiveRegulation(newRegulation.id);
+    //
+    //         notificationSuccess('Создание', 'Регламент успешно создан');
+    //     } catch (error) {
+    //         notificationError('Создание', 'Не удалось создать регламент');
+    //         console.error("Error creating regulation:", error);
+    //     }
+    // }, [createRegulation, regulations, updateRegulations, updateActiveRegulation]);
 
     return (
         <div className={styles.wrapper}>
@@ -91,19 +94,42 @@ export const RegulationList = (props: IRegulationList) => {
                 </div>
             </div>
             <div className={styles.competencies}>
-                {regulations.map((regulation, index) => (
-                    <RegulationItem
-                        key={regulation.id || index}
-                        id={regulation.id}
-                        title={regulation.title}
-                        onClick={() => updateActiveRegulation(regulation.id)}
-                    />
-                ))}
+                <div className={styles.competenciesHeader}>
+                    <div>Подберите шаблоны, разделы и модули</div>
+                </div>
+                // TODO помечать секцию в которых что-то выбрано
+                <DropdownMenu
+                    title={regulations.title}
+                    sections={regulations.sections}
+                />
+
+                {/*{regulations.map((regulation, index) => (*/}
+                {/*    <RegulationItem*/}
+                {/*        key={regulation.id || index}*/}
+                {/*        id={regulation.id}*/}
+                {/*        title={regulation.title}*/}
+                {/*        onClick={() => updateActiveRegulation(regulation.id)}*/}
+                {/*    />*/}
+                {/*))}*/}
             </div>
             <MainButton
                 text={'Создать'}
-                onClick={onCreateClick}
+                onClick={() => {}}
             />
         </div>
     )
+};
+
+const MenuItem = ({ item }) => {
+    const [checked, setChecked] = useState(item.checked);
+    return (
+        <label className={styles.menuItem}>
+            <input
+                type="checkbox"
+                checked={checked}
+                onChange={() => setChecked(!checked)}
+            />
+            <span className={styles.label}>{item.label}</span>
+        </label>
+    );
 };

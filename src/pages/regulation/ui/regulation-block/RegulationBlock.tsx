@@ -5,6 +5,7 @@ import {RegulationEditor} from "./regulation-editor";
 import {useEffect, useState} from "react";
 import {regulationApi} from "../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../entities/regulation/api/types.ts";
+import {IDropdownMenuData} from "../../../../widgets/dropdown-menu/types.ts";
 
 export const RegulationBlock = () => {
     const {
@@ -25,20 +26,42 @@ export const RegulationBlock = () => {
         }
     }, [data, isDataLoaded, updateRegulation]);
 
-    const activeRegulation = regulationState.regulations.find(
-        (reg) => reg.id === regulationState.activeRegulation
-    );
+    // const activeRegulation = regulationState.regulations.find(
+    //     (reg) => reg.id === regulationState.activeRegulation
+    // );
     // console.log(regulationState.regulations)
 
-    const regulations: IRegulation[] = [
-        { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'},
-        { id: '2', title: 'ГУБЫ', content: 'dsfsdf'},
-        { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
-    ]
+    // const regulations: IRegulation[] = [
+    //     { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'},
+    //     { id: '2', title: 'ГУБЫ', content: 'dsfsdf'},
+    //     { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
+    // ]
 
-    useEffect(() => {
-        updateRegulation(regulations);
-    }, []);
+    const regulation: IDropdownMenuData = {
+        title: "Регламент",
+        sections: [
+            {
+                title: "Общие положения",
+                items: [
+                    { label: "Настоящий регламент…", checked: true },
+                    { label: "Для достижения общ…", checked: false },
+                    { label: "Документ определяе…", checked: false },
+                ],
+            },
+            {
+                title: "Область применения",
+                items: [],
+            },
+            {
+                title: "Описание процессов",
+                items: [],
+            },
+        ],
+    };
+
+    // useEffect(() => {
+    //     updateRegulation(regulations);
+    // }, []);
     const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
     return (
         <div className={css.wrapper}>
@@ -59,7 +82,7 @@ export const RegulationBlock = () => {
             {/*    </div>*/}
             {/*)}*/}
             <RegulationList
-                regulations={regulationState.regulations}
+                regulations={regulation}
                 updateRegulations={updateRegulation}
                 updateActiveRegulation={updateActiveRegulation}
             />

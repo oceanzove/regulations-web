@@ -1,0 +1,29 @@
+.wrapper {
+  background: var(--default-bg-color);
+
+  width: 100%;
+  max-width: 240px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+
+    gap: 10px ;
+    &.expanded {
+      background: #F8F9FC;
+    }
+
+    .title {
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 24px;
+      color: #020914;
+    }
+  }
+}
