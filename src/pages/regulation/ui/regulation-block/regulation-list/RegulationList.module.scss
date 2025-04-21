@@ -4,9 +4,40 @@
   width: 100%;
   max-width: 250px;
 
-  //padding: 10px 0 10px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 
   border-right: 1px solid #EBEDEF;
+}
+
+.search {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+
+  align-content: center;
+
+  gap: 5px;
+
+  .searchArea {
+    width: 100%;
+    border: none;
+    outline: none;
+
+    border-bottom: 1px solid #EBEDEF;
+
+    transition: height 0.2s ease;
+    text-wrap: nowrap;
+    resize: none;
+
+    font-size: var(--font-size-m);
+
+    &::placeholder {
+      color: var(--text-area-placeholder-color);
+      font-size: var(--font-size-m);
+    }
+  }
 }
 
 .header {

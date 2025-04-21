@@ -30,6 +30,15 @@ export const RegulationBlock = () => {
     );
     // console.log(regulationState.regulations)
 
+    const regulations: IRegulation[] = [
+        { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'},
+        { id: '2', title: 'ГУБЫ', content: 'dsfsdf'},
+        { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
+    ]
+
+    useEffect(() => {
+        updateRegulation(regulations);
+    }, []);
     const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
     return (
         <div className={css.wrapper}>

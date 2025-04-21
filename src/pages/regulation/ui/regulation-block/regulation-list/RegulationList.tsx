@@ -1,4 +1,4 @@
-import css from './RegulationList.module.scss';
+import styles from './RegulationList.module.scss';
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import React, {useCallback} from "react";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
@@ -8,6 +8,10 @@ import {MainButton} from "../../../../../shared/ui/main-button/main-button.tsx";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
+import {SearchIcon} from "../../../../../shared/assets/icons";
+import Textarea from "@uiw/react-md-editor/lib/components/TextArea/Textarea";
+import {TextArea} from "../../../../../shared/ui/text-area/textArea.tsx";
+import css from "../../../../../shared/ui/text-area/textArea.module.scss";
 
 interface IRegulationList {
     regulations: IRegulation[];
@@ -67,11 +71,26 @@ export const RegulationList = (props: IRegulationList) => {
     }, [createRegulation, regulations, updateRegulations, updateActiveRegulation]);
 
     return (
-        <div className={css.wrapper}>
-            <div className={css.header}>
+        <div className={styles.wrapper}>
+            <div className={styles.header}>
                 <div>Подберите шаблоны, разделы и модули</div>
             </div>
-            <div className={css.competencies}>
+            <div className={styles.search}>
+                <SearchIcon
+                    width={17.4}
+                    height={17.4}
+                />
+                <div className={css.inputContainer}>
+                <textarea
+                    style={{height: 24}}
+                    className={styles.searchArea}
+                    placeholder={'Поиск'}
+                    // value={value}
+                    // onChange={handleChange}
+                />
+                </div>
+            </div>
+            <div className={styles.competencies}>
                 {regulations.map((regulation, index) => (
                     <RegulationItem
                         key={regulation.id || index}

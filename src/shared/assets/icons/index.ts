@@ -3,3 +3,4 @@ export * from './italic-button';
 export * from './underline-icon';
 export * from './ordered-list-icon';
 export * from './unordered-list-icon';
+export * from './search-icon';
