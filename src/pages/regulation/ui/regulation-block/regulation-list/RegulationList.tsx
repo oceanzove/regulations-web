@@ -14,10 +14,10 @@ import {TextArea} from "../../../../../shared/ui/text-area/textArea.tsx";
 import css from "../../../../../shared/ui/text-area/textArea.module.scss";
 import {DropdownMenuData} from "../RegulationBlock.tsx";
 import {DropdownMenu} from "../../../../../widgets/dropdown-menu/ui/DropdownMenu.tsx";
-import {IDropdownMenuData} from "../../../../../widgets/dropdown-menu/types.ts";
+import {IDropdownMenuBlock, IDropdownMenuProps} from "../../../../../widgets/dropdown-menu/types.ts";
 
 interface IRegulationList {
-    regulations: IDropdownMenuData;
+    regulations: IDropdownMenuProps;
     updateRegulations: (regulations: IRegulation[]) => void;
     updateActiveRegulation: (id: string) => void;
 }
@@ -99,8 +99,7 @@ export const RegulationList = (props: IRegulationList) => {
                 </div>
                 // TODO помечать секцию в которых что-то выбрано
                 <DropdownMenu
-                    title={regulations.title}
-                    sections={regulations.sections}
+                    blocks={regulations.blocks}
                 />
 
                 {/*{regulations.map((regulation, index) => (*/}
@@ -118,18 +117,4 @@ export const RegulationList = (props: IRegulationList) => {
             />
         </div>
     )
-};
-
-const MenuItem = ({ item }) => {
-    const [checked, setChecked] = useState(item.checked);
-    return (
-        <label className={styles.menuItem}>
-            <input
-                type="checkbox"
-                checked={checked}
-                onChange={() => setChecked(!checked)}
-            />
-            <span className={styles.label}>{item.label}</span>
-        </label>
-    );
 };

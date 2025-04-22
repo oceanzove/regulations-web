@@ -1,12 +1,26 @@
 .wrapper {
-  background: var(--default-bg-color);
-
   width: 100%;
   max-width: 240px;
 
   display: flex;
   flex-direction: column;
   gap: 5px;
+
+  &.expanded {
+    background: #F8F9FC;
+    border-radius: 8px;
+  }
+
+  .items {
+    background: #F8F9FC;
+    border-radius: 8px;
+
+    padding-left: 30px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
 
   .header {
     display: flex;
@@ -15,9 +29,6 @@
     border-radius: 8px;
 
     gap: 10px ;
-    &.expanded {
-      background: #F8F9FC;
-    }
 
     .title {
       font-weight: 400;
@@ -27,9 +38,4 @@
     }
   }
 
-  .dropdownMenu {
-    gap: 5px ;
-    display: flex;
-    flex-direction: column;
-  }
 }

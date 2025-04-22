@@ -6,7 +6,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 5px;
 
   .header {
     display: flex;
@@ -25,5 +25,11 @@
       line-height: 24px;
       color: #020914;
     }
+  }
+
+  .dropdownMenu {
+    gap: 5px ;
+    display: flex;
+    flex-direction: column;
   }
 }

@@ -5,7 +5,7 @@ import {RegulationEditor} from "./regulation-editor";
 import {useEffect, useState} from "react";
 import {regulationApi} from "../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../entities/regulation/api/types.ts";
-import {IDropdownMenuData} from "../../../../widgets/dropdown-menu/types.ts";
+import {IDropdownMenuBlock, IDropdownMenuProps} from "../../../../widgets/dropdown-menu/types.ts";
 
 export const RegulationBlock = () => {
     const {
@@ -37,27 +37,54 @@ export const RegulationBlock = () => {
     //     { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
     // ]
 
-    const regulation: IDropdownMenuData = {
-        title: "Регламент",
-        sections: [
+    const block: IDropdownMenuProps = {
+        blocks: [
             {
-                title: "Общие положения",
-                items: [
-                    { label: "Настоящий регламент…", checked: true },
-                    { label: "Для достижения общ…", checked: false },
-                    { label: "Документ определяе…", checked: false },
+                title: "Регламент",
+                sections: [
+                    {
+                        title: "Общие положения",
+                        items: [
+                            { label: "Настоящий регламент", checked: true },
+                            { label: "Для достижения общего уровня", checked: false },
+                            { label: "Документ определяющий всю вашу дальнеюшую жизнь", checked: false },
+                        ],
+                    },
+                    {
+                        title: "Область применения",
+                        items: [],
+                    },
+                    {
+                        title: "Описание процессов",
+                        items: [],
+                    },
                 ],
             },
             {
-                title: "Область применения",
-                items: [],
+                title: "Положение подразделений",
+                sections: [
+                    {
+                        title: "Общие положения",
+                        items: [
+                            { label: "Настоящий регламент", checked: true },
+                            { label: "Для достижения общего уровня", checked: false },
+                            { label: "Документ определяющий всю вашу дальнеюшую жизнь", checked: false },
+                        ],
+                    },
+                    {
+                        title: "Область применения",
+                        items: [],
+                    },
+                    {
+                        title: "Описание процессов",
+                        items: [],
+                    },
+                ],
             },
-            {
-                title: "Описание процессов",
-                items: [],
-            },
-        ],
+        ]
     };
+
+
 
     // useEffect(() => {
     //     updateRegulation(regulations);
@@ -82,7 +109,7 @@ export const RegulationBlock = () => {
             {/*    </div>*/}
             {/*)}*/}
             <RegulationList
-                regulations={regulation}
+                regulations={block}
                 updateRegulations={updateRegulation}
                 updateActiveRegulation={updateActiveRegulation}
             />

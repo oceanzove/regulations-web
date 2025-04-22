@@ -1,49 +1,19 @@
-import React, {useState} from "react";
-import {IDropdownMenuData} from "../types.ts";
-import {ArrowDownIcon, ArrowRightIcon} from "../../../shared/assets/icons";
-import styles from "./dropdownMenu.module.scss";
-import {MenuSection} from "./menu-seciton";
+import React from "react";
+import styles from "./DropdownMenu.module.scss";
+import {IDropdownMenuProps} from "../types.ts";
+import {MenuBlock} from "./menu-block";
 
 
-export const DropdownMenu = (props: IDropdownMenuData) => {
-    const [expanded, setExpanded] = useState(true);
-    const {title, sections} = props;
-
+export const DropdownMenu = (props: IDropdownMenuProps) => {
     return (
         <div className={styles.wrapper}>
-            <div
-                onClick={() => setExpanded(!expanded)}
-                className={`${styles.header} ${expanded ? styles.expanded : ''}`}
-            >
-                {expanded ?
-                    <ArrowDownIcon
-                    />
-                    :
-                    <ArrowRightIcon
-                        color={'#8692A7'}
-                    />
-                }
-                <div
-                    className={styles.title}
-                >
-                    {title}
-                </div>
-                <div
-                    className={styles.statusDot}
+            {props.blocks.map((section, index) => (
+                <MenuBlock
+                    key={index}
+                    title={section.title}
+                    sections={section.sections}
                 />
-            </div>
-
-            {expanded && (
-                <div className={styles.dropdownMenu}>
-                    {sections.map((section, index) => (
-                        <MenuSection
-                            key={index}
-                            title={section.title}
-                            items={section.items}
-                        />
-                    ))}
-                </div>
-            )}
+            ))}
         </div>
     );
 };
