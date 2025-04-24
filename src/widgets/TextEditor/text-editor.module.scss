@@ -1,4 +1,4 @@
-.textEditor {
+.textEditorContainer {
   h1,
   h2 {
     margin: revert !important;
@@ -17,10 +17,6 @@
     margin: 0 0 10px 25px;
   }
 
-  .TextEditorWrapper {
-    padding: 16px;
-  }
-
   .TextEditorWrapperHidePlaceholder {
     display: none;
   }
@@ -32,9 +28,13 @@
   }
 
   .textEditorArea {
-    box-sizing: border-box;
-    border-radius: 8px;
-    border: 1px solid greenyellow;
+    //box-sizing: border-box;
+    //border-radius: 8px;
+    //border: 1px solid greenyellow;
+    padding: 15px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid #EBEDEF;
 
     .textEditorAreaIsFocused {
       border: 1px solid blue;
@@ -45,13 +45,20 @@
     }
   }
 
-  .textEditorSub{
+  .textEditorControl{
     display: flex;
-    gap: 8px;
-    box-sizing: border-box;
-    padding: 16px;
-    border-top: 1px solid chartreuse;
-    color: purple;
+    flex-direction: row;
+    gap: 1px;
+
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    border: 1px solid #EBEDEF;
+    //display: flex;
+    //gap: 8px;
+    //box-sizing: border-box;
+    //padding: 16px;
+    //border-top: 1px solid chartreuse;
+    //color: purple;
   }
 
   .DraftEditor-root {
@@ -75,11 +82,11 @@
   }
 
   .DraftEditor-editorContainer {
-    height: 222px;
+    //height: 222px;
     color: inherit;
     overflow-y: scroll;
   }
 
-  position: relative;
-  box-sizing: border-box;
+  //position: relative;
+  //box-sizing: border-box;
 }

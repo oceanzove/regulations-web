@@ -51,29 +51,28 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = ({ activeRegul
     };
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <TextEditor
-                    title="Регламент"
-                    placeholder="test"
-                />
-                {/*<Editor*/}
-                {/*    editorState={editorState}*/}
-                {/*    toolbarClassName={styles.toolbar}*/}
-                {/*    wrapperClassName={styles.wrapper}*/}
-                {/*    editorClassName={styles.editor}*/}
-                {/*    onEditorStateChange={handleEditorChange}*/}
-                {/*    toolbar={{*/}
-                {/*        options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'remove', 'history'],*/}
-                {/*        inline: { inDropdown: true },*/}
-                {/*        list: { inDropdown: true },*/}
-                {/*        textAlign: { inDropdown: true },*/}
-                {/*        link: { inDropdown: true },*/}
-                {/*        history: { inDropdown: true },*/}
-                {/*    }}*/}
-                {/*/>*/}
-                <button className={styles.saveButton} onClick={handleSave}>Сохранить</button>
-            </div>
+        <div className={styles.textEditorWrapper}>
+            <TextEditor
+            />
+            {/*<div className={styles.container}>*/}
+            {/*   */}
+            {/*    <Editor*/}
+            {/*        editorState={editorState}*/}
+            {/*        toolbarClassName={styles.toolbar}*/}
+            {/*        wrapperClassName={styles.wrapper}*/}
+            {/*        editorClassName={styles.editor}*/}
+            {/*        onEditorStateChange={handleEditorChange}*/}
+            {/*        toolbar={{*/}
+            {/*            options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'remove', 'history'],*/}
+            {/*            inline: { inDropdown: true },*/}
+            {/*            list: { inDropdown: true },*/}
+            {/*            textAlign: { inDropdown: true },*/}
+            {/*            link: { inDropdown: true },*/}
+            {/*            history: { inDropdown: true },*/}
+            {/*        }}*/}
+            {/*    />*/}
+            {/*    <button className={styles.saveButton} onClick={handleSave}>Сохранить</button>*/}
+            {/*</div>*/}
         </div>
     );
 };
