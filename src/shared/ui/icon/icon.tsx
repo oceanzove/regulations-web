@@ -46,7 +46,7 @@ const IconComponent: FC<IIconProps> = ({
 
   return (
     <div
-      className={`${styles.icon} ${className}`}
+      className={`${className ? className : ''}`}
       ref={iconRef}
       {...rest}
     >

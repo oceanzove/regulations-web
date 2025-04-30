@@ -1,1 +1,1 @@
-export { RegulationList } from './RegulationList.tsx';
+export { RegulationSections } from './RegulationSections.tsx';

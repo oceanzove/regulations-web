@@ -6,7 +6,7 @@ import {MenuBlock} from "./menu-block";
 
 export const DropdownMenu = (props: IDropdownMenuProps) => {
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.dropdownMenuWrapper}>
             {props.blocks.map((section, index) => (
                 <MenuBlock
                     key={index}

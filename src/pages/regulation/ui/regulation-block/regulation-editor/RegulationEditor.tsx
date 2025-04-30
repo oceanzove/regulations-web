@@ -6,7 +6,7 @@ import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { IRegulation } from '../../../../../entities/regulation/api/types.ts';
 import { regulationApi } from '../../../../../entities/regulation/api/api.ts';
 import { notificationError, notificationSuccess } from '../../../../../widgets/notifications/callNotification.tsx';
-import {TextEditor} from "../../../../../widgets/TextEditor";
+import {TextEditor} from "../../../../../widgets/text-editor";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,
@@ -51,28 +51,7 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = ({ activeRegul
     };
 
     return (
-        <div className={styles.textEditorWrapper}>
-            <TextEditor
-            />
-            {/*<div className={styles.container}>*/}
-            {/*   */}
-            {/*    <Editor*/}
-            {/*        editorState={editorState}*/}
-            {/*        toolbarClassName={styles.toolbar}*/}
-            {/*        wrapperClassName={styles.wrapper}*/}
-            {/*        editorClassName={styles.editor}*/}
-            {/*        onEditorStateChange={handleEditorChange}*/}
-            {/*        toolbar={{*/}
-            {/*            options: ['inline', 'blockType', 'fontSize', 'list', 'textAlign', 'colorPicker', 'link', 'embedded', 'emoji', 'remove', 'history'],*/}
-            {/*            inline: { inDropdown: true },*/}
-            {/*            list: { inDropdown: true },*/}
-            {/*            textAlign: { inDropdown: true },*/}
-            {/*            link: { inDropdown: true },*/}
-            {/*            history: { inDropdown: true },*/}
-            {/*        }}*/}
-            {/*    />*/}
-            {/*    <button className={styles.saveButton} onClick={handleSave}>Сохранить</button>*/}
-            {/*</div>*/}
-        </div>
+        <TextEditor
+        />
     );
 };

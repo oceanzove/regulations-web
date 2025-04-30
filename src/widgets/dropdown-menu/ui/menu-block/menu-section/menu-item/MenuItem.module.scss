@@ -1,4 +1,4 @@
-.wrapper {
+.itemWrapper {
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -36,7 +36,7 @@
     }
   }
 
-  .label {
+  .title {
     flex: 1;
 
     text-overflow: ellipsis;

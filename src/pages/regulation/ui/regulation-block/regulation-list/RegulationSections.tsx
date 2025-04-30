@@ -1,4 +1,4 @@
-import styles from './RegulationList.module.scss';
+import styles from './RegulationSections.module.scss';
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import React, {useCallback, useState} from "react";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
@@ -22,7 +22,7 @@ interface IRegulationList {
     updateActiveRegulation: (id: string) => void;
 }
 
-export const RegulationList = (props: IRegulationList) => {
+export const RegulationSections = (props: IRegulationList) => {
     const {
         regulations,
         updateRegulations,
@@ -74,7 +74,7 @@ export const RegulationList = (props: IRegulationList) => {
     // }, [createRegulation, regulations, updateRegulations, updateActiveRegulation]);
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.regulationSectionWrapper}>
             <div className={styles.header}>
                 <div>Подберите шаблоны, разделы и модули</div>
             </div>
@@ -93,11 +93,12 @@ export const RegulationList = (props: IRegulationList) => {
                 />
                 </div>
             </div>
-            <div className={styles.competencies}>
-                <div className={styles.competenciesHeader}>
+            <div className={styles.sections}>
+                <div className={styles.sectionsHeader}>
                     <div>Подберите шаблоны, разделы и модули</div>
                 </div>
                 // TODO помечать секцию в которых что-то выбрано
+                // TODO добавить скролл бар
                 <DropdownMenu
                     blocks={regulations.blocks}
                 />

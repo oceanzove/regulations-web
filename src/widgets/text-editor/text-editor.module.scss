@@ -1,4 +1,13 @@
-.textEditorContainer {
+.regulationTitle {
+  background: red;
+  width: 100%;
+}
+
+.textEditorWrapper {
+  width: 100%;
+  max-width: 880px;
+
+
   h1,
   h2 {
     margin: revert !important;

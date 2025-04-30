@@ -1,13 +1,12 @@
-import clsx from "clsx";
 import {ContentBlock, Editor, EditorCommand, EditorState, RichUtils} from "draft-js";
 import {convertToHTML, convertFromHTML} from "draft-convert";
 import {memo, useCallback, useEffect, useState, type FC} from "react";
 import "draft-js/dist/Draft.css";
 
-import {BlockStyleControls} from "./BlockStyleControls";
-import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./constants";
-import {InlineStyleControls} from "./InlineStyleControls";
-import type {TTextEditorProps, TTextEditorTextStyle} from "./types";
+import {BlockStyleControls} from "./block-style-controls";
+import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
+import {InlineStyleControls} from "./inline-style-controls";
+import type {TTextEditorProps, TTextEditorTextStyle} from "./types.ts";
 import styles from './text-editor.module.scss';
 
 const TextEditorComponent: FC<TTextEditorProps> = ({
@@ -93,7 +92,7 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
         <div
             className={` 
              ${classes ? classes : ''}
-             ${styles.textEditorContainer} 
+             ${styles.textEditorWrapper} 
              ${isInvalid ? styles.textEditorAreaIsInvalid : ''}
              ${isFocused || contentState.hasText() ? styles.textEditorAreaIsFocused : ''}
              `.trim()}
@@ -159,14 +158,14 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
         //       />
         //     </div>
         //     <div className="TextEditor-Sub">
-        //       <BlockStyleControls
+        //       <block-style-controls.module.scss
         //         editorState={editorState}
         //         onToggle={(blockType) => {
         //           const newState = RichUtils.toggleBlockType(editorState, blockType);
         //           setEditorState(newState);
         //         }}
         //       />
-        //       <InlineStyleControls
+        //       <inline-style-controls
         //         editorState={editorState}
         //         onToggle={(inlineStyle) => {
         //           const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);

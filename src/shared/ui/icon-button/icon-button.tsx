@@ -1,11 +1,11 @@
-import { memo, type FC } from "react";
+import {memo, type FC} from "react";
 import styles from './icon-button.module.scss';
-import type { MouseEvent } from "react";
+import type {MouseEvent} from "react";
 import {Button, IButtonProps} from "../button";
 import {IconType} from "../icon/IconType.tsx";
 import {Icon} from "../icon";
 
-export interface IIconButtonProps extends IButtonProps {
+interface IIconButtonProps extends IButtonProps {
     className?: string;
     isActive?: boolean;
     isDisabled?: boolean;
@@ -13,23 +13,27 @@ export interface IIconButtonProps extends IButtonProps {
     typeIcon: IconType;
 }
 
-const IconButtonComponent: FC<IIconButtonProps> = ({
-                                                       className,
-                                                       isActive = false,
-                                                       isDisabled = false,
-                                                       onClick,
-                                                       typeIcon,
-                                                       ...rest
-                                                   }) => {
+const IconButtonComponent: FC<IIconButtonProps> = (props: IIconButtonProps) => {
+    const {
+        className,
+        isActive,
+        isDisabled,
+        onClick,
+        typeIcon,
+        ...rest
+    } = props;
+
     return (
         <Button
-            className={`${styles.iconButton} ${className}`}
+            className={`${styles.iconButton} ${className ? className : ''}`}
             isActive={isActive}
             isDisabled={isDisabled}
             onClick={onClick}
             {...rest}
         >
-            <Icon type={typeIcon} />
+            <Icon
+                type={typeIcon}
+            />
         </Button>
     );
 };

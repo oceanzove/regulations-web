@@ -1,14 +1,21 @@
 import { type FC, memo } from "react";
 
-import { TEXT_EDITOR_INLINE_STYLES } from "../constants";
-import { FormatButton } from "../FormatButton";
-import type { TInlineStyleControlsProps } from "./types";
+import { TEXT_EDITOR_INLINE_STYLES } from "../configuration.tsx";
+import { FormatButton } from "../format-button";
+import styles from './inline-style-controls.module.scss';
+import type {EditorState} from "draft-js";
 
-const InlineStyleControlsComponent: FC<TInlineStyleControlsProps> = ({ editorState, onToggle }) => {
+interface IInlineStyleControlsProps {
+  editorState: EditorState;
+  onToggle: (value: string) => void;
+}
+
+
+const InlineStyleControlsComponent: FC<IInlineStyleControlsProps> = ({ editorState, onToggle }) => {
   const currentStyle = editorState.getCurrentInlineStyle();
 
   return (
-    <>
+    <div className={styles.inlineStyleControls}>
       {TEXT_EDITOR_INLINE_STYLES.map((type) => (
         <FormatButton
           key={type.label}
@@ -19,7 +26,7 @@ const InlineStyleControlsComponent: FC<TInlineStyleControlsProps> = ({ editorSta
           typeIcon={type.icon}
         />
       ))}
-    </>
+    </div>
   );
 };
 

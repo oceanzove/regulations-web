@@ -1,6 +1,6 @@
 import {IDropdownMenuBlock} from "../../types.ts";
 import React, {useState} from "react";
-import styles from "../DropdownMenu.module.scss";
+import styles from './MenuBlock.module.scss';
 import {ArrowDownIcon, ArrowRightIcon} from "../../../../shared/assets/icons";
 import {MenuSection} from "./menu-section";
 
@@ -9,7 +9,7 @@ export const MenuBlock = (props: IDropdownMenuBlock) => {
     const {title, sections} = props;
 
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.blockWrapper}>
             <div
                 onClick={() => setExpanded(!expanded)}
                 className={`${styles.header} ${expanded ? styles.expanded : ''}`}
@@ -33,7 +33,7 @@ export const MenuBlock = (props: IDropdownMenuBlock) => {
             </div>
 
             {expanded && (
-                <div className={styles.dropdownMenu}>
+                <div className={styles.sections}>
                     {sections.map((section, index) => (
                         <MenuSection
                             key={index}

@@ -1,5 +1,5 @@
 import css from './RegulationBlock.module.scss';
-import {RegulationList} from "./regulation-list";
+import {RegulationSections} from "./regulation-list";
 import {useRegulation} from "../../../../entities/regulation/model/hooks/useRegulation.ts";
 import {RegulationEditor} from "./regulation-editor";
 import {useEffect, useState} from "react";
@@ -92,7 +92,7 @@ export const RegulationBlock = () => {
     const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
     return (
         <div className={css.wrapper}>
-            {/*<RegulationList*/}
+            {/*<RegulationSections*/}
             {/*    regulations={regulationState.regulations}*/}
             {/*    updateRegulations={updateRegulation}*/}
             {/*    updateActiveRegulation={updateActiveRegulation}*/}
@@ -108,7 +108,7 @@ export const RegulationBlock = () => {
             {/*        Выберите или создайте регламент для редактирования*/}
             {/*    </div>*/}
             {/*)}*/}
-            <RegulationList
+            <RegulationSections
                 regulations={block}
                 updateRegulations={updateRegulation}
                 updateActiveRegulation={updateActiveRegulation}

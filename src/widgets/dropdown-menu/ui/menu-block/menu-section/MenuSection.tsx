@@ -10,7 +10,7 @@ export const MenuSection = (props: IMenuSection) => {
     const {title, items} = props;
 
     return (
-        <div className={`${styles.wrapper} ${expanded ? styles.expanded : ''}`}>
+        <div className={`${styles.sectionWrapper} ${expanded ? styles.expanded : ''}`}>
             <div
                 onClick={() => setExpanded(!expanded)}
                 className={styles.header}

@@ -6,7 +6,7 @@ import {IMenuItem} from "../../../../types.ts";
 export const MenuItem = (props: IMenuItem) => {
     const [checked, setChecked] = useState(props.checked);
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.itemWrapper}>
             <div className={styles.checkbox}>
                 <input
                     type="checkbox"
@@ -15,7 +15,7 @@ export const MenuItem = (props: IMenuItem) => {
                 />
             </div>
 
-            <div className={styles.label}>{props.label}</div>
+            <div className={styles.title}>{props.label}</div>
         </div>
     );
 };

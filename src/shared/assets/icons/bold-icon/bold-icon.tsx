@@ -6,7 +6,7 @@ const Component: FC<TIconProps> = ({ height = 24, width = 24, ...props }) => (
     <>
         <svg width={width}
              height={height}
-             viewBox="0 0 10 12"
+             viewBox="0 0 9 12"
              fill="none"
              xmlns="http://www.w3.org/2000/svg"
              {...props}

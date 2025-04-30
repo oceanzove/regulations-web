@@ -1,28 +1,30 @@
 .button {
   $this: &;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 30px;
-  height: max-content;
-  width: max-content;
-  color: white;
-  //background-color: var(--main-button-bg-color);
-  outline: transparent;
-  transition: all 0.3s;
+  //display: inline-flex;
+  //align-items: center;
+  //justify-content: center;
+  //padding: 10px 30px;
+  //height: max-content;
+  //width: max-content;
+  //color: white;
+  //outline: transparent;
+  //transition: all 0.3s;
   cursor: pointer;
 
-  &-Text {
-    margin-left: 12px;
+  .active {
+    cursor: pointer;
   }
-
-  &:hover {
-    background-color: var(--main-button-bg-hover-color);
-  }
-
-  &.active {
-    background: blue;
-  }
+  //&-Text {
+  //  margin-left: 12px;
+  //}
+  //
+  //&:hover {
+  //  background-color: var(--main-button-bg-hover-color);
+  //}
+  //
+  //&.active {
+  //  background: blue;
+  //}
   //&#{$this}__isActive {
   //  background-color: $color-mercury-gray;
   //

@@ -32,14 +32,14 @@ const ButtonComponent: FC<IButtonProps> = ({
       //   Button__isDisabled: isDisabled,
       //   Button__isActive: isActive,
       // })}
-        className={`${styles.button} ${className} ${isActive ? styles.active : ''}`}
+        className={`${styles.button} ${className ? className : ''} ${isActive ? styles.active : ''}`}
       disabled={isDisabled}
       onClick={onClick}
       type={type}
       {...rest}
     >
       {typeIcon && <Icon type={typeIcon} />}
-      <span className={`${typeIcon ? styles.buttonText : ""}`}>{children}</span>
+      <div className={`${typeIcon ? styles.buttonText : ""}`}>{children}</div>
     </button>
   );
 };

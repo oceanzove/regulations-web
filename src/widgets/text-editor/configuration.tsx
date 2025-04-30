@@ -1,4 +1,4 @@
-import type { TTextEditorTextStyle } from "./types";
+import type { TTextEditorTextStyle } from "./types.ts";
 
 export const TEXT_EDITOR_STYLE_TO_HTML = (style: TTextEditorTextStyle) => {
   switch (style) {

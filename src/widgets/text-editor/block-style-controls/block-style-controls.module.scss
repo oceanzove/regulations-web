@@ -1,0 +1,8 @@
+.blockStyleControls {
+  display: flex;
+  flex-direction: row;
+
+  > * {
+    border-right: 1px solid #EBEDEF;
+  }
+}
