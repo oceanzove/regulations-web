@@ -7,3 +7,6 @@ export * from './search-icon';
 export * from './arrow-down-icon';
 export * from './arrow-right-icon';
 export * from './drag-point-icon';
+export * from './link-icon';
+export * from './quote-icon';
+export * from './code-icon';
