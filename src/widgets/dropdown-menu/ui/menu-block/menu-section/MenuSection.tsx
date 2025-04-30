@@ -1,8 +1,11 @@
 import React, {useState} from "react";
 import {IMenuSection} from "../../../types.ts";
-import {ArrowDownIcon, ArrowRightIcon, DragPointIcon} from "../../../../../shared/assets/icons";
+import {DragPointIcon} from "../../../../../shared/assets/icons";
 import styles from "./MenuSection.module.scss";
 import {MenuItem} from "./menu-item";
+import {Icon} from "../../../../../shared/ui/icon";
+import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
+import {IconButton} from "../../../../../shared/ui/icon-button/icon-button.tsx";
 
 
 export const MenuSection = (props: IMenuSection) => {
@@ -18,15 +21,19 @@ export const MenuSection = (props: IMenuSection) => {
                 <DragPointIcon
                     color={'#8692A7'}
                 />
-                {expanded ?
-                    <ArrowDownIcon
-                        color={'#8692A7'}
-                    />
-                    :
-                    <ArrowRightIcon
-                        color={'#8692A7'}
-                    />
-                }
+
+                <div className={styles.buttonContainer}>
+                    {expanded ?
+                        <IconButton typeIcon={IconEnum.ARROW_DOWN}
+                                    onClick={() => setExpanded(!expanded)}
+                        />
+                        :
+                        <IconButton typeIcon={IconEnum.ARROW_RIGHT}
+                                    onClick={() => setExpanded(!expanded)}
+                        />
+                    }
+                </div>
+
                 <div
                     className={styles.title}
                 >

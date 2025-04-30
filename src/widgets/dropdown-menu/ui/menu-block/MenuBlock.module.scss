@@ -7,13 +7,19 @@
   flex-direction: column;
   gap: 5px;
 
+  .buttonContainer {
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+  }
+
   .header {
     display: flex;
     align-items: center;
     padding: 10px;
     border-radius: 8px;
 
-    gap: 10px ;
+    gap: 5px ;
     &.expanded {
       background: #F8F9FC;
     }

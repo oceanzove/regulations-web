@@ -94,11 +94,8 @@ export const RegulationSections = (props: IRegulationList) => {
                 </div>
             </div>
             <div className={styles.sections}>
-                <div className={styles.sectionsHeader}>
-                    <div>Подберите шаблоны, разделы и модули</div>
-                </div>
-                // TODO помечать секцию в которых что-то выбрано
-                // TODO добавить скролл бар
+                {/*// TODO помечать секцию в которых что-то выбрано*/}
+                {/*// TODO добавить скролл бар*/}
                 <DropdownMenu
                     blocks={regulations.blocks}
                 />

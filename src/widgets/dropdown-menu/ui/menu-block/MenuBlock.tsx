@@ -1,8 +1,9 @@
 import {IDropdownMenuBlock} from "../../types.ts";
 import React, {useState} from "react";
 import styles from './MenuBlock.module.scss';
-import {ArrowDownIcon, ArrowRightIcon} from "../../../../shared/assets/icons";
 import {MenuSection} from "./menu-section";
+ import {IconEnum} from "../../../../shared/ui/icon/IconType.tsx";
+import {IconButton} from "../../../../shared/ui/icon-button/icon-button.tsx";
 
 export const MenuBlock = (props: IDropdownMenuBlock) => {
     const [expanded, setExpanded] = useState(true);
@@ -14,14 +15,17 @@ export const MenuBlock = (props: IDropdownMenuBlock) => {
                 onClick={() => setExpanded(!expanded)}
                 className={`${styles.header} ${expanded ? styles.expanded : ''}`}
             >
-                {expanded ?
-                    <ArrowDownIcon
-                    />
-                    :
-                    <ArrowRightIcon
-                        color={'#8692A7'}
-                    />
-                }
+                <div className={styles.buttonContainer}>
+                    {expanded ?
+                        <IconButton typeIcon={IconEnum.ARROW_DOWN}
+                                    onClick={() => setExpanded(!expanded)}
+                        />
+                        :
+                        <IconButton typeIcon={IconEnum.ARROW_RIGHT}
+                                    onClick={() => setExpanded(!expanded)}
+                        />
+                    }
+                </div>
                 <div
                     className={styles.title}
                 >

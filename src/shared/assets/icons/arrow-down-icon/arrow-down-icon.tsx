@@ -2,12 +2,12 @@ import { memo } from "react";
 import type { FC } from "react";
 import type { TIconProps } from "../types";
 
-const Component: FC<TIconProps> = ({ height = 8.25, width = 14.25, color = 'black', ...props }) => (
+const Component: FC<TIconProps> = ({ height = 8.25, width = 14.25, color = '#020914', ...props }) => (
     <>
         <svg
             width={width}
             height={height}
-            viewBox={`0 0 ${width} ${height}`}
+            viewBox={`0 0 10 7`}
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
