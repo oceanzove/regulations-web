@@ -1,6 +1,6 @@
 import {
     ArrowDownIcon, ArrowRightIcon,
-    BoldIcon,
+    BoldIcon, DynamicFieldIcon,
     ItalicIcon,
     OrderedListIcon,
     UnderlineIcon,
@@ -10,7 +10,7 @@ import {
 export type IconType =
     | "Arrow-down"
     | "Arrow-right"
-
+    | "DYNAMIC_FIELD"
     | "Bold"
     | "Italic"
     | "Underline"
@@ -34,4 +34,5 @@ export const iconTypes = new Map([
     ["Underline", <UnderlineIcon key="UnderlineIcon" width={12} height={15}/>],
     ["UL", <UnorderedListIcon key="UnorderedListIcon" width={20} height={12}/>],
     ["OL", <OrderedListIcon key="OrderedListIcon" width={16} height={14}/>],
+    ["DYNAMIC_FIELD", <DynamicFieldIcon key="DynamicFieldIcon" width={15.5} height={19}/>],
 ]);

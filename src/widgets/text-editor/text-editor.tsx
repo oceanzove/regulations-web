@@ -1,4 +1,13 @@
-import {ContentBlock, Editor, EditorCommand, EditorState, RichUtils} from "draft-js";
+import {
+    CompositeDecorator,
+    ContentBlock,
+    ContentState,
+    Editor,
+    EditorCommand,
+    EditorState,
+    Modifier,
+    RichUtils
+} from "draft-js";
 import {convertToHTML, convertFromHTML} from "draft-convert";
 import {memo, useCallback, useEffect, useState, type FC} from "react";
 import "draft-js/dist/Draft.css";
@@ -7,9 +16,21 @@ import {BlockStyleControls} from "./block-style-controls";
 import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
 import {InlineStyleControls} from "./inline-style-controls";
 import styles from './text-editor.module.scss';
+import {FormatButton} from "./format-button";
+import {MainButton} from "../../shared/ui/main-button/main-button.tsx";
+import {Button} from "../../shared/ui/button";
 
 
-export type TTextEditorTextStyle = "H1" | "H2" | "OL" | "UL" | "BOLD" | "ITALIC" | "UNDERLINE" | "HIGHLIGHT";
+export type TTextEditorTextStyle =
+    | "H1"
+    | "H2"
+    | "OL"
+    | "UL"
+    | "BOLD"
+    | "ITALIC"
+    | "UNDERLINE"
+    | "HIGHLIGHT"
+    | "DYNAMIC_FIELD";
 
 interface IClasses {
     textEditor?: string;
@@ -35,7 +56,43 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     } = props;
 
     const [isFocused, setFocused] = useState(false);
-    const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
+
+
+    const findDynamicFields = (
+        contentBlock: ContentBlock,
+        callback: (start: number, end: number) => void,
+        contentState: ContentState
+    ) => {
+        contentBlock.findStyleRanges(
+            (character) => character.hasStyle("DYNAMIC_FIELD"),
+            callback
+        );
+    };
+
+    const DynamicFieldSpan: FC<any> = ({ children }) => {
+        return (
+            <span
+                contentEditable={false}
+                className="dynamic-field"
+                onClick={() => {
+                    // Можно открывать popup или показывать tooltip
+                    alert("Динамическое поле: список продуктов!");
+                }}
+            >
+            {children}
+        </span>
+        );
+    };
+
+    const dynamicFieldDecorator = new CompositeDecorator([
+        {
+            strategy: findDynamicFields,
+            component: DynamicFieldSpan,
+        },
+    ]);
+    const [editorState, setEditorState] = useState<EditorState>(
+        EditorState.createEmpty(dynamicFieldDecorator)
+    );
 
     const contentState = editorState.getCurrentContent();
     const textEditorArea = `
@@ -56,13 +113,35 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             htmlToStyle: (nodeName, node, currentStyle) => {
                 if (nodeName === "span" && node.className === "highlight") {
                     return currentStyle.add("HIGHLIGHT");
+                } else if (nodeName === "span" && node.className === "DYNAMIC_FIELD") {
+                    return currentStyle.add("DYNAMIC_FIELD");
                 } else {
                     return currentStyle;
                 }
             },
         })(html);
-        return EditorState.createWithContent(contentState);
+        return EditorState.createWithContent(contentState, dynamicFieldDecorator);
+
+        // return EditorState.createWithContent(contentState);
     };
+
+    const handleInsertDynamicField = () => {
+        const contentState = editorState.getCurrentContent();
+        const selectionState = editorState.getSelection();
+
+        const newContentState = Modifier.replaceText(
+            contentState,
+            selectionState,
+            "КИРИЛЛ",
+            editorState.getCurrentInlineStyle().add("DYNAMIC_FIELD")
+        );
+
+        const newEditorState = EditorState.push(editorState, newContentState, "insert-characters");
+
+        setEditorState(EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter()));
+        onChangeHTMLText?.(convertMessageToHtml(newContentState));
+    };
+
 
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -105,6 +184,23 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         }
     };
 
+    // Функция для блокировки выделения внутри DYNAMIC_FIELD
+    const handleBeforeInput = useCallback(
+        (chars: string) => {
+            const selection = editorState.getSelection();
+            const contentState = editorState.getCurrentContent();
+            const startKey = selection.getStartKey();
+            const block = contentState.getBlockForKey(startKey);
+            const blockText = block.getText();
+
+            if (blockText.includes("КИРИЛЛ")) {
+                return "handled"; // Заблокировать редактирование
+            }
+            return "not-handled";
+        },
+        [editorState]
+    );
+
     return (
         <div
             className={` 
@@ -130,6 +226,15 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                         setEditorState(newState);
                     }}
                 />
+
+                {/* Вот сюда добавь кнопку */}
+                <button
+                    type="button"
+                    onClick={handleInsertDynamicField}
+                    className={styles.dynamicFieldButton}
+                >
+                    Вставить «КИРИЛЛ»
+                </button>
             </div>
 
             <div className={textEditorArea}>
@@ -143,6 +248,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                             onBlur={handleChangeBlur}
                             onChange={handleChangeText}
                             placeholder={placeholder}
+                            handleBeforeInput={handleBeforeInput}
                         />
                         :
                         <div className={styles.emptyEditor}>
@@ -157,55 +263,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 }
 
             </div>
-            {/*<div className={styles.TextEditorWrapperTitle}>{title}</div>*/}
-            {/*<div*/}
-            {/*    className={clsx(styles.textEditorArea, {*/}
-            {/*        [styles.textEditorAreaIsFocused]: isFocused || contentState.hasText(),*/}
-            {/*        [styles.textEditorAreaIsInvalid]: isInvalid,*/}
-            {/*    })}*/}
-            {/*    onClick={handleChangeFocus}*/}
-            {/*>*/}
-
-            {/*</div>*/}
         </div>
-        // <div className={clsx("TextEditor", classes?.textEditor)}>
-        //   <div className="TextEditor-Title">{title}</div>
-        //   <div
-        //     className={clsx("TextEditor-Area", {
-        //       "TextEditor-Area__isFocused": isFocused || contentState.hasText(),
-        //       "TextEditor-Area__isInvalid": isInvalid,
-        //     })}
-        //     onClick={handleChangeFocus}
-        //   >
-        //     <div className={wrapperClassName}>
-        //       <Editor
-        //           blockRendererFn={getBlockStyle}
-        //         customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
-        //         editorState={editorState}
-        //         handleKeyCommand={handleKeyCommand}
-        //         onBlur={handleChangeBlur}
-        //         onChange={handleChangeText}
-        //         placeholder={placeholder}
-        //       />
-        //     </div>
-        //     <div className="TextEditor-Sub">
-        //       <block-style-controls.module.scss
-        //         editorState={editorState}
-        //         onToggle={(blockType) => {
-        //           const newState = RichUtils.toggleBlockType(editorState, blockType);
-        //           setEditorState(newState);
-        //         }}
-        //       />
-        //       <inline-style-controls
-        //         editorState={editorState}
-        //         onToggle={(inlineStyle) => {
-        //           const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
-        //           setEditorState(newState);
-        //         }}
-        //       />
-        //     </div>
-        //   </div>
-        // </div>
     );
 };
 
