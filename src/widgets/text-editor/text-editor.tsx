@@ -6,17 +6,34 @@ import "draft-js/dist/Draft.css";
 import {BlockStyleControls} from "./block-style-controls";
 import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
 import {InlineStyleControls} from "./inline-style-controls";
-import type {TTextEditorProps, TTextEditorTextStyle} from "./types.ts";
 import styles from './text-editor.module.scss';
 
-const TextEditorComponent: FC<TTextEditorProps> = ({
-                                                       classes,
-                                                       htmlText,
-                                                       isInvalid = false,
-                                                       onChangeHTMLText,
-                                                       placeholder,
-                                                       title,
-                                                   }) => {
+
+export type TTextEditorTextStyle = "H1" | "H2" | "OL" | "UL" | "BOLD" | "ITALIC" | "UNDERLINE" | "HIGHLIGHT";
+
+interface IClasses {
+    textEditor?: string;
+}
+
+interface ITextEditorProps {
+    classes?: IClasses;
+    htmlText?: string;
+    isInvalid?: boolean;
+    onChangeHTMLText?: (value: string) => void;
+    placeholder?: string;
+    title?: string;
+}
+
+const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
+    const {
+        classes,
+        htmlText,
+        isInvalid = false,
+        onChangeHTMLText,
+        placeholder,
+        title,
+    } = props;
+
     const [isFocused, setFocused] = useState(false);
     const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
 
@@ -24,9 +41,9 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
     const textEditorArea = `
             ${styles.textEditorArea}
             ${!contentState.hasText()
-                && contentState.getBlockMap().first().getType() !== "unstyled"
-                ? styles.TextEditorWrapperHidePlaceholder : ''
-            }`.trim()
+    && contentState.getBlockMap().first().getType() !== "unstyled"
+        ? styles.TextEditorWrapperHidePlaceholder : ''
+    }`.trim()
 
     const options = {
         styleToHTML: (style: string) => TEXT_EDITOR_STYLE_TO_HTML(style as TTextEditorTextStyle),
@@ -116,15 +133,29 @@ const TextEditorComponent: FC<TTextEditorProps> = ({
             </div>
 
             <div className={textEditorArea}>
-                <Editor
-                    blockRendererFn={getBlockStyle}
-                    customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
-                    editorState={editorState}
-                    handleKeyCommand={handleKeyCommand}
-                    onBlur={handleChangeBlur}
-                    onChange={handleChangeText}
-                    placeholder={placeholder}
-                />
+                {
+                    htmlText ?
+                        <Editor
+                            blockRendererFn={getBlockStyle}
+                            customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
+                            editorState={editorState}
+                            handleKeyCommand={handleKeyCommand}
+                            onBlur={handleChangeBlur}
+                            onChange={handleChangeText}
+                            placeholder={placeholder}
+                        />
+                        :
+                        <div className={styles.emptyEditor}>
+                            <div className={styles.header}>
+                                Начните работу
+                            </div>
+                            <div className={styles.description}>
+                                Выберите шаблон или составьте свой
+                                из набора разделов и модулей
+                            </div>
+                        </div>
+                }
+
             </div>
             {/*<div className={styles.TextEditorWrapperTitle}>{title}</div>*/}
             {/*<div*/}

@@ -36,9 +36,10 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = ({ activeRegul
         }
     }, [activeRegulation]);
 
-    // const handleEditorChange = (state: EditorState) => {
-    //     setEditorState(state);
-    // };
+    const handleEditorChange = (value: string) => {
+        console.log(value);
+        // setEditorState(state);
+    };
 
     const handleSave = async () => {
         try {
@@ -52,6 +53,8 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = ({ activeRegul
 
     return (
         <TextEditor
+            htmlText={'123 123 1231 23'}
+            onChangeHTMLText={handleEditorChange}
         />
     );
 };

@@ -32,9 +32,6 @@
   }
 
   .textEditorArea {
-    //box-sizing: border-box;
-    //border-radius: 8px;
-    //border: 1px solid greenyellow;
     padding: 15px;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -47,6 +44,32 @@
     .textEditorAreaIsInvalid {
       border: 1px solid green;
     }
+
+    min-height: 300px; // или любую нужную
+    position: relative;
+
+    .emptyEditor {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .header {
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+
+      .description {
+        font-size: 16px;
+        color: #020914;
+        line-height: 24px;
+
+        max-width: 295px;
+      }
+    }
+
+
   }
 
   .textEditorControl{
@@ -58,13 +81,6 @@
     border-top-right-radius: 8px;
     border: 1px solid #EBEDEF;
     border-bottom: none;
-
-    //display: flex;
-    //gap: 8px;
-    //box-sizing: border-box;
-    //padding: 16px;
-    //border-top: 1px solid chartreuse;
-    //color: purple;
   }
 
   .DraftEditor-root {
