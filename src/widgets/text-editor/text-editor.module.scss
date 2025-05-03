@@ -21,6 +21,11 @@
     margin: 0 0 10px 25px;
   }
 
+  .dynamicField {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
   .TextEditorWrapperHidePlaceholder {
     display: none;
   }
@@ -84,6 +89,10 @@
   }
 
   .DraftEditor-root {
+    .public-DraftStyleDefault-block {
+      margin: 0;
+    }
+
     & .public-DraftEditorPlaceholder-root {
       color: red;
       opacity: 0.5;
@@ -111,4 +120,11 @@
 
   //position: relative;
   //box-sizing: border-box;
+}
+
+.dynamicField {
+  padding: 3px;
+  border-radius: 8px;
+  background: #db3070;
+  color: white;
 }
