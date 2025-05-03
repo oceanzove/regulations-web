@@ -1,4 +1,5 @@
 import {
+    AtomicBlockUtils,
     CompositeDecorator,
     ContentBlock,
     ContentState,
@@ -45,6 +46,16 @@ interface ITextEditorProps {
     title?: string;
 }
 
+const DynamicFieldBlock = (props: any) => {
+    const { data } = props.blockProps;
+
+    return (
+        <div className={styles.dynamicFieldWrapper}>
+            <span className={styles.dynamicField}>{data.label}</span>
+        </div>
+    );
+};
+
 const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     const {
         classes,
@@ -57,42 +68,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
 
     const [isFocused, setFocused] = useState(false);
 
-
-    const findDynamicFields = (
-        contentBlock: ContentBlock,
-        callback: (start: number, end: number) => void,
-        contentState: ContentState
-    ) => {
-        contentBlock.findStyleRanges(
-            (character) => character.hasStyle("DYNAMIC_FIELD"),
-            callback
-        );
-    };
-
-    const DynamicFieldSpan: FC<any> = ({ children }) => {
-        return (
-            <span
-                contentEditable={false}
-                className="dynamic-field"
-                onClick={() => {
-                    // Можно открывать popup или показывать tooltip
-                    alert("Динамическое поле: список продуктов!");
-                }}
-            >
-            {children}
-        </span>
-        );
-    };
-
-    const dynamicFieldDecorator = new CompositeDecorator([
-        {
-            strategy: findDynamicFields,
-            component: DynamicFieldSpan,
-        },
-    ]);
-    const [editorState, setEditorState] = useState<EditorState>(
-        EditorState.createEmpty(dynamicFieldDecorator)
-    );
+    const [editorState, setEditorState] = useState<EditorState>(EditorState.createEmpty());
 
     const contentState = editorState.getCurrentContent();
     const textEditorArea = `
@@ -120,28 +96,10 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 }
             },
         })(html);
-        return EditorState.createWithContent(contentState, dynamicFieldDecorator);
+        return EditorState.createWithContent(contentState);
 
         // return EditorState.createWithContent(contentState);
     };
-
-    const handleInsertDynamicField = () => {
-        const contentState = editorState.getCurrentContent();
-        const selectionState = editorState.getSelection();
-
-        const newContentState = Modifier.replaceText(
-            contentState,
-            selectionState,
-            "КИРИЛЛ",
-            editorState.getCurrentInlineStyle().add("DYNAMIC_FIELD")
-        );
-
-        const newEditorState = EditorState.push(editorState, newContentState, "insert-characters");
-
-        setEditorState(EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter()));
-        onChangeHTMLText?.(convertMessageToHtml(newContentState));
-    };
-
 
     useEffect(() => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -180,26 +138,44 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             case "blockquote":
                 return "RichEditor-blockquote";
             default:
-                return null;
+                return '';
         }
     };
 
-    // Функция для блокировки выделения внутри DYNAMIC_FIELD
-    const handleBeforeInput = useCallback(
-        (chars: string) => {
-            const selection = editorState.getSelection();
-            const contentState = editorState.getCurrentContent();
-            const startKey = selection.getStartKey();
-            const block = contentState.getBlockForKey(startKey);
-            const blockText = block.getText();
+    const insertDynamicField = (editorState: EditorState, fieldLabel: string): EditorState => {
+        const contentState = editorState.getCurrentContent();
+        const contentStateWithEntity = contentState.createEntity(
+            'DYNAMIC_FIELD',
+            'IMMUTABLE',
+            { label: fieldLabel }
+        );
 
-            if (blockText.includes("КИРИЛЛ")) {
-                return "handled"; // Заблокировать редактирование
+        const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+        const newEditorState = EditorState.set(editorState, {
+            currentContent: contentStateWithEntity,
+        });
+
+        return AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ' ');
+    };
+
+    const blockRendererFn = (block: ContentBlock) => {
+        if (block.getType() === 'atomic') {
+            const contentState = editorState.getCurrentContent();
+            const entity = contentState.getEntity(block.getEntityAt(0));
+
+            if (entity.getType() === 'DYNAMIC_FIELD') {
+                return {
+                    component: DynamicFieldBlock,
+                    editable: false,
+                    props: {
+                        data: entity.getData(),
+                    },
+                };
             }
-            return "not-handled";
-        },
-        [editorState]
-    );
+        }
+
+        return null; // остальные блоки рендерятся как обычно
+    };
 
     return (
         <div
@@ -230,7 +206,10 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 {/* Вот сюда добавь кнопку */}
                 <button
                     type="button"
-                    onClick={handleInsertDynamicField}
+                    onClick={() => {
+                        const newState = insertDynamicField(editorState, 'КИРИЛЛ');
+                        setEditorState(newState);
+                    }}
                     className={styles.dynamicFieldButton}
                 >
                     Вставить «КИРИЛЛ»
@@ -241,15 +220,15 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 {
                     htmlText ?
                         <Editor
-                            blockRendererFn={getBlockStyle}
+                            blockRendererFn={blockRendererFn}
+                            blockStyleFn={getBlockStyle}
                             customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
                             editorState={editorState}
                             handleKeyCommand={handleKeyCommand}
                             onBlur={handleChangeBlur}
                             onChange={handleChangeText}
                             placeholder={placeholder}
-                            handleBeforeInput={handleBeforeInput}
-                        />
+                         />
                         :
                         <div className={styles.emptyEditor}>
                             <div className={styles.header}>
