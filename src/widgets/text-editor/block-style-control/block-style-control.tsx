@@ -1,15 +1,17 @@
 import { type FC, memo } from "react";
-import styles from './block-style-controls.module.scss'
+import styles from './block-style-control.module.scss'
 import { TEXT_EDITOR_BLOCK_TYPES } from "../configuration.tsx";
 import { FormatButton } from "../format-button";
 import type {EditorState} from "draft-js";
 
-interface IBlockStyleControlsProps {
+interface IBlockStyleControlProps {
   editorState: EditorState;
   onToggle: (value: string) => void;
 }
 
-const BlockStyleControlsComponent: FC<IBlockStyleControlsProps> = ({ editorState, onToggle }) => {
+const BlockStyleControlComponent: FC<IBlockStyleControlProps> = (props: IBlockStyleControlProps) => {
+  const { editorState, onToggle } = props;
+
   const selection = editorState.getSelection();
   const blockType = editorState
     .getCurrentContent()
@@ -17,7 +19,7 @@ const BlockStyleControlsComponent: FC<IBlockStyleControlsProps> = ({ editorState
     .getType();
 
   return (
-    <div className={styles.blockStyleControls}>
+    <div className={styles.blockStyleControl}>
       {TEXT_EDITOR_BLOCK_TYPES.map((type) => (
         <FormatButton
           key={type.label}
@@ -32,6 +34,6 @@ const BlockStyleControlsComponent: FC<IBlockStyleControlsProps> = ({ editorState
   );
 };
 
-BlockStyleControlsComponent.displayName = "BlockStyleControls";
+BlockStyleControlComponent.displayName = "BlockStyleControl";
 
-export const BlockStyleControls = memo(BlockStyleControlsComponent);
+export const BlockStyleControl = memo(BlockStyleControlComponent);

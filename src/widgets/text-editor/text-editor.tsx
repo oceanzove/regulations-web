@@ -13,13 +13,14 @@ import {convertToHTML, convertFromHTML} from "draft-convert";
 import {memo, useCallback, useEffect, useState, type FC} from "react";
 import "draft-js/dist/Draft.css";
 
-import {BlockStyleControls} from "./block-style-controls";
+import {BlockStyleControl} from "./block-style-control";
 import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
-import {InlineStyleControls} from "./inline-style-controls";
+import {InlineStyleControl} from "./inline-style-control";
 import styles from './text-editor.module.scss';
 import {FormatButton} from "./format-button";
 import {MainButton} from "../../shared/ui/main-button/main-button.tsx";
 import {Button} from "../../shared/ui/button";
+import {DynamicField} from "./dynamic-field";
 
 
 export type TTextEditorTextStyle =
@@ -46,12 +47,27 @@ interface ITextEditorProps {
     title?: string;
 }
 
-const DynamicField = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <span className={styles.dynamicField} contentEditable={false}>
-            {children}
-        </span>
-    );
+const getDecorator = (): CompositeDecorator => {
+    const dynamicFieldEntities = (
+        contentBlock: ContentBlock,
+        callback: (start: number, end: number) => void,
+        contentState: ContentState,
+    ) => {
+        contentBlock.findEntityRanges((character) => {
+            const entityKey = character.getEntity();
+            return (
+                entityKey !== null &&
+                contentState.getEntity(entityKey).getType() === 'DYNAMIC_FIELD'
+            );
+        }, callback);
+    };
+
+    return new CompositeDecorator([
+        {
+            strategy: dynamicFieldEntities,
+            component: DynamicField,
+        },
+    ]);
 };
 
 const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
@@ -66,33 +82,13 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
 
     const [isFocused, setFocused] = useState(false);
 
-    function findDynamicFieldEntities(
-        contentBlock: ContentBlock,
-        callback: (start: number, end: number) => void,
-        contentState: ContentState
-    ) {
-        contentBlock.findEntityRanges((character) => {
-            const entityKey = character.getEntity();
-            return (
-                entityKey !== null &&
-                contentState.getEntity(entityKey).getType() === 'DYNAMIC_FIELD'
-            );
-        }, callback);
-    }
 
-    const decorator = new CompositeDecorator([
-        {
-            strategy: findDynamicFieldEntities,
-            component: DynamicField,
-        },
-    ]);
-
+    const decorator = getDecorator();
     const [editorState, setEditorState] = useState(
         EditorState.createEmpty(decorator)
     );
 
     const contentState = editorState.getCurrentContent();
-
     const textEditorArea = `
             ${styles.textEditorArea}
             ${!contentState.hasText()
@@ -244,14 +240,14 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             onClick={handleChangeFocus}
         >
             <div className={styles.textEditorControl}>
-                <InlineStyleControls
+                <InlineStyleControl
                     editorState={editorState}
                     onToggle={(inlineStyle) => {
                         const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
                         setEditorState(newState);
                     }}
                 />
-                <BlockStyleControls
+                <BlockStyleControl
                     editorState={editorState}
                     onToggle={(blockType) => {
                         const newState = RichUtils.toggleBlockType(editorState, blockType);

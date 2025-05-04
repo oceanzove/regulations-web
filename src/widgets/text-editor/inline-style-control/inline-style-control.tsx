@@ -2,20 +2,22 @@ import { type FC, memo } from "react";
 
 import { TEXT_EDITOR_INLINE_STYLES } from "../configuration.tsx";
 import { FormatButton } from "../format-button";
-import styles from './inline-style-controls.module.scss';
+import styles from './inline-style-control.module.scss';
 import type {EditorState} from "draft-js";
 
-interface IInlineStyleControlsProps {
+interface IInlineStyleControlProps {
   editorState: EditorState;
   onToggle: (value: string) => void;
 }
 
 
-const InlineStyleControlsComponent: FC<IInlineStyleControlsProps> = ({ editorState, onToggle }) => {
+const InlineStyleControlComponent: FC<IInlineStyleControlProps> = (props: IInlineStyleControlProps) => {
+  const { editorState, onToggle } = props;
+
   const currentStyle = editorState.getCurrentInlineStyle();
 
   return (
-    <div className={styles.inlineStyleControls}>
+    <div className={styles.inlineStyleControl}>
       {TEXT_EDITOR_INLINE_STYLES.map((type) => (
         <FormatButton
           key={type.label}
@@ -30,6 +32,6 @@ const InlineStyleControlsComponent: FC<IInlineStyleControlsProps> = ({ editorSta
   );
 };
 
-InlineStyleControlsComponent.displayName = "InlineStyleControls";
+InlineStyleControlComponent.displayName = "InlineStyleControl";
 
-export const InlineStyleControls = memo(InlineStyleControlsComponent);
+export const InlineStyleControl = memo(InlineStyleControlComponent);
