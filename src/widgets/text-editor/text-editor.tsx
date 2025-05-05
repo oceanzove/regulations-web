@@ -10,7 +10,7 @@ import {
     RichUtils
 } from "draft-js";
 import {convertToHTML, convertFromHTML} from "draft-convert";
-import {memo, useCallback, useEffect, useState, type FC} from "react";
+import {memo, useCallback, useEffect, useState, type FC, useRef} from "react";
 import "draft-js/dist/Draft.css";
 
 import {BlockStyleControl} from "./block-style-control";
@@ -21,6 +21,8 @@ import {FormatButton} from "./format-button";
 import {MainButton} from "../../shared/ui/main-button/main-button.tsx";
 import {Button} from "../../shared/ui/button";
 import {DynamicField} from "./dynamic-field";
+import DropdownMenu, {MenuItem} from "./dropdown-menu-editor.tsx";
+import DROPMENU from "./dropPOOP.tsx";
 
 
 export type TTextEditorTextStyle =
@@ -229,6 +231,62 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         return EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter());
     };
 
+
+    const buttonRef = useRef<HTMLDivElement>(null);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const menuItems = [
+        {
+            label: 'Руководитель',
+            value: 'leader',
+        },
+        {
+            label: 'Подразделение',
+            value: 'department',
+        },
+        {
+            label: 'Процесс',
+            value: 'process',
+            children: [
+                { label: 'Подпроцесс 1', value: 'sub-process-1' },
+                { label: 'Подпроцесс 2', value: 'sub-process-2' },
+            ],
+        },
+        {
+            label: 'Должность',
+            value: 'position',
+        },
+        {
+            label: 'Сотрудник',
+            value: 'employee',
+        },
+        {
+            label: 'Должность (группа)',
+            value: 'position-group',
+            children: [
+                { label: 'Должность А', value: 'position-a' },
+                { label: 'Должность Б', value: 'position-b' },
+            ],
+        },
+        {
+            label: 'Сотрудник (группа)',
+            value: 'employee-group',
+            children: [
+                { label: 'Сотрудник X', value: 'employee-x' },
+                { label: 'Сотрудник Y', value: 'employee-y' },
+            ],
+        },
+    ];
+
+    const handleMenuItemSelect = useCallback((value: string) => {
+        console.log('Выбран элемент:', value);
+        setIsMenuOpen(false);
+    }, []);
+
+    const toggleMenu = useCallback(() => {
+        setIsMenuOpen(prev => !prev);
+    }, []);
+
     return (
         <div
             className={` 
@@ -256,24 +314,44 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 />
 
                 {/* Вот сюда добавь кнопку */}
-                <button
-                    type="button"
-                    onClick={() => {
-                        setEditorState(prev => insertDynamicField(prev, 'КИРИЛЛ'));
-                    }}
-                    className={styles.dynamicFieldButton}
-                >
-                    Вставить «КИРИЛЛ»
-                </button>
-                <button
-                    type="button"
-                    onClick={() => {
-                        setEditorState(prev => replaceDynamicFieldWithList(prev, ['Яблоко', 'Банан', 'Апельсин']));
-                    }}
-                    className={styles.dynamicFieldButton}
-                >
-                    Раскрыть "КИРИЛЛА"
-                </button>
+                {/*<button*/}
+                {/*    type="button"*/}
+                {/*    onClick={() => {*/}
+                {/*        setEditorState(prev => insertDynamicField(prev, 'КИРИЛЛ'));*/}
+                {/*    }}*/}
+                {/*    className={styles.dynamicFieldButton}*/}
+                {/*>*/}
+                {/*    Вставить «КИРИЛЛ»*/}
+                {/*</button>*/}
+                {/*<button*/}
+                {/*    type="button"*/}
+                {/*    onClick={() => {*/}
+                {/*        setEditorState(prev => replaceDynamicFieldWithList(prev, ['Яблоко', 'Банан', 'Апельсин']));*/}
+                {/*    }}*/}
+                {/*    className={styles.dynamicFieldButton}*/}
+                {/*>*/}
+                {/*    Раскрыть "КИРИЛЛА"*/}
+                {/*</button>*/}
+                <div className={styles.dynamicFieldButtonContainer}>
+                    <div className={styles.dynamicFieldButton}>
+                        Ссылка
+                    </div>
+                    <div className={styles.dynamicFieldButton}
+                         ref={buttonRef} onClick={toggleMenu}
+                    >
+                        Динамические поля
+                        {/*{isMenuOpen && (*/}
+                        {/*    <DropdownMenu*/}
+                        {/*        items={menuItems}*/}
+                        {/*        onSelect={handleMenuItemSelect}*/}
+                        {/*        buttonRef={buttonRef}*/}
+                        {/*        toggleOpen={toggleMenu}*/}
+                        {/*        isOpen={isMenuOpen}*/}
+                        {/*    />*/}
+                        {/*)}*/}
+                        <DROPMENU items={menuItems} onSelect={handleMenuItemSelect} buttonLabel={'OPEN'} />
+                    </div>
+                </div>
             </div>
 
             <div className={textEditorArea}>

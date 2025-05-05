@@ -1,0 +1,121 @@
+.dropdownContainer {
+  position: relative;
+}
+
+
+.dropdownMenu {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  width: 250px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 10px;
+  font-family: sans-serif;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  /* Стили поиска */
+  .searchBar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #f0f0f0;
+    border-radius: 4px;
+
+    input[type="text"] {
+      flex-grow: 1;
+      border: none;
+      outline: none;
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    .searchIcon {
+      color: #777;
+      margin-left: 8px;
+    }
+  }
+
+  .mainMenu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .dropdownMenuItem {
+      .itemHeader {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        cursor: pointer;
+
+        .expandIcon {
+          margin-right: 8px;
+          color: #555;
+        }
+
+        input[type="radio"] {
+          margin-right: 8px;
+        }
+
+        span {
+          font-size: 16px;
+          color: #333;
+        }
+      }
+
+      &.selected {
+        background-color: #f0f8ff;
+        .itemHeader {
+          font-weight: bold;
+        }
+      }
+
+      .subMenu {
+        list-style: none;
+        padding-left: 20px;
+        margin: 5px 0;
+        border-left: 1px solid #eee;
+
+        .subMenuItem {
+          padding: 8px 12px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+
+          input[type="radio"] {
+            margin-right: 8px;
+          }
+
+          span {
+            font-size: 14px;
+            color: #555;
+          }
+
+          &.selected {
+            background-color: #e6f7ff;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .selectButton {
+    background-color: #f012be;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
+
+    &:hover {
+      background-color: darken(#f012be, 10%);
+    }
+  }
+}

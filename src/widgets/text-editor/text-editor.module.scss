@@ -26,6 +26,32 @@
     vertical-align: middle;
   }
 
+  .dynamicFieldButtonContainer {
+    display: flex;
+    flex-direction: row;
+
+    margin-left: auto;
+
+    .dynamicFieldButton {
+      background: #FFEFF5;
+      padding: 10px 15px;
+      border-radius: 8px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      color: #F91F71;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 18px;
+      letter-spacing: 0;
+
+      margin: 3px;
+    }
+  }
+
+
   .TextEditorWrapperHidePlaceholder {
     display: none;
   }
@@ -113,11 +139,7 @@
   }
 
   .DraftEditor-editorContainer {
-    //height: 222px;
     color: inherit;
     overflow-y: scroll;
   }
-
-  //position: relative;
-  //box-sizing: border-box;
 }
