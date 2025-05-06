@@ -24,39 +24,53 @@
   width: 320px;
   height: 468px;
 
+  padding: 20px;
+
+  border-radius: 16px;
+
   position: absolute;
   z-index: 10;
-  top: 100%;
-  width: 250px;
+  top: 110%;
   border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 10px;
   font-family: sans-serif;
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
-  /* Стили поиска */
-  .searchBar {
+  .contentWrapper {
     display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #f0f0f0;
-    border-radius: 4px;
+    flex-direction: column;
 
-    input[type="text"] {
-      flex-grow: 1;
-      border: none;
-      outline: none;
-      padding: 6px;
-      font-size: 14px;
-    }
+    gap: 10px;
 
-    .searchIcon {
-      color: #777;
-      margin-left: 8px;
+    /* Стили поиска */
+    .search {
+      padding: 10px 10px 0 10px;
+      display: flex;
+      flex-direction: row;
+
+      gap: 5px;
+
+      .searchArea {
+        width: 100%;
+        border: none;
+        outline: none;
+
+        transition: height 0.2s ease;
+        text-wrap: nowrap;
+        resize: none;
+
+        font-size: var(--font-size-m);
+
+        &::placeholder {
+          color: var(--text-area-placeholder-color);
+          font-size: var(--font-size-m);
+        }
+      }
+
+      border-bottom: 1px solid #EBEDEF;
     }
   }
+
 
   .mainMenu {
     list-style: none;
@@ -87,6 +101,7 @@
 
       &.selected {
         background-color: #f0f8ff;
+
         .itemHeader {
           font-weight: bold;
         }

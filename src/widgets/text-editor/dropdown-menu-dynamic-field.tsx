@@ -4,6 +4,7 @@ import styles from './dropdown-menu-dynamic-field.module.scss';
 import css from "./dropdown-menu-dynamic-field.module.scss";
 import {IconButton} from "../../shared/ui/icon-button/icon-button.tsx";
 import {IconEnum} from "../../shared/ui/icon/IconType.tsx";
+import {SearchIcon} from "../../shared/assets/icons";
 
 export interface MenuItem {
     label: string;
@@ -75,26 +76,16 @@ const DropdownMenuDynamicField: React.FC<DropdownMenuProps> = (props) => {
                     className={styles.itemHeader}
                     onClick={hasChildren ? () => toggleExpand(item.value) : () => handleSelect(item.value)}
                 >
-                    {hasChildren && (
-                        <div className={`${styles.expandIcon} ${isExpanded ? styles.expanded : ''}`}>
-                            {isExpanded ?
-                                <IconButton typeIcon={IconEnum.ARROW_DOWN}
-                                />
-                                :
-                                <IconButton typeIcon={IconEnum.ARROW_RIGHT}
-                                />
-                            }
-                        </div>
-                    )}
-                    <input
-                        type="radio"
-                        name="menu-radio"
-                        value={item.value}
-                        checked={isSelected}
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={() => handleSelect(item.value)}
-                    />
-                    <span>{item.label}</span>
+                    <div className={styles.expandIcon}>
+                        {isExpanded ?
+                            <IconButton typeIcon={IconEnum.ARROW_DOWN}
+                            />
+                            :
+                            <IconButton typeIcon={IconEnum.ARROW_RIGHT}
+                            />
+                        }
+                    </div>
+                    <div>{item.label}</div>
                 </div>
                 {hasChildren && isExpanded && (
                     <ul className={styles.subMenu}>
@@ -135,13 +126,26 @@ const DropdownMenuDynamicField: React.FC<DropdownMenuProps> = (props) => {
                     className={styles.dropdownMenu}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <div className={styles.searchBar}>
-                        <input type="text" placeholder="Поиск"/>
-                        <span className={styles.searchIcon}>🔍</span>
+                    <div className={styles.contentWrapper}>
+                        <div className={styles.search}>
+                            <SearchIcon
+                                width={17.4}
+                                height={17.4}
+                            />
+                            <div className={styles.inputContainer}>
+                            <textarea
+                                style={{height: 24}}
+                                className={styles.searchArea}
+                                placeholder={'Поиск'}
+                                // value={value}
+                                // onChange={handleChange}
+                            />
+                            </div>
+                        </div>
+                        <ul className={styles.mainMenu}>
+                            {items.map(renderItem)}
+                        </ul>
                     </div>
-                    <ul className={styles.mainMenu}>
-                        {items.map(renderItem)}
-                    </ul>
                     <button
                         className={styles.selectButton}
                         onClick={() => {
