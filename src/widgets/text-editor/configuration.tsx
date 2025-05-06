@@ -41,7 +41,7 @@ export const TEXT_EDITOR_CUSTOM_STYLES = {
 
 export const TEXT_EDITOR_BLOCK_TYPES = [
     // { label: "H2", style: "header-two", icon: "H2", size: "extra-small" },
-    {label: "UL", style: "unordered-list-icon", icon: "UL", size: "medium"},
+    {label: "UL", style: "unordered-list-item", icon: "UL", size: "medium"},
     {label: "OL", style: "ordered-list-item", icon: "OL", size: "medium"},
 ];
 

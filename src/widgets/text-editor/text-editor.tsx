@@ -340,16 +340,16 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                          ref={buttonRef} onClick={toggleMenu}
                     >
                         Динамические поля
-                        {/*{isMenuOpen && (*/}
-                        {/*    <DropdownMenu*/}
-                        {/*        items={menuItems}*/}
-                        {/*        onSelect={handleMenuItemSelect}*/}
-                        {/*        buttonRef={buttonRef}*/}
-                        {/*        toggleOpen={toggleMenu}*/}
-                        {/*        isOpen={isMenuOpen}*/}
-                        {/*    />*/}
-                        {/*)}*/}
-                        <DROPMENU items={menuItems} onSelect={handleMenuItemSelect} buttonLabel={'OPEN'} />
+                        {isMenuOpen && (
+                            <DropdownMenu
+                                items={menuItems}
+                                onSelect={handleMenuItemSelect}
+                                buttonRef={buttonRef}
+                                toggleOpen={toggleMenu}
+                                isOpen={isMenuOpen}
+                            />
+                        )}
+                        {/*<DROPMENU items={menuItems} onSelect={handleMenuItemSelect} buttonLabel={'OPEN'} />*/}
                     </div>
                 </div>
             </div>
