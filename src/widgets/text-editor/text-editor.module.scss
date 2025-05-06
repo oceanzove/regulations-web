@@ -2,6 +2,10 @@
   width: 100%;
   max-width: 880px;
 
+  &.textEditorAreaIsFocused {
+    border: 1px solid red;
+  }
+
 
   h1,
   h2 {
@@ -68,10 +72,6 @@
     border-bottom-right-radius: 8px;
     border: 1px solid #EBEDEF;
 
-    .textEditorAreaIsFocused {
-      border: 1px solid blue;
-    }
-
     .textEditorAreaIsInvalid {
       border: 1px solid green;
     }
@@ -114,32 +114,32 @@
     border-bottom: none;
   }
 
-  .DraftEditor-root {
-    .public-DraftStyleDefault-block {
-      margin: 0;
-    }
-
-    & .public-DraftEditorPlaceholder-root {
-      color: red;
-      opacity: 0.5;
-    }
-
-    & .public-DraftStyleDefault-orderedListItem,
-    .public-DraftStyleDefault-unorderedListItem {
-      position: unset;
-    }
-
-    & .public-DraftStyleDefault-orderedListItem {
-      list-style-type: unset;
-    }
-
-    & .public-DraftStyleDefault-orderedListItem::before {
-      display: none;
-    }
-  }
-
-  .DraftEditor-editorContainer {
-    color: inherit;
-    overflow-y: scroll;
-  }
+  //.DraftEditor-root {
+  //  .public-DraftStyleDefault-block {
+  //    margin: 0;
+  //  }
+  //
+  //  & .public-DraftEditorPlaceholder-root {
+  //    color: red;
+  //    opacity: 0.5;
+  //  }
+  //
+  //  & .public-DraftStyleDefault-orderedListItem,
+  //  .public-DraftStyleDefault-unorderedListItem {
+  //    position: unset;
+  //  }
+  //
+  //  & .public-DraftStyleDefault-orderedListItem {
+  //    list-style-type: unset;
+  //  }
+  //
+  //  & .public-DraftStyleDefault-orderedListItem::before {
+  //    display: none;
+  //  }
+  //}
+  //
+  //.DraftEditor-editorContainer {
+  //  color: inherit;
+  //  overflow-y: scroll;
+  //}
 }

@@ -2,8 +2,28 @@
   position: relative;
 }
 
+.dropdownMenuButton {
+  background: #FFEFF5;
+  padding: 10px 15px;
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #F91F71;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0;
+
+  margin: 3px;
+}
 
 .dropdownMenu {
+  width: 320px;
+  height: 468px;
+
   position: absolute;
   z-index: 10;
   top: 100%;

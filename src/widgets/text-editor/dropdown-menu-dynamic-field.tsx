@@ -1,6 +1,9 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {usePopper} from 'react-popper';
-import styles from './dropdown-menu-editor.module.scss';
+import styles from './dropdown-menu-dynamic-field.module.scss';
+import css from "./dropdown-menu-dynamic-field.module.scss";
+import {IconButton} from "../../shared/ui/icon-button/icon-button.tsx";
+import {IconEnum} from "../../shared/ui/icon/IconType.tsx";
 
 export interface MenuItem {
     label: string;
@@ -10,23 +13,46 @@ export interface MenuItem {
 
 interface DropdownMenuProps {
     items: MenuItem[];
+    label: string;
     onSelect: (value: string) => void;
-    buttonRef: React.RefObject<HTMLElement>;
     toggleOpen: () => void;
     isOpen: boolean;
 }
 
-const DropdownMenu: React.FC<DropdownMenuProps> = (props) => {
-    const {items, onSelect, buttonRef, toggleOpen, isOpen} = props;
+const DropdownMenuDynamicField: React.FC<DropdownMenuProps> = (props) => {
+    const {items, label, onSelect, toggleOpen, isOpen} = props;
 
     const [expandedItems, setExpandedItems] = useState<string[]>([]);
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
     const menuRef = useRef<HTMLDivElement>(null);
 
     // Вынесем использование usePopper в начало компонента
-    const { styles: popperStyles, attributes } = usePopper(buttonRef.current, menuRef.current, {
-        placement: 'top-start',
-    });
+    const {styles: popperStyles, attributes} = usePopper(
+        buttonRef.current,
+        menuRef.current,
+        {
+            placement: 'bottom',
+        }
+    );
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Node;
+            const clickedOutside =
+                !menuRef.current?.contains(target) &&
+                !buttonRef.current?.contains(target);
+
+            if (isOpen && clickedOutside) {
+                toggleOpen();
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen, toggleOpen]);
 
     const toggleExpand = (value: string) => {
         setExpandedItems((prev) =>
@@ -40,7 +66,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props) => {
 
     const renderItem = (item: MenuItem) => {
         const isExpanded = expandedItems.includes(item.value);
-        const hasChildren = item.children?.length > 0;
+        const hasChildren = item.children && item.children.length > 0;
         const isSelected = selectedValue === item.value;
 
         return (
@@ -50,9 +76,15 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props) => {
                     onClick={hasChildren ? () => toggleExpand(item.value) : () => handleSelect(item.value)}
                 >
                     {hasChildren && (
-                        <span className={`${styles.expandIcon} ${isExpanded ? styles.expanded : ''}`}>
-                            {isExpanded ? '▼' : '►'}
-                        </span>
+                        <div className={`${styles.expandIcon} ${isExpanded ? styles.expanded : ''}`}>
+                            {isExpanded ?
+                                <IconButton typeIcon={IconEnum.ARROW_DOWN}
+                                />
+                                :
+                                <IconButton typeIcon={IconEnum.ARROW_RIGHT}
+                                />
+                            }
+                        </div>
                     )}
                     <input
                         type="radio"
@@ -89,7 +121,12 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props) => {
     };
 
     return (
-        <div className={styles.dropdownContainer}>
+        <div
+            className={styles.dropdownContainer}
+            onClick={(e) => e.stopPropagation()}>
+            <button ref={buttonRef} onClick={toggleOpen} className={css.dropdownMenuButton}>
+                {label}
+            </button>
             {isOpen && (
                 <div
                     ref={menuRef}
@@ -123,4 +160,4 @@ const DropdownMenu: React.FC<DropdownMenuProps> = (props) => {
 };
 
 
-export default DropdownMenu;
+export default DropdownMenuDynamicField;

@@ -21,8 +21,9 @@ import {FormatButton} from "./format-button";
 import {MainButton} from "../../shared/ui/main-button/main-button.tsx";
 import {Button} from "../../shared/ui/button";
 import {DynamicField} from "./dynamic-field";
-import DropdownMenu, {MenuItem} from "./dropdown-menu-editor.tsx";
+import DropdownMenuDynamicField, {MenuItem} from "./dropdown-menu-dynamic-field.tsx";
 import DROPMENU from "./dropPOOP.tsx";
+import {useOutsideClick} from "../utils";
 
 
 export type TTextEditorTextStyle =
@@ -126,14 +127,6 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         htmlText && setEditorState(convertHtmlToRaw(htmlText));
     }, [htmlText]);
 
-    const handleChangeBlur = () => {
-        setFocused((prevState: boolean) => (prevState ? false : prevState));
-    };
-
-    const handleChangeFocus = () => {
-        setFocused((prevState: boolean) => (prevState ? true : !prevState));
-    };
-
     const handleChangeText = useCallback((value: EditorState) => {
         const currentSelection = value.getSelection();
         onChangeHTMLText?.(convertMessageToHtml(value.getCurrentContent()));
@@ -155,7 +148,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         const contentStateWithEntity = contentState.createEntity(
             'DYNAMIC_FIELD',
             'IMMUTABLE',
-            { label }
+            {label}
         );
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         const selection = editorState.getSelection();
@@ -232,7 +225,9 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     };
 
 
-    const buttonRef = useRef<HTMLDivElement>(null);
+    /**
+     * Работу с динамическими полями - TODO ВЫНЕСТИ В ОТДЕЛЬНУЮ КОМПОНЕНТУ
+     */
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const menuItems = [
@@ -248,8 +243,8 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             label: 'Процесс',
             value: 'process',
             children: [
-                { label: 'Подпроцесс 1', value: 'sub-process-1' },
-                { label: 'Подпроцесс 2', value: 'sub-process-2' },
+                {label: 'Подпроцесс 1', value: 'sub-process-1'},
+                {label: 'Подпроцесс 2', value: 'sub-process-2'},
             ],
         },
         {
@@ -264,28 +259,33 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             label: 'Должность (группа)',
             value: 'position-group',
             children: [
-                { label: 'Должность А', value: 'position-a' },
-                { label: 'Должность Б', value: 'position-b' },
+                {label: 'Должность А', value: 'position-a'},
+                {label: 'Должность Б', value: 'position-b'},
             ],
         },
         {
             label: 'Сотрудник (группа)',
             value: 'employee-group',
             children: [
-                { label: 'Сотрудник X', value: 'employee-x' },
-                { label: 'Сотрудник Y', value: 'employee-y' },
+                {label: 'Сотрудник X', value: 'employee-x'},
+                {label: 'Сотрудник Y', value: 'employee-y'},
             ],
         },
     ];
 
     const handleMenuItemSelect = useCallback((value: string) => {
         console.log('Выбран элемент:', value);
-        setIsMenuOpen(false);
     }, []);
 
     const toggleMenu = useCallback(() => {
         setIsMenuOpen(prev => !prev);
     }, []);
+
+    const editorWrapperRef = useOutsideClick(() => {
+        setFocused(false);
+   });
+
+    const editorRef = useRef<Editor>(null);
 
     return (
         <div
@@ -293,91 +293,85 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
              ${classes ? classes : ''}
              ${styles.textEditorWrapper} 
              ${isInvalid ? styles.textEditorAreaIsInvalid : ''}
-             ${isFocused || contentState.hasText() ? styles.textEditorAreaIsFocused : ''}
+             ${isFocused ? styles.textEditorAreaIsFocused : ''}
              `.trim()}
-            onClick={handleChangeFocus}
+            onClick={() => setFocused(true)}
         >
-            <div className={styles.textEditorControl}>
-                <InlineStyleControl
-                    editorState={editorState}
-                    onToggle={(inlineStyle) => {
-                        const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
-                        setEditorState(newState);
-                    }}
-                />
-                <BlockStyleControl
-                    editorState={editorState}
-                    onToggle={(blockType) => {
-                        const newState = RichUtils.toggleBlockType(editorState, blockType);
-                        setEditorState(newState);
-                    }}
-                />
+            <div ref={editorWrapperRef}>
+                <div className={styles.textEditorControl}>
+                    <InlineStyleControl
+                        editorState={editorState}
+                        onToggle={(inlineStyle) => {
+                            const newState = RichUtils.toggleInlineStyle(editorState, inlineStyle);
+                            setEditorState(newState);
+                        }}
+                    />
+                    <BlockStyleControl
+                        editorState={editorState}
+                        onToggle={(blockType) => {
+                            const newState = RichUtils.toggleBlockType(editorState, blockType);
+                            setEditorState(newState);
+                        }}
+                    />
 
-                {/* Вот сюда добавь кнопку */}
-                {/*<button*/}
-                {/*    type="button"*/}
-                {/*    onClick={() => {*/}
-                {/*        setEditorState(prev => insertDynamicField(prev, 'КИРИЛЛ'));*/}
-                {/*    }}*/}
-                {/*    className={styles.dynamicFieldButton}*/}
-                {/*>*/}
-                {/*    Вставить «КИРИЛЛ»*/}
-                {/*</button>*/}
-                {/*<button*/}
-                {/*    type="button"*/}
-                {/*    onClick={() => {*/}
-                {/*        setEditorState(prev => replaceDynamicFieldWithList(prev, ['Яблоко', 'Банан', 'Апельсин']));*/}
-                {/*    }}*/}
-                {/*    className={styles.dynamicFieldButton}*/}
-                {/*>*/}
-                {/*    Раскрыть "КИРИЛЛА"*/}
-                {/*</button>*/}
-                <div className={styles.dynamicFieldButtonContainer}>
-                    <div className={styles.dynamicFieldButton}>
-                        Ссылка
-                    </div>
-                    <div className={styles.dynamicFieldButton}
-                         ref={buttonRef} onClick={toggleMenu}
-                    >
-                        Динамические поля
-                        {isMenuOpen && (
-                            <DropdownMenu
-                                items={menuItems}
-                                onSelect={handleMenuItemSelect}
-                                buttonRef={buttonRef}
-                                toggleOpen={toggleMenu}
-                                isOpen={isMenuOpen}
-                            />
-                        )}
-                        {/*<DROPMENU items={menuItems} onSelect={handleMenuItemSelect} buttonLabel={'OPEN'} />*/}
+                    {/* Вот сюда добавь кнопку */}
+                    {/*<button*/}
+                    {/*    type="button"*/}
+                    {/*    onClick={() => {*/}
+                    {/*        setEditorState(prev => insertDynamicField(prev, 'КИРИЛЛ'));*/}
+                    {/*    }}*/}
+                    {/*    className={styles.dynamicFieldButton}*/}
+                    {/*>*/}
+                    {/*    Вставить «КИРИЛЛ»*/}
+                    {/*</button>*/}
+                    {/*<button*/}
+                    {/*    type="button"*/}
+                    {/*    onClick={() => {*/}
+                    {/*        setEditorState(prev => replaceDynamicFieldWithList(prev, ['Яблоко', 'Банан', 'Апельсин']));*/}
+                    {/*    }}*/}
+                    {/*    className={styles.dynamicFieldButton}*/}
+                    {/*>*/}
+                    {/*    Раскрыть "КИРИЛЛА"*/}
+                    {/*</button>*/}
+                    <div className={styles.dynamicFieldButtonContainer}>
+                        <div className={styles.dynamicFieldButton}>
+                            Ссылка
+                        </div>
+                        <DropdownMenuDynamicField
+                            items={menuItems}
+                            label={"Динамические поля"}
+                            onSelect={handleMenuItemSelect}
+                            toggleOpen={toggleMenu}
+                            isOpen={isMenuOpen}
+                        />
                     </div>
                 </div>
-            </div>
 
-            <div className={textEditorArea}>
-                {
-                    htmlText ?
-                        <Editor
-                            blockStyleFn={getBlockStyle}
-                            customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
-                            editorState={editorState}
-                            onBlur={handleChangeBlur}
-                            onChange={handleChangeText}
-                            placeholder={placeholder}
-                            // handleBeforeInput={handleBeforeInput} // добавляем обработчик ввода
-                        />
-                        :
-                        <div className={styles.emptyEditor}>
-                            <div className={styles.header}>
-                                Начните работу
+                <div className={textEditorArea}>
+                    {
+                        htmlText ?
+                            <Editor
+                                blockStyleFn={getBlockStyle}
+                                customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
+                                editorState={editorState}
+                                onChange={handleChangeText}
+                                placeholder={placeholder}
+                                readOnly={!isFocused}
+                                ref={editorRef}
+                            />
+                            :
+                            <div className={styles.emptyEditor}>
+                                <div className={styles.header}>
+                                    Начните работу
+                                </div>
+                                <div className={styles.description}>
+                                    Выберите шаблон или составьте свой
+                                    из набора разделов и модулей
+                                </div>
                             </div>
-                            <div className={styles.description}>
-                                Выберите шаблон или составьте свой
-                                из набора разделов и модулей
-                            </div>
-                        </div>
-                }
+                    }
 
+                </div>
             </div>
         </div>
     );

@@ -1,0 +1,1 @@
+export { useOutsideClick } from './outside-click.ts';
