@@ -25,6 +25,19 @@ export const TEXT_EDITOR_STYLE_TO_HTML = (style: TTextEditorTextStyle) => {
     }
 };
 
+type DYNAMIC_FIELD = {
+    title: string,
+    target: dynamicFieldTypes,
+}
+
+export enum dynamicFieldTypes {
+    PROCESS_DIRECTOR,
+    PROCESS_DEPARTMENT,
+    PROCESS_PROCESS,
+    PROCESS_POSITION,
+    PROCESS_EMPLOYEE,
+}
+
 export const TEXT_EDITOR_CUSTOM_STYLES = {
     HIGHLIGHT: {
         backgroundColor: "#8fcbe5",
@@ -41,8 +54,8 @@ export const TEXT_EDITOR_CUSTOM_STYLES = {
 
 export const TEXT_EDITOR_BLOCK_TYPES = [
     // { label: "H2", style: "header-two", icon: "H2", size: "extra-small" },
-    {label: "UL", style: "unordered-list-item", icon: "UL", size: "medium"},
-    {label: "OL", style: "ordered-list-item", icon: "OL", size: "medium"},
+    {label: "UL", style: "unordered-section-item", icon: "UL", size: "medium"},
+    {label: "OL", style: "ordered-section-item", icon: "OL", size: "medium"},
 ];
 
 export const TEXT_EDITOR_INLINE_STYLES = [

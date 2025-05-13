@@ -2,7 +2,7 @@ import React from 'react';
 import {useSortable} from '@dnd-kit/sortable';
 import {CSS} from '@dnd-kit/utilities';
 import css from './RegulationItem.module.scss';
-import DragPoint from "../../../../../../shared/assets/images/drag_point.svg";
+import DragPoint from "../../../../../../../shared/assets/images/drag_point.svg";
 
 interface IRegulationProps {
     id: string;

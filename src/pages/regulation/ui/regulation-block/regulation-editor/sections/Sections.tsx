@@ -1,20 +1,20 @@
-import styles from './RegulationSections.module.scss';
+import styles from './Sections.module.scss';
 import {closestCenter, DndContext, DragEndEvent, PointerSensor, useSensor, useSensors} from "@dnd-kit/core";
 import React, {useCallback, useState} from "react";
 import {arrayMove, SortableContext, verticalListSortingStrategy} from "@dnd-kit/sortable";
 import {RegulationItem} from "./regulation-item";
-import OptionIcon from "../../../../../shared/assets/images/option_icon.svg";
-import {MainButton} from "../../../../../shared/ui/main-button/main-button.tsx";
-import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
-import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
-import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
-import {SearchIcon} from "../../../../../shared/assets/icons";
+import OptionIcon from "../../../../../../shared/assets/images/option_icon.svg";
+import {MainButton} from "../../../../../../shared/ui/main-button/main-button.tsx";
+import {regulationApi} from "../../../../../../entities/regulation/api/api.ts";
+import {IRegulation} from "../../../../../../entities/regulation/api/types.ts";
+import {notificationError, notificationSuccess} from "../../../../../../widgets/notifications/callNotification.tsx";
+import {SearchIcon} from "../../../../../../shared/assets/icons";
 import Textarea from "@uiw/react-md-editor/lib/components/TextArea/Textarea";
-import {TextArea} from "../../../../../shared/ui/text-area/textArea.tsx";
-import css from "../../../../../shared/ui/text-area/textArea.module.scss";
-import {DropdownMenuData} from "../RegulationBlock.tsx";
-import {DropdownMenu} from "../../../../../widgets/dropdown-menu/ui/DropdownMenu.tsx";
-import {IDropdownMenuBlock, IDropdownMenuProps} from "../../../../../widgets/dropdown-menu/types.ts";
+import {TextArea} from "../../../../../../shared/ui/text-area/textArea.tsx";
+import css from "../../../../../../shared/ui/text-area/textArea.module.scss";
+import {DropdownMenuData} from "../../RegulationBlock.tsx";
+import {DropdownMenu} from "../../../../../../widgets/dropdown-menu/ui/DropdownMenu.tsx";
+import {IDropdownMenuBlock, IDropdownMenuProps} from "../../../../../../widgets/dropdown-menu/types.ts";
 
 interface IRegulationList {
     regulations: IDropdownMenuProps;
@@ -22,7 +22,7 @@ interface IRegulationList {
     updateActiveRegulation: (id: string) => void;
 }
 
-export const RegulationSections = (props: IRegulationList) => {
+export const Sections = (props: IRegulationList) => {
     const {
         regulations,
         updateRegulations,

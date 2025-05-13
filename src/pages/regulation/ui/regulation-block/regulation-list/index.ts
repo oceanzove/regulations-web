@@ -1,1 +1,0 @@
-export { RegulationSections } from './RegulationSections.tsx';

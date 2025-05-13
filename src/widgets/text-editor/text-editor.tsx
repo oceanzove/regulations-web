@@ -1,28 +1,14 @@
-import {
-    AtomicBlockUtils,
-    CompositeDecorator,
-    ContentBlock,
-    ContentState,
-    Editor,
-    EditorCommand,
-    EditorState,
-    Modifier,
-    RichUtils
-} from "draft-js";
-import {convertToHTML, convertFromHTML} from "draft-convert";
-import {memo, useCallback, useEffect, useState, type FC, useRef} from "react";
+import {CompositeDecorator, ContentBlock, ContentState, Editor, EditorState, Modifier, RichUtils} from "draft-js";
+import {convertFromHTML, convertToHTML} from "draft-convert";
+import {type FC, memo, useCallback, useEffect, useRef, useState} from "react";
 import "draft-js/dist/Draft.css";
 
 import {BlockStyleControl} from "./block-style-control";
-import {TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
+import {dynamicFieldTypes, TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
 import {InlineStyleControl} from "./inline-style-control";
 import styles from './text-editor.module.scss';
-import {FormatButton} from "./format-button";
-import {MainButton} from "../../shared/ui/main-button/main-button.tsx";
-import {Button} from "../../shared/ui/button";
 import {DynamicField} from "./dynamic-field";
-import DropdownMenuDynamicField, {MenuItem} from "./dropdown-menu-dynamic-field.tsx";
-import DROPMENU from "./dropPOOP.tsx";
+import DropdownMenuDynamicField from "./dropdown-menu-dynamic-field.tsx";
 import {useOutsideClick} from "../utils";
 
 
@@ -150,6 +136,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             'IMMUTABLE',
             {label}
         );
+        console.log('insert');
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
         const selection = editorState.getSelection();
 
@@ -231,51 +218,56 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const menuItems = [
-        {
-            label: 'Руководитель',
-            value: 'leader',
-        },
-        {
-            label: 'Подразделение',
-            value: 'department',
-        },
+        // {
+        //     label: 'Руководитель',
+        //     value: 'leader',
+        // },
+        // {
+        //     label: 'Подразделение',
+        //     value: 'department',
+        // },
         {
             label: 'Процесс',
             value: 'process',
             children: [
-                {label: 'Подпроцесс 1', value: 'sub-process-1'},
-                {label: 'Подпроцесс 2', value: 'sub-process-2'},
+                {label: 'Руководитель', value: dynamicFieldTypes.PROCESS_DIRECTOR},
+                {label: 'Подразделение', value: dynamicFieldTypes.PROCESS_DEPARTMENT},
+                {label: 'Процесс', value: dynamicFieldTypes.PROCESS_PROCESS},
+                {label: 'Должность', value: dynamicFieldTypes.PROCESS_POSITION},
+                {label: 'Сотрудник', value: dynamicFieldTypes.PROCESS_EMPLOYEE},
             ],
         },
-        {
-            label: 'Должность',
-            value: 'position',
-        },
-        {
-            label: 'Сотрудник',
-            value: 'employee',
-        },
-        {
-            label: 'Должность (группа)',
-            value: 'position-group',
-            children: [
-                {label: 'Должность А', value: 'position-a'},
-                {label: 'Должность Б', value: 'position-b'},
-            ],
-        },
-        {
-            label: 'Сотрудник (группа)',
-            value: 'employee-group',
-            children: [
-                {label: 'Сотрудник X', value: 'employee-x'},
-                {label: 'Сотрудник Y', value: 'employee-y'},
-            ],
-        },
+        // {
+        //     label: 'Должность',
+        //     value: 'position',
+        // },
+        // {
+        //     label: 'Сотрудник',
+        //     value: 'employee',
+        // },
+        // {
+        //     label: 'Должность (группа)',
+        //     value: 'position-group',
+        //     children: [
+        //         {label: 'Должность А', value: 'position-a'},
+        //         {label: 'Должность Б', value: 'position-b'},
+        //     ],
+        // },
+        // {
+        //     label: 'Сотрудник (группа)',
+        //     value: 'employee-group',
+        //     children: [
+        //         {label: 'Сотрудник X', value: 'employee-x'},
+        //         {label: 'Сотрудник Y', value: 'employee-y'},
+        //     ],
+        // },
     ];
 
-    const handleMenuItemSelect = useCallback((value: string) => {
+    const handleDynamicFieldSelect = useCallback((value: string) => {
         console.log('Выбран элемент:', value);
-    }, []);
+        insertDynamicField(editorState, value);
+        setEditorState(prev => insertDynamicField(prev, value));
+    }, [editorState]);
 
     const toggleMenu = useCallback(() => {
         setIsMenuOpen(prev => !prev);
@@ -340,7 +332,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                         <DropdownMenuDynamicField
                             items={menuItems}
                             label={"Динамические поля"}
-                            onSelect={handleMenuItemSelect}
+                            onSelect={handleDynamicFieldSelect}
                             toggleOpen={toggleMenu}
                             isOpen={isMenuOpen}
                         />

@@ -1,11 +1,11 @@
 import css from './RegulationBlock.module.scss';
-import {RegulationSections} from "./regulation-list";
+import {Sections} from "./regulation-editor/sections";
 import {useRegulation} from "../../../../entities/regulation/model/hooks/useRegulation.ts";
-import {RegulationEditor} from "./regulation-editor";
+import {Editor} from "./regulation-editor/editor";
 import {useEffect, useState} from "react";
 import {regulationApi} from "../../../../entities/regulation/api/api.ts";
 import {IRegulation} from "../../../../entities/regulation/api/types.ts";
-import {IDropdownMenuBlock, IDropdownMenuProps} from "../../../../widgets/dropdown-menu/types.ts";
+import { IDropdownMenuProps} from "../../../../widgets/dropdown-menu/types.ts";
 
 export const RegulationBlock = () => {
     const {
@@ -31,11 +31,15 @@ export const RegulationBlock = () => {
     // );
     // console.log(regulationState.regulations)
 
-    // const regulations: IRegulation[] = [
-    //     { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'},
-    //     { id: '2', title: 'ГУБЫ', content: 'dsfsdf'},
-    //     { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
-    // ]
+    const regulations: IRegulation[] = [
+        { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'},
+        { id: '2', title: 'ГУБЫ', content: 'dsfsdf'},
+        { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
+    ]
+
+    const activeRegulation = regulations.find(
+        (reg) => reg.id === '2'
+    );
 
     const block: IDropdownMenuProps = {
         blocks: [
@@ -90,9 +94,31 @@ export const RegulationBlock = () => {
     //     updateRegulation(regulations);
     // }, []);
     const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
+
+    console.log(activeRegulation);
     return (
         <div className={css.wrapper}>
-            {/*<RegulationSections*/}
+            { activeRegulation
+                ?
+                <>
+
+                </>
+                :
+                <>
+                    <Sections
+                        regulations={block}
+                        updateRegulations={updateRegulation}
+                        updateActiveRegulation={updateActiveRegulation}
+                    />
+                    <Editor
+                        activeRegulation={testRegulation}
+                        updateContent={updateContent}
+                        updateTitle={updateTitle}
+                    />
+                </>
+
+            }
+            {/*<Sections*/}
             {/*    regulations={regulationState.regulations}*/}
             {/*    updateRegulations={updateRegulation}*/}
             {/*    updateActiveRegulation={updateActiveRegulation}*/}
@@ -108,16 +134,6 @@ export const RegulationBlock = () => {
             {/*        Выберите или создайте регламент для редактирования*/}
             {/*    </div>*/}
             {/*)}*/}
-            <RegulationSections
-                regulations={block}
-                updateRegulations={updateRegulation}
-                updateActiveRegulation={updateActiveRegulation}
-            />
-            <RegulationEditor
-                activeRegulation={testRegulation}
-                updateContent={updateContent}
-                updateTitle={updateTitle}
-            />
         </div>
     )
 };
