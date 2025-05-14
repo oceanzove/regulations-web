@@ -1,1 +1,1 @@
-export { Editor } from './Editor.tsx';
+export { DraftEditor } from './DraftEditor.tsx';

@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../../../../shared/api/api';
+import { baseQuery } from '../../../api/api';
 import {
     URI_SIGN_IN,
     URI_SIGN_UP,

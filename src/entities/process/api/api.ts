@@ -1,5 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import {baseQuery} from "../../../shared/api/api.ts";
+import {baseQuery} from "../../api/api.ts";
 import {ICreateProcessResponse, IGetProcessResponse} from "./types.ts";
 import {URI_PROCESS} from "./consts.ts";
 

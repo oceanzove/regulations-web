@@ -1,48 +1,15 @@
 .button {
   $this: &;
-  //display: inline-flex;
-  //align-items: center;
-  //justify-content: center;
-  //padding: 10px 30px;
-  //height: max-content;
-  //width: max-content;
-  //color: white;
-  //outline: transparent;
-  //transition: all 0.3s;
+
   cursor: pointer;
+
+  .icon {
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+  }
 
   .active {
     cursor: pointer;
   }
-  //&-Text {
-  //  margin-left: 12px;
-  //}
-  //
-  //&:hover {
-  //  background-color: var(--main-button-bg-hover-color);
-  //}
-  //
-  //&.active {
-  //  background: blue;
-  //}
-  //&#{$this}__isActive {
-  //  background-color: $color-mercury-gray;
-  //
-  //  &:hover {
-  //    background-color: $color-mercury-gray;
-  //  }
-  //}
-  //
-  //&#{$this}__isDisabled {
-  //  color: $color-disabled;
-  //  background-color: $color-disabled-secondary;
-  //  border-color: $color-disabled-secondary;
-  //  cursor: default;
-  //
-  //  &:hover {
-  //    color: $color-disabled;
-  //    background-color: $color-disabled-secondary;
-  //    border-color: $color-disabled-secondary;
-  //  }
-  //}
 }

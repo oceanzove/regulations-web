@@ -1,6 +1,6 @@
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
 import { v4 as uuid } from 'uuid';
-import { SERVER_ENVIRONMENT_DEV } from '../../api/API';
+import { SERVER_ENVIRONMENT_DEV } from '../../api/API.ts';
 
 
 // const BASE_API_URL_PRODUCTION = 'https://wakadoo.ru/api/';

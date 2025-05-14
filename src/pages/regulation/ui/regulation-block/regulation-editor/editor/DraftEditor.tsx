@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import styles from './Editor.module.scss';
-import { EditorState, convertToRaw, convertFromRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { IRegulation } from '../../../../../../entities/regulation/api/types.ts';
-import { regulationApi } from '../../../../../../entities/regulation/api/api.ts';
-import { notificationError, notificationSuccess } from '../../../../../../widgets/notifications/callNotification.tsx';
+import styles from './DraftEditor.module.scss';
+import {IRegulation} from "../../../../../../entities/regulation/api/types.ts";
+import {useEffect, useState} from "react";
+import {convertFromRaw, convertToRaw, EditorState} from "draft-js";
+import {notificationError, notificationSuccess} from "../../../../../../widgets/notifications/callNotification.tsx";
 import {TextEditor} from "../../../../../../widgets/text-editor";
 
 interface IRegulationEditorProps {
@@ -14,7 +11,7 @@ interface IRegulationEditorProps {
     updateContent: (id: string, content: string) => void,
 }
 
-export const Editor: React.FC<IRegulationEditorProps> = ({ activeRegulation, updateTitle, updateContent }) => {
+export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation, updateTitle, updateContent }) => {
     const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
     useEffect(() => {

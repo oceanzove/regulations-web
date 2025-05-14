@@ -3,7 +3,7 @@ import {RegulationBlock} from "./regulation-block";
 
 export const RegulationPage = () => {
     return (
-        <div className={styles.wrapper}>
+        <div className={styles.regulationPageWrapper}>
             <RegulationBlock />
         </div>
     )
