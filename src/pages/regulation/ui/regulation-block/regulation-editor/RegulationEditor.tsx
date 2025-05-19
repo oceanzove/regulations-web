@@ -8,38 +8,6 @@ import {Sections} from "./sections";
 import {DraftEditor} from "./editor";
 
 export const RegulationEditor = () => {
-    const {
-        regulationState,
-        updateRegulation,
-        updateContent,
-        updateTitle,
-        updateActiveRegulation,
-    } = useRegulation()
-
-    const { data } = regulationApi.useGetQuery();
-    const [isDataLoaded, setIsDataLoaded] = useState(false);
-
-    useEffect(() => {
-        if (data && !isDataLoaded) {
-            updateRegulation(data.regulations);
-            setIsDataLoaded(true);
-        }
-    }, [data, isDataLoaded, updateRegulation]);
-
-    // const activeRegulation = regulationState.regulations.find(
-    //     (reg) => reg.id === regulationState.activeRegulation
-    // );
-    // console.log(regulationState.regulations)
-
-    const regulations: IRegulation[] = [
-        { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'},
-        { id: '2', title: 'ГУБЫ', content: 'dsfsdf'},
-        { id: '3', title: 'ТУФЛЯ', content: 'dsfsdf'},
-    ]
-
-    const activeRegulation = regulations.find(
-        (reg) => reg.id === '2'
-    );
 
     const block: IDropdownMenuProps = {
         blocks: [
@@ -95,18 +63,16 @@ export const RegulationEditor = () => {
     // }, []);
     const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
 
-    console.log(activeRegulation);
+    // console.log(activeRegulation);
     return (
         <div className={styles.wrapper}>
             <Sections
                 regulations={block}
-                updateRegulations={updateRegulation}
-                updateActiveRegulation={updateActiveRegulation}
             />
             <DraftEditor
                 activeRegulation={testRegulation}
-                updateContent={updateContent}
-                updateTitle={updateTitle}
+                // updateContent={updateContent}
+                // updateTitle={updateTitle}
             />
             {/*<Sections*/}
             {/*    regulations={regulationState.regulations}*/}

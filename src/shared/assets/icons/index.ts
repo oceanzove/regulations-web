@@ -12,3 +12,4 @@ export * from './quote-icon';
 export * from './code-icon';
 export * from './dynamic-field';
 export * from './add-icon';
+export * from './filter-icon';

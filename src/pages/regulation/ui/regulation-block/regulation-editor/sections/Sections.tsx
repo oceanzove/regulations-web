@@ -18,15 +18,15 @@ import {IDropdownMenuBlock, IDropdownMenuProps} from "../../../../../../widgets/
 
 interface IRegulationList {
     regulations: IDropdownMenuProps;
-    updateRegulations: (regulations: IRegulation[]) => void;
-    updateActiveRegulation: (id: string) => void;
+    // updateRegulations: (regulations: IRegulation[]) => void;
+    // updateActiveRegulation: (id: string) => void;
 }
 
 export const Sections = (props: IRegulationList) => {
     const {
         regulations,
-        updateRegulations,
-        updateActiveRegulation,
+        // updateRegulations,
+        // updateActiveRegulation,
     } = props;
 
     // // Настройка сенсоров

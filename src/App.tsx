@@ -13,7 +13,7 @@ const App = () => {
 
     return (
         <>
-            {!shouldHideNavbar && <Navbar />}
+            {/*{!shouldHideNavbar && <Navbar />}*/}
             <Router />
             <ToastContainer />
         </>

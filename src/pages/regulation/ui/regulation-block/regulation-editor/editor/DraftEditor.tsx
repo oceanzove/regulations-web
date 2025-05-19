@@ -38,15 +38,15 @@ export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation
         // setEditorState(state);
     };
 
-    const handleSave = async () => {
-        try {
-            const content = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-            updateContent(activeRegulation.id, content);
-            notificationSuccess('Сохранение', 'Регламент успешно сохранен');
-        } catch {
-            notificationError('Сохранение', 'Не удалось сохранить регламент');
-        }
-    };
+    // const handleSave = async () => {
+    //     try {
+    //         const content = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+    //         updateContent(activeRegulation.id, content);
+    //         notificationSuccess('Сохранение', 'Регламент успешно сохранен');
+    //     } catch {
+    //         notificationError('Сохранение', 'Не удалось сохранить регламент');
+    //     }
+    // };
 
     return (
         <TextEditor
