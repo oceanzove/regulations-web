@@ -1,13 +1,17 @@
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 import {IDropdownMenuProps} from "../../../../../widgets/dropdown-menu/types.ts";
-import {useEffect, useState} from "react";
-import {useRegulation} from "../../../../../entities/regulation/model/hooks/useRegulation.ts";
-import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
+import { FC } from "react";
 import styles from './RegulationEditor.module.scss';
 import {Sections} from "./sections";
 import {DraftEditor} from "./editor";
 
-export const RegulationEditor = () => {
+type TRegulationEditorProps = {
+    onSelectRegulation: (id: string | null) => void;
+}
+
+export const RegulationEditor: FC<TRegulationEditorProps> = (props) => {
+
+    const { onSelectRegulation } = props;
 
     const block: IDropdownMenuProps = {
         blocks: [
@@ -63,11 +67,14 @@ export const RegulationEditor = () => {
     // }, []);
     const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
 
+
+
     // console.log(activeRegulation);
     return (
         <div className={styles.wrapper}>
             <Sections
                 regulations={block}
+                onSelectRegulation={(regulationId) => onSelectRegulation(regulationId)}
             />
             <DraftEditor
                 activeRegulation={testRegulation}

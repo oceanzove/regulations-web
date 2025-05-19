@@ -2,12 +2,12 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {IRegulation} from "../../api/types.ts";
 
 interface IRegulationState {
-    activeRegulation: string | null;
+    activeRegulationId: string | null;
     regulations: IRegulation[];
 }
 
 const initialState: IRegulationState = {
-    activeRegulation:  "",
+    activeRegulationId:  "",
     regulations: []
 };
 
@@ -47,8 +47,12 @@ export const regulationSlice = createSlice({
                 regulations: updatedRegulations,
             };
         },
-        setActiveRegulation(state, action: PayloadAction<string>) {
-            state.activeRegulation = action.payload;
+        setActiveRegulation(state, action: PayloadAction<string | null>) {
+            console.log(action.payload)
+            return {
+                ...state,
+                activeRegulation: action.payload
+            }
         },
     },
 });

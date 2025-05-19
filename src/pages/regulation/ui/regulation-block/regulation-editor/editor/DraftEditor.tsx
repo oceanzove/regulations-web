@@ -7,8 +7,8 @@ import {TextEditor} from "../../../../../../widgets/text-editor";
 
 interface IRegulationEditorProps {
     activeRegulation: IRegulation,
-    updateTitle: (id: string, title: string) => void,
-    updateContent: (id: string, content: string) => void,
+    // updateTitle: (id: string, title: string) => void,
+    // updateContent: (id: string, content: string) => void,
 }
 
 export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation, updateTitle, updateContent }) => {

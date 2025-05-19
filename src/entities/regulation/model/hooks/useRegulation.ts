@@ -19,7 +19,7 @@ export const useRegulation = () => {
         dispatch(regulationActions.setTitle({id, title}));
     };
 
-    const updateActiveRegulation = (id: string) => {
+    const updateActiveRegulation = (id: string | null) => {
         dispatch(regulationActions.setActiveRegulation(id));
     };
 
