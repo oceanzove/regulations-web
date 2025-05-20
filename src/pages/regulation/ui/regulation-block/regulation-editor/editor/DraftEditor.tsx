@@ -12,27 +12,6 @@ interface IRegulationEditorProps {
 }
 
 export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation, updateTitle, updateContent }) => {
-    const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-
-    useEffect(() => {
-        if (activeRegulation.content) {
-            try {
-                const parsedContent = JSON.parse(activeRegulation.content);
-
-                if (parsedContent.blocks && parsedContent.entityMap) {
-                    const contentState = convertFromRaw(parsedContent);
-                    setEditorState(EditorState.createWithContent(contentState));
-                } else {
-                    console.warn('Неверный формат JSON, инициализация пустым редактором.');
-                }
-
-            } catch (error) {
-                console.error('Ошибка загрузки контента', error);
-                setEditorState(EditorState.createEmpty());
-            }
-        }
-    }, [activeRegulation]);
-
     const handleEditorChange = (value: string) => {
         console.log(value);
         // setEditorState(state);
@@ -50,7 +29,7 @@ export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation
 
     return (
         <TextEditor
-            htmlText={'123 123 1231 23'}
+            htmlText={activeRegulation.content}
             onChangeHTMLText={handleEditorChange}
         />
     );

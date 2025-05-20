@@ -1,4 +1,10 @@
-import {memo, type FC, type DetailedHTMLProps, type ButtonHTMLAttributes, type MouseEvent} from "react";
+import React, {
+    memo,
+    type FC,
+    type DetailedHTMLProps,
+    type ButtonHTMLAttributes,
+    type MouseEvent,
+} from "react";
 import styles from './button.module.scss';
 import {IconType} from "../icon/IconType.tsx";
 import {Icon} from "../icon";
@@ -11,7 +17,7 @@ export interface IButtonProps
     dataTestId?: string;
     isActive?: boolean;
     isDisabled?: boolean;
-    onClick?: (event: MouseEvent) => void;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     type?: TButton;
     typeIcon?: IconType;
 }

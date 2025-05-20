@@ -1,7 +1,7 @@
 import {
     AddIcon,
     ArrowDownIcon, ArrowRightIcon,
-    BoldIcon, DynamicFieldIcon, FilterIcon,
+    BoldIcon, CrossIcon, DynamicFieldIcon, FilterIcon,
     ItalicIcon,
     OrderedListIcon, SearchIcon,
     UnderlineIcon,
@@ -20,6 +20,7 @@ export type IconType =
     | "ADD"
     | "SEARCH"
     | "FILTER"
+    | "CROSS"
     ;
 
 export enum IconEnum {
@@ -29,6 +30,7 @@ export enum IconEnum {
     SEARCH = "SEARCH",
     FILTER = "FILTER",
     BOLD = "Bold",
+    CROSS = "CROSS",
 }
 
 
@@ -36,6 +38,7 @@ export const iconTypes = new Map([
     ['ADD', <AddIcon key="add-icon" width={24} height={24}/>],
     ['SEARCH', <SearchIcon key="add-icon" />],
     ['FILTER', <FilterIcon key="filter-icon" width={17.5} height={13.5} color={'#8692A7'} />],
+    ['CROSS', <CrossIcon key="cross-icon"/>],
     ["Arrow-down", <ArrowDownIcon key="arrow-down" width={9.5} height={5.5} />],
     ["Arrow-right", <ArrowRightIcon key="arrow-down" width={5.5} height={9.5} />],
     ["Bold", <BoldIcon key="BoldIcon" width={9} height={12} />],

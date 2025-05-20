@@ -48,6 +48,7 @@ export const RegulationBlock = () => {
                 />
                 :
                 <RegulationEditor
+                    activeRegulation={activeRegulation}
                     onSelectRegulation={(regulationId) => onSelectRegulation(regulationId)}
                 />
             }

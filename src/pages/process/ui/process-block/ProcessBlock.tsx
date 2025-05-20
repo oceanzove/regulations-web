@@ -15,8 +15,10 @@ export const ProcessBlock = () => {
         updateTitle
     } = useProcess()
 
-    const { data } = processApi.useGetQuery();
+    const {data} = processApi.useGetQuery();
     const [isDataLoaded, setIsDataLoaded] = useState(false);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (data && !isDataLoaded) {
@@ -30,24 +32,38 @@ export const ProcessBlock = () => {
     );
 
     return (
-        <div className={css.wrapper}>
-            <ProcessList
-                processes={processState.processes}
-                updateProcesses={updateProcesses}
-                updateActiveProcess={updateActiveProcess}
-            />
-            {activeProcess ? (
-                <ProcessEditor
-                    activeProcess={activeProcess}
-                    updateTitle={updateTitle}
-                    updateDescription={updateDescription}
-                    steps={processState.processSteps}
+        <div className={css.processBlockWrapper}>
+            {!activeProcess
+                ?
+                <ProcessList
+                    processes={processState.processes}
+                    updateProcesses={updateProcesses}
+                    updateActiveProcess={updateActiveProcess}
+
+                    isModalOpen={isModalOpen}
+                    toggleModal={() => setIsModalOpen((prev) => !prev)}
                 />
-            ) : (
-                <div className={css.placeholder}>
-                    Выберите или создайте процесс для редактирования
-                </div>
-            )}
+                :
+                <ProcessEditor
+                    // activeProcess={}
+                    // steps={}
+                    // updateTitle={}
+                    // updateDescription={}
+                />
+
+            }
+            {/*{activeProcess ? (*/}
+            {/*    <ProcessEditor*/}
+            {/*        activeProcess={activeProcess}*/}
+            {/*        updateTitle={updateTitle}*/}
+            {/*        updateDescription={updateDescription}*/}
+            {/*        steps={processState.processSteps}*/}
+            {/*    />*/}
+            {/*) : (*/}
+            {/*    <div className={css.placeholder}>*/}
+            {/*        Выберите или создайте процесс для редактирования*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     )
 };

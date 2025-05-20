@@ -1,0 +1,47 @@
+.modalWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  .modalContent {
+    width: 800px;
+    height: 425px;
+    border-radius: 12px;
+
+    padding: 10px 20px 20px 20px;
+
+    background: #FFFFFF;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+
+  font-size: 24px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #EEF2F8;
+
+  .iconButtonContainer {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+}
+
+.content {
+  padding-top: 10px;
+}
+

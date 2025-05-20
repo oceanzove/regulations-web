@@ -13,3 +13,4 @@ export * from './code-icon';
 export * from './dynamic-field';
 export * from './add-icon';
 export * from './filter-icon';
+export * from './cross-icon';

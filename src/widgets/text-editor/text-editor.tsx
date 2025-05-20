@@ -1,4 +1,13 @@
-import {CompositeDecorator, ContentBlock, ContentState, Editor, EditorState, Modifier, RichUtils} from "draft-js";
+import {
+    CompositeDecorator,
+    ContentBlock,
+    ContentState,
+    convertFromRaw,
+    Editor,
+    EditorState,
+    Modifier,
+    RichUtils
+} from "draft-js";
 import {convertFromHTML, convertToHTML} from "draft-convert";
 import {type FC, memo, useCallback, useEffect, useRef, useState} from "react";
 import "draft-js/dist/Draft.css";
@@ -340,29 +349,38 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 </div>
 
                 <div className={textEditorArea}>
-                    {
-                        htmlText ?
-                            <Editor
-                                blockStyleFn={getBlockStyle}
-                                customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
-                                editorState={editorState}
-                                onChange={handleChangeText}
-                                placeholder={placeholder}
-                                readOnly={!isFocused}
-                                ref={editorRef}
-                            />
-                            :
-                            <div className={styles.emptyEditor}>
-                                <div className={styles.header}>
-                                    Начните работу
-                                </div>
-                                <div className={styles.description}>
-                                    Выберите шаблон или составьте свой
-                                    из набора разделов и модулей
-                                </div>
-                            </div>
-                    }
+                    {/*{*/}
+                    {/*    htmlText ?*/}
+                    {/*        <Editor*/}
+                    {/*            blockStyleFn={getBlockStyle}*/}
+                    {/*            customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}*/}
+                    {/*            editorState={editorState}*/}
+                    {/*            onChange={handleChangeText}*/}
+                    {/*            placeholder={placeholder}*/}
+                    {/*            readOnly={!isFocused}*/}
+                    {/*            ref={editorRef}*/}
+                    {/*        />*/}
+                    {/*        :*/}
+                    {/*        <div className={styles.emptyEditor}>*/}
+                    {/*            <div className={styles.header}>*/}
+                    {/*                Начните работу*/}
+                    {/*            </div>*/}
+                    {/*            <div className={styles.description}>*/}
+                    {/*                Выберите шаблон или составьте свой*/}
+                    {/*                из набора разделов и модулей*/}
+                    {/*            </div>*/}
+                    {/*        </div>*/}
+                    {/*}*/}
 
+                    <Editor
+                        blockStyleFn={getBlockStyle}
+                        customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
+                        editorState={editorState}
+                        onChange={handleChangeText}
+                        placeholder={placeholder}
+                        readOnly={!isFocused}
+                        ref={editorRef}
+                    />
                 </div>
             </div>
         </div>

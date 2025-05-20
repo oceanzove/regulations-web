@@ -6,12 +6,13 @@ import {Sections} from "./sections";
 import {DraftEditor} from "./editor";
 
 type TRegulationEditorProps = {
+    activeRegulation: IRegulation;
     onSelectRegulation: (id: string | null) => void;
 }
 
 export const RegulationEditor: FC<TRegulationEditorProps> = (props) => {
 
-    const { onSelectRegulation } = props;
+    const { activeRegulation, onSelectRegulation } = props;
 
     const block: IDropdownMenuProps = {
         blocks: [
@@ -65,7 +66,6 @@ export const RegulationEditor: FC<TRegulationEditorProps> = (props) => {
     // useEffect(() => {
     //     updateRegulation(regulations);
     // }, []);
-    const testRegulation: IRegulation = { id: '1', title: 'ЗУБЫ', content: 'dsfsdf'}
 
 
 
@@ -77,7 +77,7 @@ export const RegulationEditor: FC<TRegulationEditorProps> = (props) => {
                 onSelectRegulation={(regulationId) => onSelectRegulation(regulationId)}
             />
             <DraftEditor
-                activeRegulation={testRegulation}
+                activeRegulation={activeRegulation}
                 // updateContent={updateContent}
                 // updateTitle={updateTitle}
             />
