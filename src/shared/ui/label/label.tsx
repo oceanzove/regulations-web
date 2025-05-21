@@ -1,5 +1,5 @@
 import React from 'react';
-import css from './label.module.scss';
+import styles from './label.module.scss';
 
 interface ILabelProps {
     label?: string;
@@ -7,21 +7,23 @@ interface ILabelProps {
     color?: string;
     children?: React.ReactNode;
     id?: string;
+    className?: string,
 }
 
 export const Label = (props: ILabelProps) => {
     const {
-        label,
-        fontSize,
-        color,
-        children,
         id,
+        label,
+        color,
+        className,
+        children,
+        fontSize,
     } = props;
 
     return (
-        <div className={css.wrapper}>
+        <div className={`${styles.wrapper} ${className}`}>
             <label
-                className={css.label}
+                className={styles.label}
                 style={{
                     fontSize,
                     color,
@@ -30,7 +32,7 @@ export const Label = (props: ILabelProps) => {
             >
                 {label}
             </label>
-            <div className={css.children}>
+            <div className={styles.children}>
                 {children}
             </div>
         </div>

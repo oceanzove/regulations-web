@@ -27,6 +27,7 @@ export const ProcessBlock = () => {
         }
     }, [data, isDataLoaded, updateProcesses]);
 
+    console.log(processState.processes)
     const activeProcess = processState.processes.find(
         (p) => p.id === processState.activeProcess
     );

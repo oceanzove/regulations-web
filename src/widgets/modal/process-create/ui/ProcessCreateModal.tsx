@@ -1,30 +1,50 @@
-import React, {FC, useEffect} from "react";
+import React, {FC, useEffect, useState} from "react";
 import styles from './ProcessCreateModal.module.scss';
 import {IconButton} from "../../../../shared/ui/icon-button/icon-button.tsx";
 import {IconEnum} from "../../../../shared/ui/icon/IconType.tsx";
 import {Label} from "../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../shared/ui/input/input.tsx";
+import {Button} from "../../../../shared/ui/button";
+import {v4 as uuid} from 'uuid';
+import {IProcess, IStep} from "../../../../entities/process/api/types.ts";
 
 type TProcessCreateModalProps = {
     isOpen: boolean;
     onClose: () => void;
+    onProcessCreate: (process: IProcess) => void;
 }
 
 export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
     const {
-        isOpen, onClose
+        isOpen, onClose, onProcessCreate
     } = props;
 
-    const handleSave = () => {
-        // onSelect(selected);
-        console.log('close from enter')
+    const [steps, setSteps] = useState<IStep[]>([{
+        id: uuid(),
+        title: "",
+        description: "",
+        order: 0
+    }])
+
+    const [title, setTitle] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+
+    const onSave = () => {
         onClose();
+
+        const process: IProcess = {
+            id: uuid(),
+            title,
+            description
+        }
+
+        onProcessCreate(process);
     };
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
-                handleSave();
+                onSave();
             } else if (e.key === 'Escape') {
                 onClose();
             }
@@ -37,11 +57,21 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [isOpen, onClose]);
-    // }, [isOpen, selected, onSelect, onClose]);
+    }, [onSave, isOpen, onClose]);
 
     if (!isOpen) return null;
 
+    const onAddStepClick = () => {
+        setSteps(prevSteps => {
+            const newStep: IStep = {
+                id: uuid(),
+                title: "",
+                description: "",
+                order: prevSteps.length
+            };
+            return [...prevSteps, newStep];
+        });
+    };
 
     return (
         <div className={styles.modalWrapper}>
@@ -58,9 +88,44 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                 <div className={styles.content}>
                     <Label label={'Название процесса'}>
                         <Input
+                            onChange={(e) => setTitle(e.target.value || '')}
                             placeholder={'Например, разработка сервиса'}
                         />
                     </Label>
+                    <Label label={'Описание процесса'}>
+                        <Input
+                            onChange={(e) => setDescription(e.target.value || '')}
+                            placeholder={'Например, описание сервиса'}
+                        />
+                    </Label>
+                    <Label label={'Инструкция'}>
+                        <div className={styles.stepControl}>
+                            <div className={styles.stepsContainer}>
+                                {steps.map(step => (
+                                    <Label label={`Шаг ${step.order + 1}`}>
+                                        <Input>
+                                        </Input>
+                                    </Label>
+                                ))}
+                            </div>
+                            <Button
+                                className={styles.addStepButton}
+                                onClick={onAddStepClick}
+                            >
+                                Добавить шаг
+                            </Button>
+                        </div>
+                    </Label>
+                </div>
+                <div className={styles.footer}>
+                    <Button
+                        className={styles.controlButton}
+                        onClick={onClose}
+                    > Отмена </Button>
+                    <Button
+                        className={styles.controlButton}
+                        onClick={onSave}
+                    > Сохранить </Button>
                 </div>
             </div>
             {/*<div className={css.overlay} onClick={onClose}></div>*/}

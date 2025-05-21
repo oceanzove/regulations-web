@@ -12,12 +12,16 @@
 
   .modalContent {
     width: 800px;
-    height: 425px;
+    height: 700px;
     border-radius: 12px;
 
     padding: 10px 20px 20px 20px;
 
     background: #FFFFFF;
+
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -42,6 +46,47 @@
 }
 
 .content {
+  display: flex;
+  flex-direction: column;
+
   padding-top: 10px;
+  gap: 10px;
+
+  .stepControl {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+
+  }
+
+  .stepsContainer {
+    overflow-y: scroll;
+    max-height: 300px;
+  }
+
+  .addStepButton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    background: #0BB2E7;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .controlButton {
+    border-radius: 8px;
+    color: white;
+    background: #0BB2E7;
+    padding: 10px 80px;
+  }
 }
 

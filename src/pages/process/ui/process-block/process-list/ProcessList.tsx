@@ -3,9 +3,10 @@ import styles from './ProcessList.module.scss';
 import {Button} from "../../../../../shared/ui/button";
 import {Icon} from "../../../../../shared/ui/icon";
 import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {ProcessCreateModal} from "../../../../../widgets/modal/process-create";
-import {useBlurOnAction} from "../../../../../shared/hooks/use-blur-on-action";
+import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
+import {processApi} from "../../../../../entities/process/api/api.ts";
 
 interface IProcessList {
     processes: IProcess[];
@@ -26,25 +27,24 @@ export const ProcessList = (props: IProcessList) => {
     } = props;
 
 
-    // const [createProcess] = processApi.useCreateMutation();
-    //
-    // // Обработчик нажатия на кнопку "Создать"
-    // const onCreateClick = useCallback(async () => {
-    //     try {
-    //         // Вызываем мутацию для создания нового регламента
-    //         const newProcess = await createProcess().unwrap();
-    //
-    //         // Добавляем новый регламент в начало списка
-    //         updateProcesses([newProcess, ...processes]);
-    //
-    //         // Дополнительная логика, например, выделение только что созданного регламента
-    //         updateActiveProcess(newProcess.id);
-    //         notificationSuccess('Создание', 'Процесс успешно создан');
-    //     } catch (error) {
-    //         notificationError('Создание', 'Не удалось создать процесс');
-    //         console.error("Error creating regulation:", error);
-    //     }
-    // }, [createProcess, processes, updateProcesses, updateActiveProcess]);
+    const [createProcess] = processApi.useCreateMutation();
+
+    // Обработчик нажатия на кнопку "Создать"
+    const onCreateClick = useCallback(async (process: IProcess) => {
+        try {
+            console.log(process);
+            // Вызываем мутацию для создания нового регламента
+            await createProcess(process).unwrap();
+
+            // Добавляем новый регламент в начало списка
+            updateProcesses([process, ...processes]);
+
+            notificationSuccess('Создание', 'Процесс успешно создан');
+        } catch (error) {
+            notificationError('Создание', 'Не удалось создать процесс');
+            console.error("Error creating regulation:", error);
+        }
+    }, [createProcess, processes, updateProcesses, updateActiveProcess]);
 
 
     const onCreateProcessClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -102,8 +102,9 @@ export const ProcessList = (props: IProcessList) => {
                     > Сотрудники </Button>
                 </div>
                 <div className={styles.processItems}>
-                    {processes.map(process => (
+                    {processes.map((process, index) => (
                         <div
+                            key={index}
                             className={styles.process}
                             // onClick={() => onCreateProcessClick()}
                         >
@@ -116,6 +117,7 @@ export const ProcessList = (props: IProcessList) => {
             <ProcessCreateModal
                 isOpen={isModalOpen}
                 onClose={toggleModal}
+                onProcessCreate={onCreateClick}
                 // onSelect={handleCompetenciesSelect}
                 // selectedCompetencies={competencies}
                 // competencyNames={competencyNames}

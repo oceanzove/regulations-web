@@ -54,8 +54,9 @@ export const RegulationList: FC<TRegulationListProps> = (props) => {
                     > Сотрудники </Button>
                 </div>
                 <div className={styles.regulationItems}>
-                    { regulations.map(regulation => (
+                    { regulations.map((regulation, index) => (
                         <div
+                            key={index}
                             className={styles.regulation}
                             onClick={() => onSelectRegulation(regulation.id)}
                         >
