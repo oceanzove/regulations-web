@@ -7,6 +7,8 @@ import React, {useCallback, useEffect} from "react";
 import {ProcessCreateModal} from "../../../../../widgets/modal/process-create";
 import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
 import {processApi} from "../../../../../entities/process/api/api.ts";
+import {stepApi} from "../../../../../entities/step/api/api.ts";
+import {IStep} from "../../../../../entities/step/api/types.ts";
 
 interface IProcessList {
     processes: IProcess[];
@@ -28,14 +30,16 @@ export const ProcessList = (props: IProcessList) => {
 
 
     const [createProcess] = processApi.useCreateMutation();
+    const [createSteps] = stepApi.useCreateStepsMutation();
 
     // Обработчик нажатия на кнопку "Создать"
-    const onCreateClick = useCallback(async (process: IProcess) => {
+    const onCreateClick = useCallback(async (process: IProcess, steps: IStep[]) => {
         try {
             console.log(process);
             // Вызываем мутацию для создания нового регламента
             await createProcess(process).unwrap();
-
+            console.log(steps);
+            await createSteps(steps).unwrap();
             // Добавляем новый регламент в начало списка
             updateProcesses([process, ...processes]);
 

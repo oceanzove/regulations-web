@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useCallback, useEffect, useState} from "react";
 import styles from './ProcessCreateModal.module.scss';
 import {IconButton} from "../../../../shared/ui/icon-button/icon-button.tsx";
 import {IconEnum} from "../../../../shared/ui/icon/IconType.tsx";
@@ -6,12 +6,13 @@ import {Label} from "../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../shared/ui/input/input.tsx";
 import {Button} from "../../../../shared/ui/button";
 import {v4 as uuid} from 'uuid';
-import {IProcess, IStep} from "../../../../entities/process/api/types.ts";
+import {IProcess} from "../../../../entities/process/api/types.ts";
+import {IStep} from "../../../../entities/step/api/types.ts";
 
 type TProcessCreateModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    onProcessCreate: (process: IProcess) => void;
+    onProcessCreate: (process: IProcess, steps: IStep[]) => void;
 }
 
 export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
@@ -22,24 +23,35 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
     const [steps, setSteps] = useState<IStep[]>([{
         id: uuid(),
         title: "",
+        order: 0,
+        processId: "",
         description: "",
-        order: 0
-    }])
+        responsible: ""
+    }]);
 
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
 
-    const onSave = () => {
+    const onSave = useCallback(() => {
         onClose();
 
-        const process: IProcess = {
-            id: uuid(),
-            title,
-            description
-        }
+        const processID = uuid();
 
-        onProcessCreate(process);
-    };
+        const process: IProcess = {
+            id: processID,
+            title,
+            description,
+            steps
+        };
+
+        const stepsWithProcessId = steps
+            .map(step => ({
+            ...step,
+            processID
+        }));
+
+        onProcessCreate(process, stepsWithProcessId);
+    }, [title, description, steps, onClose, onProcessCreate]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -66,11 +78,21 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
             const newStep: IStep = {
                 id: uuid(),
                 title: "",
+                processId: "",
                 description: "",
+                responsible: "",
                 order: prevSteps.length
             };
             return [...prevSteps, newStep];
         });
+    };
+
+    const onStepChange = (id: string, field: keyof IStep, value: string) => {
+        setSteps(prev =>
+            prev.map(step =>
+                step.id === id ? {...step, [field]: value} : step
+            )
+        );
     };
 
     return (
@@ -102,10 +124,25 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                         <div className={styles.stepControl}>
                             <div className={styles.stepsContainer}>
                                 {steps.map(step => (
-                                    <Label label={`Шаг ${step.order + 1}`}>
-                                        <Input>
-                                        </Input>
-                                    </Label>
+                                    // TODO
+                                    <div key={step.id} className={styles.stepBlock}>
+                                        <Label label={`Шаг ${step.order + 1} - Название`}>
+                                            <Input
+                                                value={step.title}
+                                                onChange={(e) =>
+                                                    onStepChange(step.id, 'title', e.target.value)}
+                                                placeholder="Введите название шага"
+                                            />
+                                        </Label>
+                                        <Label label={`Шаг ${step.order + 1} - Описание`}>
+                                            <Input
+                                                value={step.description}
+                                                onChange={(e) =>
+                                                    onStepChange(step.id, 'description', e.target.value)}
+                                                placeholder="Введите описание шага"
+                                            />
+                                        </Label>
+                                    </div>
                                 ))}
                             </div>
                             <Button

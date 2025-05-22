@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from "../../../../app/reducers.ts";
 import {processActions} from "../slices/processSlice.ts";
-import {IProcess, IStep} from "../../api/types.ts";
+import {IProcess} from "../../api/types.ts";
 
 export const useProcess = () => {
     const dispatch = useDispatch();
@@ -18,42 +18,11 @@ export const useProcess = () => {
     const addProcess = (process: IProcess) => {
         dispatch(processActions.addProcess(process));
     };
-    const updateDescription = (id: string, description: string) => {
-        dispatch(processActions.setDescription({id, description}));
-    };
-
-    const updateTitle = (id: string, title: string) => {
-        dispatch(processActions.setTitle({id, title}));
-    };
-
-    const updateSteps = (steps: IStep[]) => {
-        dispatch(processActions.setProcessSteps(steps));
-    };
-
-    const addStep = (step: IStep) => {
-        dispatch(processActions.addProcessStep(step));
-    };
-
-    const updateStepTitle = (id: string, title: string) => {
-        dispatch(processActions.setTitleStep({id, title}));
-    };
-
-    const updateStepDescription = (id: string, description: string) => {
-        dispatch(processActions.setDescriptionStep({id, description}));
-    }
-
-
 
     return {
-        addStep,
         addProcess,
-        updateSteps,
-        updateTitle,
         processState,
-        updateStepTitle,
         updateProcesses,
-        updateDescription,
         updateActiveProcess,
-        updateStepDescription,
     };
 };

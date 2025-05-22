@@ -5,6 +5,8 @@ import { regulationReducer } from "../entities/regulation/model/slices/regulatio
 import { regulationApi } from "../entities/regulation/api/api.ts";
 import {processApi} from "../entities/process/api/api.ts";
 import {processReducer} from "../entities/process/model/slices/processSlice.ts";
+import {stepReducer} from "../entities/step/model/slices/stepSlice.ts";
+import {stepApi} from "../entities/step/api/api.ts";
 
 export const reducers = combineReducers({
     signIn: signInReducer,
@@ -13,6 +15,8 @@ export const reducers = combineReducers({
     [regulationApi.reducerPath]: regulationApi.reducer,
     process: processReducer,
     [processApi.reducerPath]: processApi.reducer,
+    step: stepReducer,
+    [stepApi.reducerPath]: stepApi.reducer,
 });
 
 export type RootState = ReturnType<typeof reducers>;
