@@ -1,7 +1,7 @@
 import css from './ProcessBlock.module.scss';
 import {ProcessList} from "./process-list";
 import {ProcessEditor} from "./process-editor";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useProcess} from "../../../../entities/process/model/hooks/useProcess.ts";
 import {processApi} from "../../../../entities/process/api/api.ts";
 
@@ -20,21 +20,24 @@ export const ProcessBlock = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+    const [activeProcessId, setActiveProcessId] = useState<string | null>(processState.activeProcess)
+
     useEffect(() => {
         if (data && !isDataLoaded) {
-            updateProcesses(data.processes);
+            if (data.processes !== null) {
+                updateProcesses(data.processes);
+            }
             setIsDataLoaded(true);
         }
     }, [data, isDataLoaded, updateProcesses]);
 
-    console.log(processState.processes)
     const activeProcess = processState.processes.find(
         (p) => p.id === processState.activeProcess
     );
 
     return (
         <div className={css.processBlockWrapper}>
-            {!activeProcess
+            {!activeProcessId
                 ?
                 <ProcessList
                     processes={processState.processes}

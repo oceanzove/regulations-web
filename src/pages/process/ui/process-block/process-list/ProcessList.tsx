@@ -35,11 +35,11 @@ export const ProcessList = (props: IProcessList) => {
     // Обработчик нажатия на кнопку "Создать"
     const onCreateClick = useCallback(async (process: IProcess, steps: IStep[]) => {
         try {
-            console.log(process);
             // Вызываем мутацию для создания нового регламента
             await createProcess(process).unwrap();
-            console.log(steps);
+
             await createSteps(steps).unwrap();
+
             // Добавляем новый регламент в начало списка
             updateProcesses([process, ...processes]);
 

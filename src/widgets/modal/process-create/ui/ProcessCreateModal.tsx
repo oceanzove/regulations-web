@@ -141,21 +141,16 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                         <div className={styles.stepControl}>
                             <div className={styles.stepsContainer}>
                                 {steps.map(step => (
-                                    // TODO
                                     <div key={step.id} className={styles.stepBlock}>
+                                        <div className={styles.step}>
+                                            {step.order + 1}
+                                        </div>
                                         <Input
                                             className={styles.step}
                                             value={step.title}
                                             onChange={(e) =>
                                                 onStepChange(step.id, 'title', e.target.value)}
                                             placeholder="Введите название шага"
-                                        />
-                                        <Input
-                                            className={styles.step}
-                                            value={step.description}
-                                            onChange={(e) =>
-                                                onStepChange(step.id, 'description', e.target.value)}
-                                            placeholder="Введите описание шага"
                                         />
                                         <Input
                                             className={styles.step}

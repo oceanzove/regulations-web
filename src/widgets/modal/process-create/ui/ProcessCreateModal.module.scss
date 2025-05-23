@@ -57,8 +57,8 @@
     padding: 0;
 
     .filter {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 40px 1fr 1fr 1fr;
 
       border-bottom: 1px solid #D8E1EF;
 
@@ -69,8 +69,6 @@
         flex-direction: row;
         gap: 5px;
 
-        flex-grow: 1;
-
         padding: 5px;
 
         border-right: 1px solid #D8E1EF;
@@ -78,7 +76,6 @@
 
       .filterButton:first-child {
         justify-content: center;
-        flex-grow: 0;
         width: 40px;
       }
 
@@ -100,8 +97,10 @@
       max-height: 280px;
 
       .stepBlock {
-        display: flex;
-        flex-direction: row;
+        display: grid;
+        grid-template-columns: 40px 1fr 1fr 1fr;
+
+        border-bottom: 1px solid #D8E1EF;
       }
 
       .step {
@@ -112,8 +111,6 @@
 
         gap: 5px;
 
-        flex-grow: 1;
-
         padding: 5px;
 
         border-right: 1px solid #D8E1EF;
@@ -121,7 +118,6 @@
 
       .step:first-child {
         justify-content: center;
-        flex-grow: 0;
         width: 40px;
       }
 
