@@ -46,9 +46,9 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
 
         const stepsWithProcessId = steps
             .map(step => ({
-            ...step,
-            processID
-        }));
+                ...step,
+                processID
+            }));
 
         onProcessCreate(process, stepsWithProcessId);
     }, [title, description, steps, onClose, onProcessCreate]);
@@ -120,28 +120,57 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                             placeholder={'Например, описание сервиса'}
                         />
                     </Label>
-                    <Label label={'Инструкция'}>
+                    <Label label={'Инструкция'} childClassName={styles.instructionContainer}>
+                        <div className={styles.filter}>
+                            <Button
+                                className={styles.filterButton}
+                            > № </Button>
+                            <Button
+                                typeIcon={IconEnum.FILTER}
+                                className={styles.filterButton}
+                            > Название </Button>
+                            <Button
+                                typeIcon={IconEnum.FILTER}
+                                className={styles.filterButton}
+                            > Описание </Button>
+                            <Button
+                                typeIcon={IconEnum.FILTER}
+                                className={styles.filterButton}
+                            > Ответственный </Button>
+                        </div>
                         <div className={styles.stepControl}>
                             <div className={styles.stepsContainer}>
                                 {steps.map(step => (
                                     // TODO
                                     <div key={step.id} className={styles.stepBlock}>
-                                        <Label label={`Шаг ${step.order + 1} - Название`}>
-                                            <Input
-                                                value={step.title}
-                                                onChange={(e) =>
-                                                    onStepChange(step.id, 'title', e.target.value)}
-                                                placeholder="Введите название шага"
-                                            />
-                                        </Label>
-                                        <Label label={`Шаг ${step.order + 1} - Описание`}>
-                                            <Input
-                                                value={step.description}
-                                                onChange={(e) =>
-                                                    onStepChange(step.id, 'description', e.target.value)}
-                                                placeholder="Введите описание шага"
-                                            />
-                                        </Label>
+                                        <Input
+                                            className={styles.step}
+                                            value={step.title}
+                                            onChange={(e) =>
+                                                onStepChange(step.id, 'title', e.target.value)}
+                                            placeholder="Введите название шага"
+                                        />
+                                        <Input
+                                            className={styles.step}
+                                            value={step.description}
+                                            onChange={(e) =>
+                                                onStepChange(step.id, 'description', e.target.value)}
+                                            placeholder="Введите описание шага"
+                                        />
+                                        <Input
+                                            className={styles.step}
+                                            value={step.description}
+                                            onChange={(e) =>
+                                                onStepChange(step.id, 'description', e.target.value)}
+                                            placeholder="Введите описание шага"
+                                        />
+                                        <Input
+                                            className={styles.step}
+                                            value={step.description}
+                                            onChange={(e) =>
+                                                onStepChange(step.id, 'description', e.target.value)}
+                                            placeholder="Введите описание шага"
+                                        />
                                     </div>
                                 ))}
                             </div>

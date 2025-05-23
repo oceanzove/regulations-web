@@ -7,6 +7,7 @@ interface IInputProps {
     height?: number;
     id?: string;
     value?: string;
+    className?: string;
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -17,11 +18,12 @@ export const Input = (props: IInputProps) => {
         height,
         id,
         value,
+        className,
         onChange,
     } = props;
 
     return (
-        <div className={css.wrapper} style={{ width, height }}>
+        <div className={`${css.wrapper} ${className}`} style={{ width, height }}>
             <div className={css.inputContainer}>
                 <input
                     id={id}

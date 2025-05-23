@@ -11,7 +11,8 @@
   background-color: rgba(0, 0, 0, 0.3);
 
   .modalContent {
-    width: 800px;
+    width: 100%;
+    max-width: 1170px;
     height: 700px;
     border-radius: 12px;
 
@@ -52,30 +53,95 @@
   padding-top: 10px;
   gap: 10px;
 
+  .instructionContainer {
+    padding: 0;
+
+    .filter {
+      display: flex;
+      flex-direction: row;
+
+      border-bottom: 1px solid #D8E1EF;
+
+      .filterButton {
+        color: #8692A7;
+
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+
+        flex-grow: 1;
+
+        padding: 5px;
+
+        border-right: 1px solid #D8E1EF;
+      }
+
+      .filterButton:first-child {
+        justify-content: center;
+        flex-grow: 0;
+        width: 40px;
+      }
+
+      .filterButton:last-child {
+        border-right: 0;
+      }
+    }
+  }
+
+
   .stepControl {
     display: flex;
     flex-direction: column;
     gap: 20px;
 
+    .stepsContainer {
+      overflow-y: scroll;
+      height: 280px;
+      max-height: 280px;
 
+      .stepBlock {
+        display: flex;
+        flex-direction: row;
+      }
+
+      .step {
+        display: flex;
+        flex-direction: row;
+
+        color: #8692A7;
+
+        gap: 5px;
+
+        flex-grow: 1;
+
+        padding: 5px;
+
+        border-right: 1px solid #D8E1EF;
+      }
+
+      .step:first-child {
+        justify-content: center;
+        flex-grow: 0;
+        width: 40px;
+      }
+
+      .step:last-child {
+        border-right: 0;
+      }
+    }
+
+    .addStepButton {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+
+      color: white;
+      border-radius: 8px;
+      padding: 10px 15px;
+      background: #0BB2E7;
+    }
   }
 
-  .stepsContainer {
-    overflow-y: scroll;
-    height: 280px;
-    max-height: 280px;
-  }
-
-  .addStepButton {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-
-    color: white;
-    border-radius: 8px;
-    padding: 10px 15px;
-    background: #0BB2E7;
-  }
 }
 
 .footer {
@@ -90,4 +156,3 @@
     padding: 10px 80px;
   }
 }
-
