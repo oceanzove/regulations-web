@@ -25,7 +25,7 @@ export const regulationApi = createApi({
                 body: { title, content },
             }),
         }),
-        create: builder.mutation<ICreateRegulationResponse, void>({
+        create: builder.mutation<void, ICreateRegulationResponse>({
             query: () => ({
                 url: URI_REGULATION,
                 method: 'POST',

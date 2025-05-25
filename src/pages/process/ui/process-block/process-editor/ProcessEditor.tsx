@@ -10,13 +10,13 @@ import {StepList} from "./steps-list";
 
 interface IProcessEditorProps {
     activeProcess: IProcess,
-    steps: IStep[],
-    updateTitle: (id: string, title: string) => void,
-    updateDescription: (id: string , description: string) => void,
+    // steps: IStep[],
+    // updateTitle: (id: string, title: string) => void,
+    // updateDescription: (id: string , description: string) => void,
 }
 
 export const ProcessEditor = (props: IProcessEditorProps) => {
-    const { activeProcess, steps, updateTitle, updateDescription } = props;
+    const { activeProcess } = props;
 
     const [localTitle, setLocalTitle] = useState(activeProcess.title);
     const [localDescription, setLocalDescription] = useState(activeProcess.description);
@@ -33,12 +33,12 @@ export const ProcessEditor = (props: IProcessEditorProps) => {
     const onSaveClick = () => {
         if (!isChanged) return;
 
-        if (localTitle !== activeProcess.title) {
-            updateTitle(activeProcess.id, localTitle);
-        }
-        if (localDescription !== activeProcess.description) {
-            updateDescription(activeProcess.id, localDescription);
-        }
+        // if (localTitle !== activeProcess.title) {
+        //     updateTitle(activeProcess.id, localTitle);
+        // }
+        // if (localDescription !== activeProcess.description) {
+        //     updateDescription(activeProcess.id, localDescription);
+        // }
         if (localTitle !== activeProcess.title || localDescription !== activeProcess.description) {
             try {
                 update({ process: activeProcess.id, title: localTitle, description: localDescription})
@@ -66,7 +66,7 @@ export const ProcessEditor = (props: IProcessEditorProps) => {
                 </Label>
                 <Label label={'Шаги'}>
                    <StepList
-                       steps={steps}
+                       steps={activeProcess.steps}
                        updateSteps={() => {}}
                    />
                 </Label>

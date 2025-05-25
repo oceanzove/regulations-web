@@ -1,4 +1,4 @@
-import { fetchBaseQuery } from '@reduxjs/toolkit/query';
+import {BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError} from '@reduxjs/toolkit/query';
 import { v4 as uuid } from 'uuid';
 import { SERVER_ENVIRONMENT_DEV } from '../../api/API.ts';
 
@@ -43,21 +43,84 @@ const paramsSerializer = (params: any) => {
     return searchParams.toString();
 };
 
-export const baseQuery = fetchBaseQuery({
-    baseUrl: setBaseUrl(),
-    paramsSerializer,
-    credentials: 'include',
-    prepareHeaders: (headers) => {
-        const authorization = localStorage.getItem('token')
-            ? localStorage.getItem('token')
-            : sessionStorage.getItem('token');
+export const baseQuery: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
+    args,
+    api,
+    extraOptions
+) => {
+    const accessToken = localStorage.getItem('token') || sessionStorage.getItem('token') || undefined;
 
-        const token = `Bearer ${authorization}`
+    const prepareRequest = (args: string | FetchArgs, token?: string): FetchArgs => {
+        if (typeof args === 'string') {
+            return {
+                url: args,
+                method: 'GET',
+                headers: {
+                    'Authorization': token ? `Bearer ${token}` : '',
+                    'Client-Request-Id': uuid(),
+                },
+            };
+        } else {
+            return {
+                ...args,
+                headers: {
+                    ...(args.headers || {}),
+                    'Authorization': token ? `Bearer ${token}` : '',
+                    'Client-Request-Id': uuid(),
+                },
+            };
+        }
+    };
 
-        headers.set('Client-Request-Id', uuid());
-        headers.set('Authorization', token || '');
+    const rawBaseQuery = fetchBaseQuery({
+        baseUrl: setBaseUrl(),
+        credentials: 'include',
+        paramsSerializer,
+    });
 
-        return headers;
-    },
-});
+    let preparedArgs = prepareRequest(args, accessToken);
+    let result = await rawBaseQuery(preparedArgs, api, extraOptions);
 
+    if (result.error?.status === 401) {
+        const refreshToken = localStorage.getItem('refresh_token');
+        console.log('авторизация кончилась')
+        if (refreshToken) {
+            console.log('реавтораизация')
+            const refreshResult = await rawBaseQuery(
+                {
+                    url: '/auth/refresh',
+                    method: 'POST',
+                    body: { refresh_token: refreshToken },
+                },
+                api,
+                extraOptions
+            );
+
+            if (refreshResult.data && typeof refreshResult.data === 'object') {
+                const { access_token } = refreshResult.data as { access_token: string };
+                localStorage.setItem('token', access_token);
+
+                // Повтор запроса с новым токеном
+                preparedArgs = prepareRequest(args, access_token);
+                result = await rawBaseQuery(preparedArgs, api, extraOptions);
+            } else {
+                // Сессия истекла — чистим и редиректим
+                localStorage.removeItem('token');
+                localStorage.removeItem('refresh_token');
+
+                if (!localStorage.getItem('isSessionExpiredShown')) {
+                    localStorage.setItem('isSessionExpiredShown', 'true');
+                    localStorage.setItem('isSessionLocked', 'true');
+                }
+
+                setTimeout(() => {
+                    localStorage.removeItem('isSessionExpiredShown');
+                    localStorage.removeItem('isSessionLocked');
+                    window.location.href = '/';
+                }, 6000);
+            }
+        }
+    }
+
+    return result;
+};

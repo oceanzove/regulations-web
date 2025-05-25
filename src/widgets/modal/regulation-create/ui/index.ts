@@ -1,0 +1,1 @@
+export { RegulationCreateModal } from './RegulationCreateModal.tsx';

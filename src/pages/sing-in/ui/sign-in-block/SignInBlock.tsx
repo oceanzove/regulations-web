@@ -7,7 +7,7 @@ import {authAPI} from "../../../../entities/user/auth/api/api.ts";
 import {ISignInRequest} from "../../../../entities/user/auth/api/types.ts";
 import {FetchBaseQueryError} from "@reduxjs/toolkit/query";
 import {useNavigate} from "react-router-dom";
-import {notificationError} from "../../../../widgets/notifications/callNotification.tsx";
+import {notificationError, notificationSuccess} from "../../../../widgets/notifications/callNotification.tsx";
 
 export const SignInBlock = () => {
     const {
@@ -22,21 +22,26 @@ export const SignInBlock = () => {
         email: signInState.email,
         password: signInState.password,
     };
+
     const [signIn] = authAPI.useSignInMutation();
 
     const onSignIn = async () => {
         try {
-            const res = await signIn(authorizationData)
-                .unwrap();
-
-            const { access_token } = res;
+            const res = await signIn(authorizationData).unwrap();
+            const { access_token, refresh_token } = res;
             if (access_token) {
-                localStorage.setItem('token', access_token); // Сохраняем токен в localStorage
-                navigate('./regulation');
-                resetCredentials();
-            } else {
-                console.error('Токен не найден в ответе от сервера.');
+                localStorage.setItem('access_token', access_token);
             }
+            if (refresh_token) {
+                localStorage.setItem('refresh_token', refresh_token);
+            }
+
+
+            resetCredentials();
+            navigate('./regulation');
+            localStorage.removeItem('isSessionLocked');
+            localStorage.removeItem('isSessionExpiredShown');
+            notificationSuccess('Успешный вход');
         } catch (error) {
             if ((error as FetchBaseQueryError).status === 401) {
                 notificationError('Ошибка авторизации', 'Пожалуйста, убедитесь в правильности ввода и повторите попытку.')

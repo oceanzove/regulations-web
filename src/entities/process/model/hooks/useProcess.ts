@@ -7,7 +7,7 @@ export const useProcess = () => {
     const dispatch = useDispatch();
     const processState = useSelector((state: RootState) => state.process);
 
-    const updateActiveProcess = (id: string) => {
+    const updateActiveProcess = (id: string | null) => {
         dispatch(processActions.setActiveProcess(id));
     };
 

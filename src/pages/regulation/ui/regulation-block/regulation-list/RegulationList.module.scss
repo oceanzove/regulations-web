@@ -1,13 +1,10 @@
 .regulationListWrapper {
-
   display: flex;
   flex-direction: column;
 
   gap: 10px;
 
   border-radius: 12px;
-
-  padding: 10px;
 
   width: 100%;
   max-width: 1170px;
@@ -90,7 +87,7 @@
     }
   }
 
-  .processes {
+  .regulations {
     background: var(--default-bg-color);
     border-radius: 12px;
 
@@ -124,7 +121,7 @@
       }
     }
 
-    .process {
+    .regulation {
       padding: 15px;
 
       border-bottom: 1px solid #EEF2F8;

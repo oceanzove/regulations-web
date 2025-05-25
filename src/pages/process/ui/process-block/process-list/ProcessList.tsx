@@ -13,7 +13,7 @@ import {IStep} from "../../../../../entities/step/api/types.ts";
 interface IProcessList {
     processes: IProcess[];
     updateProcesses: (processes: IProcess[]) => void;
-    updateActiveProcess: (id: string) => void;
+    onSelectProcess: (id: string) => void;
 
     isModalOpen: boolean;
     toggleModal: () => void;
@@ -23,7 +23,7 @@ export const ProcessList = (props: IProcessList) => {
     const {
         processes,
         updateProcesses,
-        updateActiveProcess,
+        onSelectProcess,
         isModalOpen,
         toggleModal,
     } = props;
@@ -48,7 +48,7 @@ export const ProcessList = (props: IProcessList) => {
             notificationError('Создание', 'Не удалось создать процесс');
             console.error("Error creating regulation:", error);
         }
-    }, [createProcess, processes, updateProcesses, updateActiveProcess]);
+    }, [createProcess, createSteps, processes, updateProcesses]);
 
 
     const onCreateProcessClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -110,7 +110,7 @@ export const ProcessList = (props: IProcessList) => {
                         <div
                             key={index}
                             className={styles.process}
-                            // onClick={() => onCreateProcessClick()}
+                            onClick={() => onSelectProcess(process.id)}
                         >
                             {process.title}
                         </div>
@@ -122,9 +122,6 @@ export const ProcessList = (props: IProcessList) => {
                 isOpen={isModalOpen}
                 onClose={toggleModal}
                 onProcessCreate={onCreateClick}
-                // onSelect={handleCompetenciesSelect}
-                // selectedCompetencies={competencies}
-                // competencyNames={competencyNames}
             />
         </div>
     )

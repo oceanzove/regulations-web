@@ -4,15 +4,11 @@ import {RegulationEditor} from "./regulation-editor";
 import {useRegulation} from "../../../../entities/regulation/model/hooks/useRegulation.ts";
 import {regulationApi} from "../../../../entities/regulation/api/api.ts";
 import {useEffect, useMemo, useState} from "react";
-import {IRegulation} from "../../../../entities/regulation/api/types.ts";
 
 export const RegulationBlock = () => {
-
     const {
         regulationState,
         updateRegulation,
-        updateContent,
-        updateTitle,
         updateActiveRegulation,
     } = useRegulation()
 
@@ -20,6 +16,7 @@ export const RegulationBlock = () => {
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [activeRegulationId, setActiveRegulationId] = useState<string | null>(regulationState.activeRegulationId)
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         if (data && !isDataLoaded) {
@@ -44,12 +41,17 @@ export const RegulationBlock = () => {
                 ?
                 <RegulationList
                     regulations={regulationState.regulations}
+                    updateRegulation={updateRegulation}
+
                     onSelectRegulation={(regulationId) => onSelectRegulation(regulationId)}
+
+                    isModalOpen={isModalOpen}
+                    toggleModal={() => setIsModalOpen((prev) => !prev)}
                 />
                 :
                 <RegulationEditor
                     activeRegulation={activeRegulation}
-                    onSelectRegulation={(regulationId) => onSelectRegulation(regulationId)}
+                    onSelectRegulation={onSelectRegulation}
                 />
             }
         </div>

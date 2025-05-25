@@ -21,7 +21,7 @@ export const processSlice = createSlice({
         setProcesses(state, action: PayloadAction<IProcess[]>) {
             state.processes = action.payload;
         },
-        setActiveProcess(state, action: PayloadAction<string>) {
+        setActiveProcess(state, action: PayloadAction<string | null>) {
             state.activeProcess = action.payload;
         },
     },

@@ -11,16 +11,13 @@ export const ProcessBlock = () => {
         processState,
         updateActiveProcess,
         updateProcesses,
-        updateDescription,
-        updateTitle
     } = useProcess()
 
     const {data} = processApi.useGetQuery();
     const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const [activeProcessId, setActiveProcessId] = useState<string | null>(processState.activeProcess)
 
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const [activeProcessId, setActiveProcessId] = useState<string | null>(processState.activeProcess)
 
     useEffect(() => {
         if (data && !isDataLoaded) {
@@ -31,28 +28,31 @@ export const ProcessBlock = () => {
         }
     }, [data, isDataLoaded, updateProcesses]);
 
-    const activeProcess = processState.processes.find(
-        (p) => p.id === processState.activeProcess
-    );
+    const activeProcess = useMemo(() => {
+        return processState.processes.find((process) => process.id === activeProcessId) || null;
+    }, [processState.processes, activeProcessId])
+
+    const onSelectProcess = (id: string | null) => {
+        updateActiveProcess(id);
+        setActiveProcessId(id);
+    };
 
     return (
         <div className={css.processBlockWrapper}>
-            {!activeProcessId
+            {!activeProcess
                 ?
                 <ProcessList
                     processes={processState.processes}
                     updateProcesses={updateProcesses}
-                    updateActiveProcess={updateActiveProcess}
+
+                    onSelectProcess={(processId) => onSelectProcess(processId)}
 
                     isModalOpen={isModalOpen}
                     toggleModal={() => setIsModalOpen((prev) => !prev)}
                 />
                 :
                 <ProcessEditor
-                    // activeProcess={}
-                    // steps={}
-                    // updateTitle={}
-                    // updateDescription={}
+                    activeProcess={activeProcess}
                 />
 
             }
