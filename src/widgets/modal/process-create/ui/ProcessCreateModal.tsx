@@ -150,21 +150,21 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                                             value={step.title}
                                             onChange={(e) =>
                                                 onStepChange(step.id, 'title', e.target.value)}
-                                            placeholder="Введите название шага"
+                                            placeholder="Введите название"
                                         />
                                         <Input
                                             className={styles.step}
                                             value={step.description}
                                             onChange={(e) =>
                                                 onStepChange(step.id, 'description', e.target.value)}
-                                            placeholder="Введите описание шага"
+                                            placeholder="Введите описание"
                                         />
                                         <Input
                                             className={styles.step}
-                                            value={step.description}
+                                            value={step.responsible}
                                             onChange={(e) =>
-                                                onStepChange(step.id, 'description', e.target.value)}
-                                            placeholder="Введите описание шага"
+                                                onStepChange(step.id, 'responsible', e.target.value)}
+                                            placeholder="Введите ответственного"
                                         />
                                     </div>
                                 ))}
