@@ -1,9 +1,10 @@
 import React from 'react';
-import {Navigate, Route, Routes} from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
 import css from './Router.module.scss';
 import {SignInPage} from "../../pages/sing-in";
 import {RegulationPage} from "../../pages/regulation";
-import {ProcessPage} from "../../pages/process";
+import {ProcessListPage} from "../../pages/process/process-list";
+import {ProcessViewPage} from "../../pages/process/process-view";
 
 const Router = () => {
     const token = localStorage.getItem('access_token');
@@ -15,9 +16,10 @@ const Router = () => {
                 ?
                 <Routes>
                     {/*<Route path="/" element={<RegulationPage />} />*/}
-                    <Route path="/" element={<RegulationPage/>}/>
+                    <Route path="/regulation" element={<RegulationPage/>}/>
                     {/*<Route path="/regulation" element={<RegulationPage/>}/>*/}
-                    <Route path="/process" element={<ProcessPage/>}/>
+                    <Route path="/process" element={<ProcessListPage/>}/>
+                    <Route path="/process/:id" element={<ProcessViewPage />} />
                 </Routes>
                 :
                 <Routes>

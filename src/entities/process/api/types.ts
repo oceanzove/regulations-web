@@ -1,14 +1,16 @@
-import {IStep} from "../../step/api/types.ts";
-
 export interface IProcess {
     id: string,
     title: string,
     description: string,
-    steps: IStep[],
+    responsible: string,
 }
 
 export interface IGetProcessResponse {
     processes: IProcess[];
+}
+
+export interface IGetByIDProcessResponse {
+    process: IProcess
 }
 
 export interface ICreateProcessResponse {

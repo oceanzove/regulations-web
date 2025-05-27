@@ -8,16 +8,19 @@ import {Button} from "../../../../shared/ui/button";
 import {v4 as uuid} from 'uuid';
 import {IProcess} from "../../../../entities/process/api/types.ts";
 import {IStep} from "../../../../entities/step/api/types.ts";
+import {IRegulation} from "../../../../entities/regulation/api/types.ts";
+import {DropdownMenuRegulations} from "./drowdown-menu-regulations";
 
 type TProcessCreateModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    onProcessCreate: (process: IProcess, steps: IStep[]) => void;
+    regulations: IRegulation[];
+    onProcessCreate: (process: IProcess, steps: IStep[], regulationIds: string[]) => void;
 }
 
 export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
     const {
-        isOpen, onClose, onProcessCreate
+        isOpen, onClose, onProcessCreate, regulations
     } = props;
 
     const [steps, setSteps] = useState<IStep[]>([{
@@ -31,6 +34,10 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
 
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
+    const [responsible, setResponsible] = useState<string>('');
+
+    const [selectedRegulations, setSelectedRegulations] = useState<string[]>([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const onSave = useCallback(() => {
         onClose();
@@ -41,7 +48,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
             id: processID,
             title,
             description,
-            steps
+            responsible,
         };
 
         const stepsWithProcessId = steps
@@ -50,14 +57,17 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                 processID
             }));
 
-        onProcessCreate(process, stepsWithProcessId);
-    }, [title, description, steps, onClose, onProcessCreate]);
+        onProcessCreate(process, stepsWithProcessId, selectedRegulations);
+
+        clearStates();
+    }, [onClose, title, description, responsible, selectedRegulations, steps, onProcessCreate]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
                 onSave();
             } else if (e.key === 'Escape') {
+                clearStates();
                 onClose();
             }
         };
@@ -72,6 +82,22 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
     }, [onSave, isOpen, onClose]);
 
     if (!isOpen) return null;
+
+    const clearStates = () => {
+        setTitle('');
+        setDescription('');
+        setResponsible('');
+        setSteps([{
+            id: uuid(),
+            title: "",
+            order: 0,
+            processId: "",
+            description: "",
+            responsible: ""
+        }]);
+        setSelectedRegulations([]);
+        setIsDropdownOpen(false);
+    };
 
     const onAddStepClick = () => {
         setSteps(prevSteps => {
@@ -108,18 +134,70 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                     </div>
                 </div>
                 <div className={styles.content}>
-                    <Label label={'Название процесса'}>
-                        <Input
-                            onChange={(e) => setTitle(e.target.value || '')}
-                            placeholder={'Например, разработка сервиса'}
+                    <div className={styles.aboutBlock}>
+                        <div className={styles.meta}>
+                            <Label label={'Название процесса'}>
+                                <Input
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value || '')}
+                                    placeholder={'Например, разработка сервиса'}
+                                />
+                            </Label>
+                            <Label label={'Описание процесса'}>
+                                <Input
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value || '')}
+                                    placeholder={'Например, описание сервиса'}
+                                />
+                            </Label>
+                        </div>
+                        <Label label={'Ответственный за процесс'}>
+                            <Input
+                                value={responsible}
+                                onChange={(e) => setResponsible(e.target.value || '')}
+                                placeholder={'Например, СТАРТ СЕТ'}
+                            />
+                        </Label>
+                    </div>
+                    <div className={styles.regulations}>
+                        <Label className={'Регламенты'}>
+                            {selectedRegulations.length > 0
+                                ?
+                                <div className={styles.selectedRegulations}>
+                                    { selectedRegulations
+                                        .map((id => regulations.find(r => r.id === id)))
+                                        .filter(Boolean)
+                                        .map(regulation => (
+                                            <div key={regulation?.id} className={styles.regulationTag}>
+                                                {regulation?.title}
+                                                <div
+                                                    className={styles.removeRegulation}
+                                                    onClick={() =>
+                                                        setSelectedRegulations(ids => ids
+                                                            .filter(x => x !== regulation!.id))}
+                                                >
+                                                    ×
+                                                </div>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                :
+                                <div className={styles.noRegulation}>
+                                    Пока нет прикрепленных регламентов
+                                </div>
+                            }
+                        </Label>
+                        <DropdownMenuRegulations
+                            regulations={regulations}
+                            label={"Прикрепить регламент"}
+                            selectedIds={selectedRegulations}
+                            onSelect={(ids) => setSelectedRegulations(ids)}
+                            toggleOpen={() => setIsDropdownOpen(o => !o)}
+                            isOpen={isDropdownOpen}
                         />
-                    </Label>
-                    <Label label={'Описание процесса'}>
-                        <Input
-                            onChange={(e) => setDescription(e.target.value || '')}
-                            placeholder={'Например, описание сервиса'}
-                        />
-                    </Label>
+                    </div>
+
                     <Label label={'Инструкция'} childClassName={styles.instructionContainer}>
                         <div className={styles.filter}>
                             <Button
@@ -138,50 +216,51 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                                 className={styles.filterButton}
                             > Ответственный </Button>
                         </div>
-                        <div className={styles.stepControl}>
-                            <div className={styles.stepsContainer}>
-                                {steps.map(step => (
-                                    <div key={step.id} className={styles.stepBlock}>
-                                        <div className={styles.step}>
-                                            {step.order + 1}
-                                        </div>
-                                        <Input
-                                            className={styles.step}
-                                            value={step.title}
-                                            onChange={(e) =>
-                                                onStepChange(step.id, 'title', e.target.value)}
-                                            placeholder="Введите название"
-                                        />
-                                        <Input
-                                            className={styles.step}
-                                            value={step.description}
-                                            onChange={(e) =>
-                                                onStepChange(step.id, 'description', e.target.value)}
-                                            placeholder="Введите описание"
-                                        />
-                                        <Input
-                                            className={styles.step}
-                                            value={step.responsible}
-                                            onChange={(e) =>
-                                                onStepChange(step.id, 'responsible', e.target.value)}
-                                            placeholder="Введите ответственного"
-                                        />
+                        <div className={styles.stepsContainer}>
+                            {steps.map(step => (
+                                <div key={step.id} className={styles.stepBlock}>
+                                    <div className={styles.step}>
+                                        {step.order + 1}
                                     </div>
-                                ))}
-                            </div>
-                            <Button
-                                className={styles.addStepButton}
-                                onClick={onAddStepClick}
-                            >
-                                Добавить шаг
-                            </Button>
+                                    <Input
+                                        className={styles.step}
+                                        value={step.title}
+                                        onChange={(e) =>
+                                            onStepChange(step.id, 'title', e.target.value)}
+                                        placeholder="Введите название"
+                                    />
+                                    <Input
+                                        className={styles.step}
+                                        value={step.description}
+                                        onChange={(e) =>
+                                            onStepChange(step.id, 'description', e.target.value)}
+                                        placeholder="Введите описание"
+                                    />
+                                    <Input
+                                        className={styles.step}
+                                        value={step.responsible}
+                                        onChange={(e) =>
+                                            onStepChange(step.id, 'responsible', e.target.value)}
+                                        placeholder="Введите ответственного"
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </Label>
+                    <Button
+                        className={styles.addStepButton}
+                        onClick={onAddStepClick}
+                    >
+                        Добавить шаг
+                    </Button>
                 </div>
                 <div className={styles.footer}>
                     <Button
                         className={styles.controlButton}
-                        onClick={onClose}
+                        onClick={() => {
+                            clearStates()
+                            onClose()
+                        }}
                     > Отмена </Button>
                     <Button
                         className={styles.controlButton}

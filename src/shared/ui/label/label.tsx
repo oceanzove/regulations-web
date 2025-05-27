@@ -7,6 +7,7 @@ interface ILabelProps {
     color?: string;
     children?: React.ReactNode;
     id?: string;
+    className?: string,
     childClassName?: string,
 }
 
@@ -15,13 +16,14 @@ export const Label = (props: ILabelProps) => {
         id,
         label,
         color,
+        className,
         childClassName,
         children,
         fontSize,
     } = props;
 
     return (
-        <div className={`${styles.wrapper} `}>
+        <div className={`${styles.labelWrapper} ${className}`}>
             <label
                 className={styles.label}
                 style={{

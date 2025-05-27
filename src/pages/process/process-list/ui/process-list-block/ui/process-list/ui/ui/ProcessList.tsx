@@ -1,19 +1,21 @@
-import {IProcess} from "../../../../../entities/process/api/types.ts";
+import {IProcess} from "../../../../../../../../../entities/process/api/types.ts";
 import styles from './ProcessList.module.scss';
-import {Button} from "../../../../../shared/ui/button";
-import {Icon} from "../../../../../shared/ui/icon";
-import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
+import {Button} from "../../../../../../../../../shared/ui/button";
+import {Icon} from "../../../../../../../../../shared/ui/icon";
+import {IconEnum} from "../../../../../../../../../shared/ui/icon/IconType.tsx";
 import React, {useCallback, useEffect} from "react";
-import {ProcessCreateModal} from "../../../../../widgets/modal/process-create";
-import {notificationError, notificationSuccess} from "../../../../../widgets/notifications/callNotification.tsx";
-import {processApi} from "../../../../../entities/process/api/api.ts";
-import {stepApi} from "../../../../../entities/step/api/api.ts";
-import {IStep} from "../../../../../entities/step/api/types.ts";
+import {ProcessCreateModal} from "../../../../../../../../../widgets/modal/process-create";
+import {notificationError, notificationSuccess} from "../../../../../../../../../widgets/notifications/callNotification.tsx";
+import {processApi} from "../../../../../../../../../entities/process/api/api.ts";
+import {stepApi} from "../../../../../../../../../entities/step/api/api.ts";
+import {IStep} from "../../../../../../../../../entities/step/api/types.ts";
+import {useNavigate} from "react-router-dom";
+import {IRegulation} from "../../../../../../../../../entities/regulation/api/types.ts";
 
 interface IProcessList {
     processes: IProcess[];
+    regulations: IRegulation[];
     updateProcesses: (processes: IProcess[]) => void;
-    onSelectProcess: (id: string) => void;
 
     isModalOpen: boolean;
     toggleModal: () => void;
@@ -22,38 +24,60 @@ interface IProcessList {
 export const ProcessList = (props: IProcessList) => {
     const {
         processes,
+        regulations,
         updateProcesses,
-        onSelectProcess,
         isModalOpen,
         toggleModal,
     } = props;
 
+    const navigate = useNavigate();
 
     const [createProcess] = processApi.useCreateMutation();
-    const [createSteps] = stepApi.useCreateStepsMutation();
+    const [createStep] = processApi.useCreateStepMutation();
+    const [linkRegulation] = processApi.useLinkRegulationMutation();
 
     // Обработчик нажатия на кнопку "Создать"
-    const onCreateClick = useCallback(async (process: IProcess, steps: IStep[]) => {
+    const onCreateClick = useCallback(async (
+        process: IProcess,
+        steps: IStep[],
+        regulationIds: string[]
+    ) => {
         try {
-            // Вызываем мутацию для создания нового регламента
+            // 1. Создаём процесс
             await createProcess(process).unwrap();
 
-            await createSteps(steps).unwrap();
+            // 2. Создаём шаги
+            if (steps.length > 0) {
+                await Promise.all(steps.map(step => {
+                    createStep(step).unwrap()
+                }))
+            }
 
-            // Добавляем новый регламент в начало списка
+            // 3. Связываем регламенты
+            if (regulationIds.length > 0) {
+                // Можно делать последовательно, если важен порядок, либо Promise.all
+                await Promise.all(regulationIds.map(regulationId =>
+                    linkRegulation({ processId: process.id, regulationId }).unwrap()
+                ));
+            }
+
+            // 4. Обновляем локальный список
             updateProcesses([process, ...processes]);
-
             notificationSuccess('Создание', 'Процесс успешно создан');
         } catch (error) {
             notificationError('Создание', 'Не удалось создать процесс');
             console.error("Error creating regulation:", error);
         }
-    }, [createProcess, createSteps, processes, updateProcesses]);
+    }, [createProcess, createStep, linkRegulation, processes, updateProcesses]);
 
 
     const onCreateProcessClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         toggleModal();
         event.currentTarget.blur();
+    };
+
+    const onNavigateToProcessClick = (id: string) => {
+        navigate(`/process/${id}`);
     };
 
     useEffect(() => {
@@ -110,7 +134,7 @@ export const ProcessList = (props: IProcessList) => {
                         <div
                             key={index}
                             className={styles.process}
-                            onClick={() => onSelectProcess(process.id)}
+                            onClick={() => onNavigateToProcessClick(process.id)}
                         >
                             {process.title}
                         </div>
@@ -121,6 +145,7 @@ export const ProcessList = (props: IProcessList) => {
             <ProcessCreateModal
                 isOpen={isModalOpen}
                 onClose={toggleModal}
+                regulations={regulations}
                 onProcessCreate={onCreateClick}
             />
         </div>

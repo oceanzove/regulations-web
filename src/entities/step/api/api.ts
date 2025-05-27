@@ -8,43 +8,43 @@ export const stepApi = createApi({
     baseQuery,
     tagTypes: ['Step'],
     endpoints: (builder) => ({
-        getSteps: builder.query<IStep[], void>({
-            query: () => ({
-                url: URI_STEP,
-                method: 'GET',
-            }),
-            providesTags: ['Step'],
-        }),
-        createSteps: builder.mutation<void, IStep[]>({
-            query: (steps) => ({
-                url: URI_STEP,
-                method: 'POST',
-                body: {
-                    steps: steps
-                },
-            }),
-        }),
-        updateStep: builder.mutation<IStep, { id: string; changes: Partial<IStep> }>({
-            query: ({ id, changes }) => ({
-                url: `${URI_STEP}/${id}`,
-                method: 'PUT',
-                body: changes,
-            }),
-            invalidatesTags: ['Step'],
-        }),
-        deleteStep: builder.mutation<void, string>({
-            query: (id) => ({
-                url: `${URI_STEP}/${id}`,
-                method: 'DELETE',
-            }),
-            invalidatesTags: ['Step'],
-        }),
+        // getSteps: builder.query<IStep[], void>({
+        //     query: () => ({
+        //         url: URI_STEP,
+        //         method: 'GET',
+        //     }),
+        //     providesTags: ['Step'],
+        // }),
+        // createSteps: builder.mutation<void, IStep[]>({
+        //     query: (steps) => ({
+        //         url: URI_STEP,
+        //         method: 'POST',
+        //         body: {
+        //             steps: steps
+        //         },
+        //     }),
+        // }),
+        // updateStep: builder.mutation<IStep, { id: string; changes: Partial<IStep> }>({
+        //     query: ({ id, changes }) => ({
+        //         url: `${URI_STEP}/${id}`,
+        //         method: 'PUT',
+        //         body: changes,
+        //     }),
+        //     invalidatesTags: ['Step'],
+        // }),
+        // deleteStep: builder.mutation<void, string>({
+        //     query: (id) => ({
+        //         url: `${URI_STEP}/${id}`,
+        //         method: 'DELETE',
+        //     }),
+        //     invalidatesTags: ['Step'],
+        // }),
     }),
 });
 
 export const {
-    useGetStepsQuery,
-    useCreateStepsMutation,
-    useUpdateStepMutation,
-    useDeleteStepMutation,
+    // useGetStepsQuery,
+    // useCreateStepsMutation,
+    // useUpdateStepMutation,
+    // useDeleteStepMutation,
 } = stepApi;

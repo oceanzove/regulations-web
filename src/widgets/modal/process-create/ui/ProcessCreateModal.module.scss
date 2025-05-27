@@ -13,7 +13,6 @@
   .modalContent {
     width: 100%;
     max-width: 1170px;
-    height: 700px;
     border-radius: 12px;
 
     padding: 10px 20px 20px 20px;
@@ -53,6 +52,22 @@
   padding-top: 10px;
   gap: 10px;
 
+  .aboutBlock {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+
+    .meta {
+      display: flex;
+      flex-direction: row;
+
+      gap: 5px;
+    }
+  }
+
   .instructionContainer {
     padding: 0;
 
@@ -86,6 +101,49 @@
     }
   }
 
+  .regulations {
+    padding: 10px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .noRegulation {
+      color: #8692A7;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .selectedRegulations {
+      display: flex;
+      flex-direction: column;
+
+      //flex-wrap: wrap;
+      gap: 6px;
+      //margin-bottom: 10px;
+
+      .regulationTag {
+        background: #FFEFF5;
+        color: #F91F71;
+        border-radius: 8px;
+        padding: 20px 10px;
+        font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .removeRegulation {
+        font-size: 15px;
+        cursor: pointer;
+        margin-left: 2px;
+        &:hover { color: #ff1f56; }
+      }
+    }
+  }
+
+
 
   .stepControl {
     display: flex;
@@ -94,7 +152,7 @@
 
     .stepsContainer {
       overflow-y: scroll;
-      height: 280px;
+      height: 140px;
       max-height: 280px;
 
       .stepBlock {
@@ -127,16 +185,16 @@
       }
     }
 
-    .addStepButton {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+  }
+  .addStepButton {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 
-      color: white;
-      border-radius: 8px;
-      padding: 10px 15px;
-      background: #0BB2E7;
-    }
+    color: white;
+    border-radius: 8px;
+    padding: 10px 15px;
+    background: #0BB2E7;
   }
 
 }
