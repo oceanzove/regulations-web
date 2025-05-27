@@ -25,7 +25,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
 
     const [steps, setSteps] = useState<IStep[]>([{
         id: uuid(),
-        title: "",
+        name: "",
         order: 0,
         processId: "",
         description: "",
@@ -89,7 +89,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
         setResponsible('');
         setSteps([{
             id: uuid(),
-            title: "",
+            name: "",
             order: 0,
             processId: "",
             description: "",
@@ -103,7 +103,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
         setSteps(prevSteps => {
             const newStep: IStep = {
                 id: uuid(),
-                title: "",
+                name: "",
                 processId: "",
                 description: "",
                 responsible: "",
@@ -224,9 +224,9 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                                     </div>
                                     <Input
                                         className={styles.step}
-                                        value={step.title}
+                                        value={step.name}
                                         onChange={(e) =>
-                                            onStepChange(step.id, 'title', e.target.value)}
+                                            onStepChange(step.id, 'name', e.target.value)}
                                         placeholder="Введите название"
                                     />
                                     <Input

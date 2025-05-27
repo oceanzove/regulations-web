@@ -2,7 +2,6 @@ import styles from './ProcessView.module.scss';
 import React, {useEffect, useState} from "react";
 import {Label} from "../../../../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../../../../shared/ui/input/input.tsx";
-import {MainButton} from "../../../../../../../shared/ui/main-button/main-button.tsx";
 import {IProcess} from "../../../../../../../entities/process/api/types.ts";
 import {processApi} from "../../../../../../../entities/process/api/api.ts";
 import {notificationError, notificationSuccess} from "../../../../../../../widgets/notifications/callNotification.tsx";
@@ -34,6 +33,7 @@ export const ProcessView = (props: IProcessEditorProps) => {
     useEffect(() => {
         setLocalTitle(process.title);
         setLocalDescription(process.description);
+        setLocalResponsible(process.responsible);
     }, [process]);
 
     const [update, { isLoading }] = processApi.useUpdateMutation();
@@ -132,7 +132,7 @@ export const ProcessView = (props: IProcessEditorProps) => {
                                         {step.order + 1}
                                     </div>
                                     <div className={styles.step}>
-                                        {step.title}
+                                        {step.name}
                                     </div>
                                     <div className={styles.step}>
                                         {step.description}

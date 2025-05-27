@@ -2,7 +2,7 @@ export interface IStep {
     id: string,
     processId: string,
     order: number,
-    title: string,
+    name: string,
     description: string,
     responsible: string,
 }
