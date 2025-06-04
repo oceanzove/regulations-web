@@ -5,6 +5,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 
+ENV VITE_ENVIRONMENT_SERVER=release
+
 COPY . .
 RUN npm run build
 

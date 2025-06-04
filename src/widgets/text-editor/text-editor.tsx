@@ -245,8 +245,6 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                     sectionNumber: block.getData().get('number'), // номер раздела, если надо
                     sectionTitle: block.getData().get('title'),
                     sectionContent: block.getData().get('content'),
-                    onTitleChange: (newTitle) => { /* обработчик изменения названия секции */
-                    },
                 },
             };
         }

@@ -1,11 +1,12 @@
 import {BaseQueryFn, FetchArgs, fetchBaseQuery, FetchBaseQueryError} from '@reduxjs/toolkit/query';
 import { v4 as uuid } from 'uuid';
-import { SERVER_ENVIRONMENT_DEV } from '../../api/API.ts';
 
-
-// const BASE_API_URL_PRODUCTION = 'https://wakadoo.ru/api/';
-// const BASE_API_URL_TEST = 'https://test.wakadoo.ru/api/';
+const BASE_API_URL_PRODUCTION = 'https://d.service-to.ru/api/';
 const BASE_API_URL_DEV = 'http://localhost:25504/api/';
+
+export const SERVER_ENVIRONMENT_RELEASE = 'release';
+export const SERVER_ENVIRONMENT_DEV = 'dev';
+
 
 export const providesList = <R extends { id: string | number }[], T extends string>(
     resultsWithIds: R | undefined,
@@ -19,10 +20,12 @@ export const providesList = <R extends { id: string | number }[], T extends stri
 
 const setBaseUrl = () => {
     const serverEnvironment = import.meta.env.VITE_ENVIRONMENT_SERVER;
-
+    console.log(serverEnvironment)
     switch (serverEnvironment) {
         case SERVER_ENVIRONMENT_DEV:
             return BASE_API_URL_DEV;
+        case SERVER_ENVIRONMENT_RELEASE:
+            return BASE_API_URL_PRODUCTION;
         default:
             return '';
     }
