@@ -1,11 +1,15 @@
 import {useNavigate} from "react-router-dom";
-import React, {useEffect} from "react";
-import {IRegulation} from "../../../../../../entities/regulation/api/types.ts";
+import React, {useCallback, useEffect, useState} from "react";
+import {IRegulation, ISection} from "../../../../../../entities/regulation/api/types.ts";
 import styles from './RegulationList.module.scss';
 import {Button} from "../../../../../../shared/ui/button";
 import {IconEnum} from "../../../../../../shared/ui/icon/IconType.tsx";
 import {Icon} from "../../../../../../shared/ui/icon";
 import {RegulationCreateModal} from "../../../../../../widgets/modal/regulation-create";
+import {IProcess} from "../../../../../../entities/process/api/types.ts";
+import {IStep} from "../../../../../../entities/step/api/types.ts";
+import {notificationError, notificationSuccess} from "../../../../../../widgets/notifications/callNotification.tsx";
+import {regulationApi} from "../../../../../../entities/regulation/api/api.ts";
 
 interface IRegulationList {
     regulations: IRegulation[];
@@ -25,44 +29,48 @@ export const RegulationList = (props: IRegulationList) => {
 
     const navigate = useNavigate();
 
-    // const [createProcess] = processApi.useCreateMutation();
-    // const [createStep] = processApi.useCreateStepMutation();
-    // const [linkRegulation] = processApi.useLinkRegulationMutation();
-    //
-    // // Обработчик нажатия на кнопку "Создать"
-    // const onCreateClick = useCallback(async (
-    //     process: IProcess,
-    //     steps: IStep[],
-    //     regulationIds: string[]
-    // ) => {
-    //     try {
-    //         // 1. Создаём процесс
-    //         await createProcess(process).unwrap();
-    //
-    //         // 2. Создаём шаги
-    //         if (steps.length > 0) {
-    //             await Promise.all(steps.map(step => {
-    //                 createStep(step).unwrap()
-    //             }))
-    //         }
-    //
-    //         // 3. Связываем регламенты
-    //         if (regulationIds.length > 0) {
-    //             // Можно делать последовательно, если важен порядок, либо Promise.all
-    //             await Promise.all(regulationIds.map(regulationId =>
-    //                 linkRegulation({ processId: process.id, regulationId }).unwrap()
-    //             ));
-    //         }
-    //
-    //         // 4. Обновляем локальный список
-    //         updateProcesses([process, ...processes]);
-    //         notificationSuccess('Создание', 'Процесс успешно создан');
-    //     } catch (error) {
-    //         notificationError('Создание', 'Не удалось создать процесс');
-    //         console.error("Error creating regulation:", error);
-    //     }
-    // }, [createProcess, createStep, linkRegulation, processes, updateProcesses]);
+    const [ sections, setSections ] = useState<ISection[]>([])
 
+    const [ createRegulation ] = regulationApi.useCreateMutation();
+
+    const handleRegulationCreate = useCallback(async (
+        regulation: IRegulation,
+    ) => {
+        try {
+            await createRegulation(regulation);
+
+            updateRegulations([regulation, ...regulations]);
+            notificationSuccess('Создание', 'Регламент успешно создан');
+        } catch (error) {
+            notificationError('Создание', 'Не удалось создать регламент');
+            console.error("Error creating regulation:", error);
+        }
+    }, [createRegulation, regulations, updateRegulations]);
+
+    const [ createSection ] = regulationApi.useCreateSectionMutation();
+
+    const handleSectionCreate = useCallback(async (
+        section: ISection,
+    ) => {
+        try {
+            await createSection(section);
+
+            notificationSuccess('Создание', 'Секция успешно создан');
+        } catch (error) {
+            notificationError('Создание', 'Не удалось создать секцию');
+            console.error("Error creating regulation:", error);
+        }
+    }, [createSection]);
+
+    const { data: sectionData } = regulationApi.useGetSectionQuery();
+
+    useEffect(() => {
+        if (sectionData) {
+            if (sectionData.sections !== null) {
+                setSections(sectionData.sections);
+            }
+        }
+    }, [sectionData]);
 
     const onCreateProcessClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         toggleModal();
@@ -136,10 +144,11 @@ export const RegulationList = (props: IRegulationList) => {
             </div>
 
             <RegulationCreateModal
-                // isOpen={isModalOpen}
-                // onClose={toggleModal}
-                // regulations={regulations}
-                // onProcessCreate={onCreateClick}
+                isOpen={isModalOpen}
+                onClose={toggleModal}
+                sections={sections}
+                onSectionCreate={handleSectionCreate}
+                onRegulationCreate={handleRegulationCreate}
             />
         </div>
     )

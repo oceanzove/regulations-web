@@ -7,26 +7,6 @@ import {RegulationEditor} from "./editor";
 import {Sections} from "./section";
 import {Section} from "./section/Sections.tsx";
 
-const initialSections: Section[] = [
-    {
-        id: "1",
-        title: "Общие положения",
-        content: `Настоящий документ устанавливает основные положения, принципы и цели, связанные с реализацией и соблюдением регламента. Он предназначен для использования всеми участниками процесса, обеспечивая единый подход и понимание ключевых аспектов деятельности.`,
-        checked: true,
-    },
-    {
-        id: "2",
-        title: "Область применения",
-        content: `Регламент распространяется на все подразделения и сотрудников организации, участвующих в выполнении указанных процессов. Он применяется при разработке, реализации и контроле процедур, связанных с управлением проектами, документооборотом и внутренними коммуникациями.`,
-        checked: true,
-    },
-    {
-        id: "3",
-        title: "Описание процессов",
-        content: `В данном разделе подробно описываются этапы выполнения ключевых процессов, ответственные лица, используемые ресурсы и ожидаемые результаты. Каждый процесс сопровождается блок-схемой и таблицей контрольных точек, необходимых для оценки эффективности и качества выполнения.`,
-        checked: true,
-    },
-];
 export const RegulationViewBlock = () => {
     // const {
     //     processState,
@@ -62,38 +42,12 @@ export const RegulationViewBlock = () => {
         }
     }, [regulationData, setRegulation]);
 
-    // useEffect(() => {
-    //     if (stepsData) {
-    //         setSteps(stepsData as IStep[]);
-    //     }
-    // }, [stepsData, setSteps]);
-    //
-    // useEffect(() => {
-    //     if (regulationsData) {
-    //         setRegulations(regulationsData as IRegulation[]);
-    //     }
-    // }, [regulationsData, setRegulations]);
-
-    const [sections, setSections] = useState<Section[]>(initialSections);
-
-    const handleSectionToggle = (id: string) => {
-        setSections(prev =>
-            prev.map(sec => sec.id === id ? { ...sec, checked: !sec.checked } : sec)
-        );
-    };
-
-    // Получить выбранные:
-    const selectedSections = sections.filter(sec => sec.checked);
-
     return (
         <div className={styles.regulationViewBlockWrapper}>
-            <Sections
-                sections={sections}
-                onToggle={handleSectionToggle}
-            />
             <RegulationEditor
                 regulation={regulation}
-                selectedSections={selectedSections}
+                selectedSections={[]}
+                onEditorChange={() => {}}
             />
             {/*<ProcessView*/}
             {/*    process={process}*/}

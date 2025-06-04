@@ -1,0 +1,46 @@
+.workspaceBlockWrapper {
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  border-radius: 12px;
+
+  width: 100%;
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+
+  padding: 114px 0 25px 0;
+
+  .workspaceTitle {
+    font-size: 48px;
+    font-weight: 700;
+    color: #000000;
+    line-height: 1.2;
+  }
+
+  .workspacePanel {
+    display: flex;
+    flex-direction: row;
+
+    gap: 20px;
+
+    border-bottom: 1px solid #C9D4E7;
+
+    .panel {
+      font-size: 16px;
+      padding-bottom: 5px;
+
+      cursor: pointer;
+
+      &.active {
+        color: #F91F71;
+        font-weight: bolder;
+
+        border-bottom: 2px solid #F91F71;
+
+      }
+    }
+  }
+}

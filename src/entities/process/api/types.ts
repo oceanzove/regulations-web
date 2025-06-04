@@ -18,9 +18,3 @@ export interface ICreateProcessResponse {
     title: string;
     description: string;
 }
-
-export interface ICreateProcessRequest {
-    id: string;
-    title: string;
-    description: string;
-}

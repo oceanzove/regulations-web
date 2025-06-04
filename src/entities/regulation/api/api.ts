@@ -1,6 +1,6 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
+import {createApi} from '@reduxjs/toolkit/query/react';
 import {URI_REGULATION} from "./consts.ts";
-import {ICreateRegulationResponse, IGetRegulationsResponse, IRegulation} from "./types.ts";
+import {ICreateRegulationResponse, IGetRegulationsResponse, IRegulation, ISection} from "./types.ts";
 import {baseQuery} from "../../api/api.ts";
 
 export const regulationApi = createApi({
@@ -22,13 +22,31 @@ export const regulationApi = createApi({
                     }) => ({
                 url: `${URI_REGULATION}/${regulation}`,
                 method: 'PUT',
-                body: { title, content },
+                body: {title, content},
             }),
         }),
-        create: builder.mutation<void, ICreateRegulationResponse>({
-            query: () => ({
+        create: builder.mutation<void, IRegulation>({
+            query: ({
+                        id, title, content
+                    }) => ({
                 url: URI_REGULATION,
                 method: 'POST',
+                body: { id, title, content }
+            }),
+        }),
+        createSection: builder.mutation<void, IRegulation>({
+            query: ({
+                        id, title, content
+                    }) => ({
+                url: `${URI_REGULATION}/section`,
+                method: 'POST',
+                body: { id, title, content }
+            }),
+        }),
+        getSection: builder.query<{sections: ISection[]}, void>({
+            query: () => ({
+                url: `${URI_REGULATION}/section`,
+                method: 'GET',
             }),
         }),
         getById: builder.query<IRegulation, string>({

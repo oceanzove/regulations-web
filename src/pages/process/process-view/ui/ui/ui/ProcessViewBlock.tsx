@@ -54,6 +54,8 @@ export const ProcessViewBlock = () => {
         }
     }, [regulationsData, setRegulations]);
 
+    console.log(processData)
+    console.log(stepsData)
     return (
         <div className={styles.processBlockWrapper}>
             <ProcessView

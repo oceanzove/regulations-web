@@ -155,7 +155,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                             <Input
                                 value={responsible}
                                 onChange={(e) => setResponsible(e.target.value || '')}
-                                placeholder={'Например, СТАРТ СЕТ'}
+                                placeholder={'Например, отдел кадров'}
                             />
                         </Label>
                     </div>
@@ -164,7 +164,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                             {selectedRegulations.length > 0
                                 ?
                                 <div className={styles.selectedRegulations}>
-                                    { selectedRegulations
+                                    {selectedRegulations
                                         .map((id => regulations.find(r => r.id === id)))
                                         .filter(Boolean)
                                         .map(regulation => (

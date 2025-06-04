@@ -38,8 +38,8 @@ export const SignInBlock = () => {
 
 
             resetCredentials();
-            navigate('./regulation');
-            localStorage.removeItem('isSessionLocked');
+            navigate('./');
+            localStorage.removeItem('isSessioanLocked');
             localStorage.removeItem('isSessionExpiredShown');
             notificationSuccess('Успешный вход');
         } catch (error) {
@@ -64,6 +64,7 @@ export const SignInBlock = () => {
             </Label>
             <Label label="Пароль">
                 <Input
+                    type={'password'}
                     placeholder="Введите пароль"
                     value={signInState.password}
                     onChange={(e) => updatePassword(e.target.value)}

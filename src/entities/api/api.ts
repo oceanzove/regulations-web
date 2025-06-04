@@ -20,7 +20,6 @@ export const providesList = <R extends { id: string | number }[], T extends stri
 
 const setBaseUrl = () => {
     const serverEnvironment = import.meta.env.VITE_ENVIRONMENT_SERVER;
-    console.log(serverEnvironment)
     switch (serverEnvironment) {
         case SERVER_ENVIRONMENT_DEV:
             return BASE_API_URL_DEV;

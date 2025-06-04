@@ -1,7 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {baseQuery} from "../../api/api.ts";
 import {
-    ICreateProcessRequest,
     IGetProcessResponse,
     IProcess
 } from "./types.ts";
@@ -63,7 +62,7 @@ export const processApi = createApi({
                 body: step,
             }),
         }),
-        create: builder.mutation<void, ICreateProcessRequest>({
+        create: builder.mutation<void, IProcess>({
             query: ({
                         id, title, description
                     }) => ({

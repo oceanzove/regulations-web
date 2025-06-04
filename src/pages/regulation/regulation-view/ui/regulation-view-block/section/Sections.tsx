@@ -20,7 +20,7 @@ export const Sections = (props: SectionsProps) => {
     return (
         <div className={styles.regulationSectionWrapper}>
             <div className={styles.header}>
-                <div>Подберите шаблоны, разделы и модули</div>
+                <div>Подберите разделы</div>
             </div>
             <div className={styles.search}>
                 <SearchIcon
@@ -49,10 +49,10 @@ export const Sections = (props: SectionsProps) => {
                     </div>
                 ))}
             </div>
-            <MainButton
-                text={'Создать'}
-                onClick={() => {}}
-            />
+            {/*<MainButton*/}
+            {/*    text={'Создать'}*/}
+            {/*    onClick={() => {}}*/}
+            {/*/>*/}
         </div>
     )
 };
