@@ -192,17 +192,19 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         }
     };
 
+    const prevSectionsRef = useRef<Section[] | undefined>(undefined);
+
     const insertAllSections = (sections: Section[]): EditorState => {
         let contentState = ContentState.createFromText('');
         let editorState = EditorState.createWithContent(contentState, decorator);
 
-        sections.forEach((section, index) => {
+        sections.forEach((section) => {
             // Вставка заголовка как entity
             contentState = editorState.getCurrentContent();
             const contentWithEntity = contentState.createEntity(
                 "SECTION_ENTITY",
                 "IMMUTABLE",
-                { title: section.title, sectionId: section.id }
+                { title: section.title, content: section.content, sectionId: section.id }
             );
             const entityKey = contentWithEntity.getLastCreatedEntityKey();
 
@@ -215,36 +217,24 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 entityKey
             );
             editorState = EditorState.push(editorState, withTitle, 'insert-characters');
-
-            // Перенос строки после заголовка
-            const withLineBreak = Modifier.insertText(
-                editorState.getCurrentContent(),
-                editorState.getSelection(),
-                '\n'
-            );
-            editorState = EditorState.push(editorState, withLineBreak, 'insert-characters');
-
-            // Вставка текста содержимого (обычный текст без entity)
-            if (section.content?.trim()) {
-                const withContent = Modifier.insertText(
-                    editorState.getCurrentContent(),
-                    editorState.getSelection(),
-                    section.content.trim()
-                );
-                editorState = EditorState.push(editorState, withContent, 'insert-characters');
-
-                // Добавим ещё один перенос строки между секциями
-                const withSpacing = Modifier.insertText(
-                    editorState.getCurrentContent(),
-                    editorState.getSelection(),
-                    '\n\n'
-                );
-                editorState = EditorState.push(editorState, withSpacing, 'insert-characters');
-            }
         });
 
         return EditorState.moveFocusToEnd(editorState);
     };
+
+    useEffect(() => {
+        const sectionsChanged = JSON.stringify(prevSectionsRef.current) !== JSON.stringify(sections);
+        // Если секции изменились
+        if (sectionsChanged) {
+            if (!sections || sections.length === 0) {
+                setEditorState(EditorState.createEmpty(decorator));
+            } else {
+                const newEditorState = insertAllSections(sections);
+                setEditorState(newEditorState);
+            }
+            prevSectionsRef.current = sections;
+        }
+    }, [decorator, htmlText, insertAllSections, sections]);
 
     const blockRendererFn = (block) => {
         if (block.getType() === 'section') {
