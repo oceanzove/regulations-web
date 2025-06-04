@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import {URI_REGULATION} from "./consts.ts";
-import {ICreateRegulationResponse, IGetRegulationsResponse} from "./types.ts";
+import {ICreateRegulationResponse, IGetRegulationsResponse, IRegulation} from "./types.ts";
 import {baseQuery} from "../../api/api.ts";
 
 export const regulationApi = createApi({
@@ -29,6 +29,12 @@ export const regulationApi = createApi({
             query: () => ({
                 url: URI_REGULATION,
                 method: 'POST',
+            }),
+        }),
+        getById: builder.query<IRegulation, string>({
+            query: (id) => ({
+                url: `${URI_REGULATION}/${id}`,
+                method: 'GET',
             }),
         }),
         // resendCode: builder.mutation<void, { email: string }>({

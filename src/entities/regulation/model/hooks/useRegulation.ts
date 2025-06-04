@@ -7,7 +7,7 @@ export const useRegulation = () => {
     const dispatch = useDispatch();
     const regulationState = useSelector((state: RootState) => state.regulation);
 
-    const updateRegulation = (regulations: IRegulation[]) => {
+    const updateRegulations = (regulations: IRegulation[]) => {
         dispatch(regulationActions.setRegulations(regulations))
     };
 
@@ -31,8 +31,8 @@ export const useRegulation = () => {
         updateTitle,
         updateContent,
         regulationState,
-        updateRegulation,
         createRegulation,
+        updateRegulations,
         updateActiveRegulation,
     };
 };

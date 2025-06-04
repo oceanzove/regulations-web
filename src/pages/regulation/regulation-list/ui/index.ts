@@ -1,0 +1,1 @@
+export { RegulationListPage } from './RegulationListPage.tsx';

@@ -1,21 +1,23 @@
-import styles from './DraftEditor.module.scss';
 import {IRegulation} from "../../../../../../entities/regulation/api/types.ts";
-import {useEffect, useState} from "react";
-import {convertFromRaw, convertToRaw, EditorState} from "draft-js";
-import {notificationError, notificationSuccess} from "../../../../../../widgets/notifications/callNotification.tsx";
 import {TextEditor} from "../../../../../../widgets/text-editor";
+import {Section} from "../section/Sections.tsx";
+import React from "react";
 
 interface IRegulationEditorProps {
-    activeRegulation: IRegulation,
+    regulation: IRegulation,
+    selectedSections: Section[]
     // updateTitle: (id: string, title: string) => void,
     // updateContent: (id: string, content: string) => void,
 }
 
-export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation, updateTitle, updateContent }) => {
+export const RegulationEditor: React.FC<IRegulationEditorProps> = (props) => {
+    const { regulation, selectedSections } = props
     const handleEditorChange = (value: string) => {
         console.log(value);
         // setEditorState(state);
     };
+
+    console.log(selectedSections)
 
     // const handleSave = async () => {
     //     try {
@@ -27,9 +29,12 @@ export const DraftEditor: React.FC<IRegulationEditorProps> = ({ activeRegulation
     //     }
     // };
 
+    // Генерация HTML если regulation.content пуст
+
     return (
         <TextEditor
-            htmlText={activeRegulation.content}
+            htmlText={regulation.content}
+            sections={selectedSections}
             onChangeHTMLText={handleEditorChange}
         />
     );

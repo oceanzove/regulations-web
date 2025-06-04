@@ -87,6 +87,7 @@ export const ProcessList = (props: IProcessList) => {
         };
     }, [isModalOpen]);
 
+    console.log(processes);
     return (
         <div className={styles.processListWrapper}>
             <div className={styles.controls}>

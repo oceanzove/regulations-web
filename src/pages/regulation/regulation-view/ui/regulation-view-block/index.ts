@@ -1,0 +1,1 @@
+export { RegulationViewBlock } from './RegulationViewBlock.tsx';

@@ -15,4 +15,8 @@ export interface ICreateRegulationResponse {
     content: string,
 }
 
-
+export interface ISection {
+    id: string,
+    title: string,
+    content: string,
+}

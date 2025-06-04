@@ -1,5 +1,5 @@
 import styles from './ProccesListPage.module.scss';
-import {ProcessListBlock} from "./process-list-block/ui";
+import {ProcessListBlock} from "./process-list-block";
 
 export const ProcessListPage = () => {
     return (
