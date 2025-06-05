@@ -26,7 +26,6 @@ export const SectionBlock = (props) => {
                      style={{
                          borderRadius: 8,
                          padding: "4px 12px",
-                         fontWeight: 700,
                          margin: "0 4px",
                          display: "inline-block",
                          userSelect: "none",
