@@ -1,26 +1,37 @@
-import Draft, {
-    CompositeDecorator,
+import {
     ContentBlock,
-    ContentState,
-    convertFromRaw,
+    ContentState, convertToRaw,
     Editor,
     EditorState, genKey,
     Modifier,
     RichUtils, SelectionState
 } from "draft-js";
-import {convertFromHTML, convertToHTML} from "draft-convert";
 import {type FC, memo, useCallback, useEffect, useRef, useState} from "react";
 import "draft-js/dist/Draft.css";
 import {BlockStyleControl} from "./block-style-control";
-import {dynamicFieldTypes, TEXT_EDITOR_CUSTOM_STYLES, TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
+import {
+    dynamicFieldTypes,
+    TEXT_EDITOR_CUSTOM_STYLES,
+} from "./configuration.tsx";
 import {InlineStyleControl} from "./inline-style-control";
 import styles from './text-editor.module.scss';
-import {DynamicField} from "./custom-block/dynamic-field";
 import DropdownMenuDynamicField from "./dropdown-menu-dynamic-field.tsx";
 import {useOutsideClick} from "../utils";
 import {SectionBlock} from "./custom-block/section-block/section-block.tsx";
 import {Section} from "../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
-import { Map } from 'immutable';
+import {Map} from 'immutable';
+import stateToPdfMake from "draft-js-export-pdfmake";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+
+pdfMake.vfs = pdfFonts.vfs;
+
+import {
+    CONVERT_HTML_TO_MESSAGE,
+    CONVERT_MESSAGE_TO_HTML,
+    GET_DECORATOR,
+    NORMALIZE_HTML_TEXT
+} from "./editor-utils.ts";
 
 export type TTextEditorTextStyle =
     | "H1"
@@ -31,7 +42,6 @@ export type TTextEditorTextStyle =
     | "ITALIC"
     | "UNDERLINE"
     | "HIGHLIGHT"
-    | "DYNAMIC_FIELD";
 
 interface IClasses {
     textEditor?: string;
@@ -46,32 +56,6 @@ interface ITextEditorProps {
     sections?: Section[];
 }
 
-const getDecorator = (): CompositeDecorator => {
-    const dynamicFieldEntities = (
-        contentBlock: ContentBlock,
-        callback: (start: number, end: number) => void,
-        contentState: ContentState,
-    ) => {
-        contentBlock.findEntityRanges((character) => {
-            const entityKey = character.getEntity();
-            return (
-                entityKey !== null &&
-                contentState.getEntity(entityKey).getType() === 'DYNAMIC_FIELD'
-            );
-        }, callback);
-    };
-
-    return  new CompositeDecorator([
-        {
-            strategy: dynamicFieldEntities,
-            component: DynamicField,
-        },
-    ]);
-};
-
-
-
-
 const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     const {
         classes,
@@ -84,11 +68,8 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
 
     const [isFocused, setFocused] = useState(false);
 
-
-    const decorator = getDecorator();
-    const [editorState, setEditorState] = useState(
-        EditorState.createEmpty(decorator)
-    );
+    const decorator = GET_DECORATOR();
+    const [editorState, setEditorState] = useState(EditorState.createEmpty(decorator));
 
     const contentState = editorState.getCurrentContent();
     const textEditorArea = `
@@ -98,72 +79,14 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         ? styles.TextEditorWrapperHidePlaceholder : ''
     }`.trim()
 
-    const options = {
-        styleToHTML: (style: string) => TEXT_EDITOR_STYLE_TO_HTML(style as TTextEditorTextStyle),
-        blockToHTML: (block) => {
-            if (block.type === "section") {
-                const title = block.data?.title || block.text;
-                const content = block.data?.content || '';
-                const sectionId = block.data?.sectionId || '';
-                return {
-                    start: `<div class="section-block" data-section-id="${sectionId}"><h2>${title}</h2><div class="section-content">${content}</div>`,
-                    end: `</div>`,
-                };
-            }
-        },
-        entityToHTML: (entity: any, originalText: string) => {
-            if (entity.type === 'DYNAMIC_FIELD') {
-                const label = entity.data?.label ?? '';
-                // Можно добавить любые data-атрибуты, чтобы на сервере различать эти поля
-                return `<span class="dynamic-field" data-field-label="${label}">${originalText}</span>`;
-            }
-            // По умолчанию просто текст
-            return originalText;
-        }
-    };
 
-    const convertMessageToHtml = convertToHTML(options);
-    // Пройтись по текущему контенту редактора
-
-    const convertHtmlToRaw = (html: string): EditorState => {
-        const contentState = convertFromHTML({
-            htmlToStyle: (nodeName, node, currentStyle) => {
-                if (nodeName === "span" && node.className === "highlight") {
-                    return currentStyle.add("HIGHLIGHT");
-                } else if (nodeName === "span" && node.className === "DYNAMIC_FIELD") {
-                    return currentStyle.add("DYNAMIC_FIELD");
-                }
-                return currentStyle;
-            },
-            htmlToBlock: (nodeName, node) => {
-                if (
-                    nodeName === "div" &&
-                    node.classList?.contains("section-block")
-                ) {
-                    const h2 = node.querySelector("h2");
-                    const title = h2 ? h2.textContent || "" : "";
-                    // Остальное содержимое секции (после <h2>) как content
-                    let content = '';
-                    for (const child of node.childNodes) {
-                        if (child !== h2) content += child.textContent || '';
-                    }
-                    return {
-                        type: "section",
-                        data: { sectionId: node.getAttribute("data-section-id") || "", title, content }
-                    };
-                }
-            },
-        })(html);
-
-        return EditorState.createWithContent(contentState, decorator);
-    };
 
     const handleChangeText = useCallback((value: EditorState) => {
         const currentSelection = value.getSelection();
-        onChangeHTMLText?.(convertMessageToHtml(value.getCurrentContent()));
+        onChangeHTMLText?.(NORMALIZE_HTML_TEXT(CONVERT_MESSAGE_TO_HTML(value.getCurrentContent())));
         const stateWithContentAndSelection = EditorState.forceSelection(value, currentSelection);
         setEditorState(stateWithContentAndSelection);
-    }, [convertMessageToHtml, onChangeHTMLText]);
+    }, [onChangeHTMLText]);
 
     const getBlockStyle = (block: ContentBlock) => {
         switch (block.getType()) {
@@ -178,81 +101,47 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
 
 
     const insertAllSections = useCallback((sections: Section[]): EditorState => {
-        // Собираем все блоки (section + текст)
         const blocks: ContentBlock[] = [];
 
         sections.forEach(section => {
-            const contentState = convertFromHTML({
-                htmlToStyle: (nodeName, node, currentStyle) => {
-                    if (nodeName === "span" && node.className === "highlight") {
-                        return currentStyle.add("HIGHLIGHT");
-                    } else if (nodeName === "span" && node.className === "DYNAMIC_FIELD") {
-                        return currentStyle.add("DYNAMIC_FIELD");
-                    }
-                    return currentStyle;
-                },
-                htmlToBlock: (nodeName, node) => {
-                    if (
-                        nodeName === "div" &&
-                        node.classList?.contains("section-block")
-                    ) {
-                        const h2 = node.querySelector("h2");
-                        const title = h2 ? h2.textContent || "" : "";
-                        // Остальное содержимое секции (после <h2>) как content
-                        let content = '';
-                        for (const child of node.childNodes) {
-                            if (child !== h2) content += child.textContent || '';
-                        }
-                        return {
-                            type: "section",
-                            data: { sectionId: node.getAttribute("data-section-id") || "", title, content }
-                        };
-                    }
-                },
-            })(section.content);
-
-            // 1. Заголовок-секция (блок типа section)
             blocks.push(new ContentBlock({
                 key: genKey(),
                 type: "section",
-                text: section.title,
-                data: Map({ sectionId: section.id, title: section.title, content: contentState.getPlainText() })
+                data: Map({ sectionId: section.id, title: section.title, content: section.content})
             }));
 
-            // 2. Пустая строка для разделения (необязательно)
+            // Пустая строка для разделения
             blocks.push(new ContentBlock({
                 key: genKey(),
                 type: "unstyled",
-                text: "",
             }));
         });
+
 
         // Создаём ContentState из массива блоков
         const contentState = ContentState.createFromBlockArray(blocks);
 
-        // EditorState с декоратором
-        return EditorState.createWithContent(contentState, getDecorator());
+        return EditorState.createWithContent(contentState, GET_DECORATOR());
     }, []);
 
     const [isInitialized, setInitialized] = useState(false);
 
+
     useEffect(() => {
         if (!isInitialized) {
-            if (htmlText && htmlText.trim() !== "") {
-                setEditorState(convertHtmlToRaw(htmlText));
+            if (htmlText) {
+                const contentState = CONVERT_HTML_TO_MESSAGE(htmlText);
+                setEditorState(EditorState.createWithContent(contentState, decorator));
                 setInitialized(true);
             } else if (props.sections?.length) {
                 setEditorState(insertAllSections(props.sections));
                 setInitialized(true);
             }
         }
-        // Если нужен сброс — можно добавить отдельную логику для этого случая
-        // Например, если явно меняется regulationId или т.д.
-    }, [htmlText, props.sections, insertAllSections, convertHtmlToRaw, isInitialized]);
+    }, [htmlText, props.sections, insertAllSections, isInitialized, decorator]);
 
     useEffect(() => {
         const sectionsChanged = JSON.stringify(prevSectionsRef.current) !== JSON.stringify(sections);
-        // Если секции изменились
         if (sectionsChanged) {
             if (!sections || sections.length === 0) {
                 setEditorState(EditorState.createEmpty(decorator));
@@ -264,24 +153,25 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         }
     }, [decorator, htmlText, insertAllSections, sections]);
 
-    const blockRendererFn = (block) => {
+    const blockRendererFn = (block: ContentBlock) => {
         if (block.getType() === 'section') {
             const data = block.getData();
-            const sectionTitle = data.get ? data.get('title') : data.title;
-            const sectionContent = data.get ? data.get('content') : data.content;
+            const title = data.get('title')
+            const content = data.get('content')
+
             return {
                 component: SectionBlock,
                 editable: false,
                 props: {
-                    sectionTitle,
-                    sectionContent,
+                    title,
+                    content,
                 },
             };
         }
         return null;
     };
 
-    const handleReturn = (e: React.KeyboardEvent, editorState: EditorState) => {
+    const handleReturn = (editorState: EditorState) => {
         const selection = editorState.getSelection();
         const content = editorState.getCurrentContent();
         const block = content.getBlockForKey(selection.getStartKey());
@@ -432,6 +322,19 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         // },
     ];
 
+    const handleGeneratePDF = () => {
+        const rawContent = convertToRaw(editorState.getCurrentContent());
+        const pdfState = new stateToPdfMake(rawContent);
+
+        const result = pdfState.generate({ download: true, fileName: 'document.pdf' });
+        pdfMake.createPdf(result).download('document.pdf');
+    };
+
+    const handleGenerateDOCX = () => {
+        const html = CONVERT_MESSAGE_TO_HTML(editorState.getCurrentContent());
+        await HTMLtoDOCX(html, headerHTMLString, documentOptions, footerHTMLString)
+    };
+
     const handleDynamicFieldSelect = useCallback((value: string) => {
         insertDynamicField(editorState, value);
         setEditorState(prev => insertDynamicField(prev, value));
@@ -499,37 +402,21 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                             label={"Динамические поля"}
                             onSelect={handleDynamicFieldSelect}
                             toggleOpen={toggleMenu}
+
                             isOpen={isMenuOpen}
                         />
+                        <button onClick={() => handleGeneratePDF()}>
+                            Экспорт в PDF
+                        </button>
+                        <button onClick={() => handleGenerateDOCX()}>
+                            Экспорт в Word
+                        </button>
                     </div>
                 </div>
 
                 <div className={textEditorArea}>
-                    {/*{*/}
-                    {/*    htmlText ?*/}
-                    {/*        <Editor*/}
-                    {/*            blockStyleFn={getBlockStyle}*/}
-                    {/*            customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}*/}
-                    {/*            editorState={editorState}*/}
-                    {/*            onChange={handleChangeText}*/}
-                    {/*            placeholder={placeholder}*/}
-                    {/*            readOnly={!isFocused}*/}
-                    {/*            ref={editorRef}*/}
-                    {/*        />*/}
-                    {/*        :*/}
-                    {/*        <div className={styles.emptyEditor}>*/}
-                    {/*            <div className={styles.header}>*/}
-                    {/*                Начните работу*/}
-                    {/*            </div>*/}
-                    {/*            <div className={styles.description}>*/}
-                    {/*                Выберите шаблон или составьте свой*/}
-                    {/*                из набора разделов и модулей*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*}*/}
-
                     <Editor
-                        handleReturn={(e) => handleReturn(e, editorState)}
+                        handleReturn={() => handleReturn(editorState)}
                         blockStyleFn={getBlockStyle}
                         blockRendererFn={blockRendererFn}
                         customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}

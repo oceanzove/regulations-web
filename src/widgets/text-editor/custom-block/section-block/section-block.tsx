@@ -1,40 +1,40 @@
-import React from 'react';
+import React, {FC, useState} from 'react';
 import styles from './section-block.module.scss';
+import {Editor, EditorState} from "draft-js";
+import {CONVERT_HTML_TO_MESSAGE, GET_DECORATOR} from "../../editor-utils.ts";
 
-export const SectionBlock = (props) => {
-    const {sectionTitle, sectionContent} = props.blockProps;
-    console.log(props)
+interface ISectionBlockProps {
+    blockProps: {
+        title: string,
+        content: string,
+    }
+}
+
+export const SectionBlock: FC<ISectionBlockProps> = (props) => {
+    const {title, content} = props.blockProps;
+
+    const [editorState, setEditorState] = useState(EditorState.createWithContent(CONVERT_HTML_TO_MESSAGE(content), GET_DECORATOR()));
+
     return (
         <div>
             <span
                 style={{
-                    // background: "#e3e8f0",
                     borderRadius: 8,
                     padding: "4px 12px",
                     fontWeight: 700,
-                    // color: "#22577a",
                     margin: "0 4px",
                     display: "inline-block",
                     userSelect: "none",
                 }}
-                contentEditable={false} // не редактируемое
+                contentEditable={false}
             >
-            {sectionTitle}
+            {title}
         </span>
-            <div>
-                 <span
-                     style={{
-                         borderRadius: 8,
-                         padding: "4px 12px",
-                         margin: "0 4px",
-                         display: "inline-block",
-                         userSelect: "none",
-                     }}
-                     contentEditable={false} // не редактируемое
-                 >
-             {sectionContent}
-         </span>
-            </div>
+            <Editor
+                editorState={editorState}
+                readOnly={true}
+                onChange={(editorState) => {setEditorState(editorState)}}
+            />
         </div>
     );
 };

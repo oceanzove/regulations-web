@@ -16,9 +16,9 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = (props) => {
 
     const handleEditorChange = (value: string) => {
         onEditorChange(value);
+        console.log(value);
     };
 
-    console.log(regulation.content);
     return (
         <TextEditor
             htmlText={regulation.content}
