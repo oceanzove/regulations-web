@@ -64,11 +64,11 @@ export const processApi = createApi({
         }),
         create: builder.mutation<void, IProcess>({
             query: ({
-                        id, title, description
+                        id, title, description, responsible
                     }) => ({
                 url: URI_PROCESS,
                 method: 'POST',
-                body: {id, title, description}
+                body: {id, title, description, responsible}
             }),
         }),
     }),

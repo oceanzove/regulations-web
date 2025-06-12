@@ -1,8 +1,6 @@
 .regulationViewBlockWrapper {
-  background: var(--default-bg-color);
-
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 
   justify-content: center;
 
@@ -10,14 +8,87 @@
 
   border-radius: 12px;
 
-  padding: 10px;
-
   width: 100%;
   max-width: 1170px;
   margin-left: auto;
   margin-right: auto;
 }
 
+.controls {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  height: 44px;
+
+  .button {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 8px;
+    background: #FFFFFF;
+
+  }
+
+  .search {
+    background: white;
+
+    width: 358px;
+
+    padding: 10px;
+
+    display: flex;
+    flex-direction: row;
+
+    border-radius: 8px;
+    gap: 5px;
+
+    .iconContainer {
+      width: 24px;
+      height: 24px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .inputContainer {
+      width: 100%;
+    }
+
+    .searchArea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+
+      transition: height 0.2s ease;
+      text-wrap: nowrap;
+      resize: none;
+
+      font-size: var(--font-size-m);
+
+      &::placeholder {
+        color: #8692A7;
+        font-size: var(--font-size-m);
+      }
+    }
+
+    border-bottom: 1px solid #EBEDEF;
+  }
+}
+
+.regulation {
+  background: var(--default-bg-color);
+  border-radius: 12px;
+  padding: 20px;
+}
+.title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+}
 .editorViewer {
   width: 100%;
   max-width: 880px;

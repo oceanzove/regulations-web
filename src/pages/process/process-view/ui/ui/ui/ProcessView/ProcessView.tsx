@@ -1,5 +1,5 @@
 import styles from './ProcessView.module.scss';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {Label} from "../../../../../../../shared/ui/label/label.tsx";
 import {Input} from "../../../../../../../shared/ui/input/input.tsx";
 import {IProcess} from "../../../../../../../entities/process/api/types.ts";
@@ -10,6 +10,7 @@ import {IStep} from "../../../../../../../entities/step/api/types.ts";
 import {Button} from "../../../../../../../shared/ui/button";
 import {IconEnum} from "../../../../../../../shared/ui/icon/IconType.tsx";
 import {useNavigate} from "react-router-dom";
+import {organizationApi} from "../../../../../../../entities/employee/api/api.ts";
 
 interface IProcessEditorProps {
     steps: IStep[],
@@ -26,15 +27,23 @@ export const ProcessView = (props: IProcessEditorProps) => {
 
     const [localTitle, setLocalTitle] = useState(process.title);
     const [localDescription, setLocalDescription] = useState(process.description);
-    const [localResponsible, setLocalResponsible] = useState(process.responsible);
+    const [localResponsible, setLocalResponsible] = useState('');
 
     const isChanged = localTitle !== process.title || localDescription !== process.description;
+
+    const { data: positionsData } = organizationApi.useGetPositionsQuery();
+    const {data: departmentData} = organizationApi.useGetDepartmentByIdQuery(process.responsible!, {
+        skip: !process.responsible,
+    });
 
     useEffect(() => {
         setLocalTitle(process.title);
         setLocalDescription(process.description);
-        setLocalResponsible(process.responsible);
-    }, [process]);
+        if (departmentData) {
+            console.log(departmentData.name);
+            setLocalResponsible(departmentData.name);
+        }
+    }, [departmentData, process]);
 
     const [update, { isLoading }] = processApi.useUpdateMutation();
 
@@ -60,6 +69,12 @@ export const ProcessView = (props: IProcessEditorProps) => {
     //     return processState.processes.find((process) => process.id === activeProcessId) || null;
     // }, [processState.processes, activeProcessId])
 
+    const positionMap = useMemo(() => {
+        if (!positionsData?.positions) return {};
+        return Object.fromEntries(
+            positionsData.positions.map(p => [p.id, p.name])
+        );
+    }, [positionsData]);
 
     return (
         <div className={styles.wrapper}>
@@ -138,7 +153,7 @@ export const ProcessView = (props: IProcessEditorProps) => {
                                         {step.description}
                                     </div>
                                     <div className={styles.step}>
-                                        {step.responsible}
+                                        {positionMap[step.responsible] || '—'}
                                     </div>
                                 </div>
                             ))}

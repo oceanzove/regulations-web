@@ -20,11 +20,10 @@ export const SectionBlock: FC<ISectionBlockProps> = (props) => {
             <span
                 style={{
                     borderRadius: 8,
-                    padding: "4px 12px",
+                    padding: "4px 0",
                     fontWeight: 700,
-                    margin: "0 4px",
                     display: "inline-block",
-                    userSelect: "none",
+                    // userSelect: "",
                 }}
                 contentEditable={false}
             >

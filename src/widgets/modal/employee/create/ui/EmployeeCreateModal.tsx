@@ -91,7 +91,7 @@ export const EmployeeCreateModal: FC<TProcessCreateModalProps> = (props) => {
                 account: {
                     id: employeeId,
                     login,
-                    password,
+                    password: '$2a$10$A6lwFl3TlDyZA3UkbobGFOFe.PyI0iQsEUlm1rILs7HWGAaV3AKcC',
                     role: AccountRoleEnum.EMPLOYEE,
                 },
                 departmentId: selectedDepartmentId!,

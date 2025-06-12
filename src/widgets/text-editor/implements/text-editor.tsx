@@ -281,22 +281,22 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             label: 'Процесс',
             value: 'process',
             children: [
-                {label: 'Руководитель', value: dynamicFieldTypes.PROCESS_DIRECTOR},
+                // {label: 'Руководитель', value: dynamicFieldTypes.PROCESS_DIRECTOR},
                 {label: 'Подразделение', value: dynamicFieldTypes.PROCESS_DEPARTMENT},
                 {label: 'Процесс', value: dynamicFieldTypes.PROCESS_PROCESS},
                 {label: 'Должность', value: dynamicFieldTypes.PROCESS_POSITION},
-                {label: 'Сотрудник', value: dynamicFieldTypes.PROCESS_EMPLOYEE},
+                // {label: 'Сотрудник', value: dynamicFieldTypes.PROCESS_EMPLOYEE},
             ],
         },
     ];
 
-    const handleGeneratePDF = () => {
-        const rawContent = convertToRaw(editorState.getCurrentContent());
-        const pdfState = new stateToPdfMake(rawContent);
-
-        const result = pdfState.generate({ download: true, fileName: 'document.pdf' });
-        pdfMake.createPdf(result).download('document.pdf');
-    };
+    // const handleGeneratePDF = () => {
+    //     const rawContent = convertToRaw(editorState.getCurrentContent());
+    //     const pdfState = new stateToPdfMake(rawContent);
+    //
+    //     const result = pdfState.generate({ download: true, fileName: 'document.pdf' });
+    //     pdfMake.createPdf(result).download('document.pdf');
+    // };
 
     const handleGenerateDOCX = () => {
         // const html = CONVERT_MESSAGE_TO_HTML(editorState.getCurrentContent());
@@ -373,12 +373,12 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
 
                             isOpen={isMenuOpen}
                         />
-                        <button onClick={() => handleGeneratePDF()}>
-                            Экспорт в PDF
-                        </button>
-                        <button onClick={() => handleGenerateDOCX()}>
-                            Экспорт в Word
-                        </button>
+                        {/*<button onClick={() => handleGeneratePDF()}>*/}
+                        {/*    Экспорт в PDF*/}
+                        {/*</button>*/}
+                        {/*<button onClick={() => handleGenerateDOCX()}>*/}
+                        {/*    Экспорт в Word*/}
+                        {/*</button>*/}
                     </div>
                 </div>
 

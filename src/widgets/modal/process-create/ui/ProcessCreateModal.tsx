@@ -10,6 +10,9 @@ import {IProcess} from "../../../../entities/process/api/types.ts";
 import {IStep} from "../../../../entities/step/api/types.ts";
 import {IRegulation} from "../../../../entities/regulation/api/types.ts";
 import {DropdownMenuRegulations} from "./drowdown-menu-regulations";
+import {DropdownMenuSingle} from "../../employee/create/ui/dropdown-menu/DropdownMenu.tsx";
+import {IDepartment, IPosition} from "../../../../entities/employee/api/types.ts";
+import {organizationApi} from "../../../../entities/employee/api/api.ts";
 
 type TProcessCreateModalProps = {
     isOpen: boolean;
@@ -32,9 +35,39 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
         responsible: ""
     }]);
 
+    const [departments, setDepartments] = useState<IDepartment[]>([]);
+    const [isDropdownDepartmentOpen, setIsDropdownDepartmentOpen] = useState(false);
+    const [selectedDepartmentId, setSelectedDepartmentId] = useState<string | null>(null);
+
+    const {data: departmentsData} = organizationApi.useGetDepartmentsQuery();
+
+    useEffect(() => {
+        if (departmentsData && departmentsData.departments) {
+            setDepartments(departmentsData.departments as IDepartment[]);
+        }
+    }, [departmentsData, setDepartments]);
+
+    const onSelectDepartment = (id: string) => {
+        setSelectedDepartmentId(id);
+    };
+
+    const [openedStepId, setOpenedStepId] = useState<string | null>(null);
+    const [positions, setPositions] = useState<IPosition[]>([]);
+    const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
+
+    const {data: positionData} = organizationApi.useGetPositionsByDepartmentQuery(selectedDepartmentId!, {
+        skip: !selectedDepartmentId,
+    });
+
+    useEffect(() => {
+        if (positionData?.positions) {
+            setPositions(positionData.positions);
+            setSelectedPositionId(null);
+        }
+    }, [positionData]);
+
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [responsible, setResponsible] = useState<string>('');
 
     const [selectedRegulations, setSelectedRegulations] = useState<string[]>([]);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -48,19 +81,19 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
             id: processID,
             title,
             description,
-            responsible,
+            responsible: selectedDepartmentId!,
         };
 
         const stepsWithProcessId = steps
             .map(step => ({
                 ...step,
-                processID
+                processId: processID
             }));
 
         onProcessCreate(process, stepsWithProcessId, selectedRegulations);
 
         clearStates();
-    }, [onClose, title, description, responsible, selectedRegulations, steps, onProcessCreate]);
+    }, [onClose, title, description, selectedDepartmentId, steps, onProcessCreate, selectedRegulations]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -86,7 +119,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
     const clearStates = () => {
         setTitle('');
         setDescription('');
-        setResponsible('');
+        setSelectedDepartmentId('');
         setSteps([{
             id: uuid(),
             name: "",
@@ -151,13 +184,25 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                                 />
                             </Label>
                         </div>
-                        <Label label={'Ответственный за процесс'}>
-                            <Input
-                                value={responsible}
-                                onChange={(e) => setResponsible(e.target.value || '')}
-                                placeholder={'Например, отдел кадров'}
-                            />
-                        </Label>
+                        <DropdownMenuSingle<IDepartment>
+                            label="Подразделение"
+                            isOpen={isDropdownDepartmentOpen}
+                            toggleOpen={() => {
+                                setIsDropdownDepartmentOpen(prev => !prev)
+                            }}
+                            selectedId={selectedDepartmentId}
+                            items={departments}
+                            getId={(d) => d.id}
+                            getLabel={(d) => d.name}
+                            onSelect={(id) => {
+                                onSelectDepartment(id)
+                            }}
+                            placeholder="Выбрать подразделения"
+                            disabled={false}
+                            classes={{
+                                dropdownContainer: styles.dropdownDepartment
+                            }}
+                        />
                     </div>
                     <div className={styles.regulations}>
                         <Label className={'Регламенты'}>
@@ -225,23 +270,28 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                                     <Input
                                         className={styles.step}
                                         value={step.name}
-                                        onChange={(e) =>
-                                            onStepChange(step.id, 'name', e.target.value)}
+                                        onChange={(e) => onStepChange(step.id, 'name', e.target.value)}
                                         placeholder="Введите название"
                                     />
                                     <Input
                                         className={styles.step}
                                         value={step.description}
-                                        onChange={(e) =>
-                                            onStepChange(step.id, 'description', e.target.value)}
+                                        onChange={(e) => onStepChange(step.id, 'description', e.target.value)}
                                         placeholder="Введите описание"
                                     />
-                                    <Input
-                                        className={styles.step}
-                                        value={step.responsible}
-                                        onChange={(e) =>
-                                            onStepChange(step.id, 'responsible', e.target.value)}
-                                        placeholder="Введите ответственного"
+                                    <DropdownMenuSingle<IPosition>
+                                        isOpen={openedStepId === step.id}
+                                        toggleOpen={() => setOpenedStepId(prev => prev === step.id ? null : step.id)}
+                                        selectedId={step.responsible || null}
+                                        items={positions}
+                                        getId={(p) => p.id}
+                                        getLabel={(p) => p.name}
+                                        onSelect={(id) => onStepChange(step.id, 'responsible', id)}
+                                        placeholder="Выбрать ответственного"
+                                        disabled={false}
+                                        classes={{
+                                            dropdownButton: styles.dropdownPosition
+                                        }}
                                     />
                                 </div>
                             ))}

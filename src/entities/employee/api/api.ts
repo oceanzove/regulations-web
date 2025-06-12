@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from '../../api/api.ts';
 import {
-    IAccount,
+    IAccount, IDepartment,
     IEmployeeCreateRequest,
     IGetDepartmentsResponse,
     IGetEmployeesResponse,
@@ -28,7 +28,12 @@ export const organizationApi = createApi({
                 method: 'GET',
             }),
         }),
-        getPositions: builder.query<IGetPositionsResponse, void>({
+        getDepartmentById: builder.query<IDepartment, string>({
+            query: (id) => ({
+                url: `${URI_ORGANIZATION}/${URI_DEPARTMENT}/${id}`,
+                method: 'GET',
+            }),
+        }),        getPositions: builder.query<IGetPositionsResponse, void>({
             query: () => ({
                 url: `${URI_ORGANIZATION}/${URI_POSITION}`,
                 method: 'GET',

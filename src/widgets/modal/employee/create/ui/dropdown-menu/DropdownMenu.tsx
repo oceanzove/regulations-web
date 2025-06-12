@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {usePopper} from 'react-popper';
 import styles from './DropdownMenu.module.scss';
+import {createPortal} from "react-dom";
 
 interface IClasses {
     dropdownContainer?: string;
+    dropdownMenu?: string;
+    dropdownButton?: string;
 }
 
 interface DropdownMenuProps<T> {
-    label: string;
+    label?: string;
     isOpen: boolean;
     toggleOpen: () => void;
     selectedId: string | null;
@@ -63,6 +66,12 @@ export function DropdownMenuSingle<T>({
         };
     }, [isOpen, toggleOpen, popperElement, referenceElement, disabled]);
 
+    useEffect(() => {
+        if (isOpen && referenceElement && popperElement) {
+            popperElement.style.width = `${referenceElement.offsetWidth}px`;
+        }
+    }, [isOpen, referenceElement, popperElement]);
+
     const selectedItem = items.find((item) => getId(item) === selectedId);
     const selectedLabel = selectedItem ? getLabel(selectedItem) : placeholder;
 
@@ -77,19 +86,19 @@ export function DropdownMenuSingle<T>({
                         setTimeout(() => update?.(), 0); // 🛠 Пересчет позиции popper
                     }
                 }}
-                className={`${styles.dropdownMenuButton} ${isOpen ? styles.active : ''} ${disabled ? styles.disabled : ''}`}
+                className={`${styles.dropdownMenuButton} ${isOpen ? styles.active : ''} ${disabled ? styles.disabled : ''} ${classes?.dropdownButton}`}
                 disabled={disabled}
             >
                 {selectedLabel}
                 <span className={styles.arrow}>{isOpen ? '▴' : '▾'}</span>
             </button>
 
-            {isOpen && !disabled && (
+            {isOpen && !disabled && createPortal(
                 <div
                     ref={setPopperElement}
                     style={popperStyles.popper}
                     {...attributes.popper}
-                    className={styles.dropdownMenu}
+                    className={`${styles.dropdownMenu} ${classes?.dropdownMenu}`}
                 >
                     <div className={styles.mainMenu}>
                         {items.map((item) => {
@@ -109,7 +118,8 @@ export function DropdownMenuSingle<T>({
                             );
                         })}
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

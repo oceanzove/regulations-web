@@ -48,17 +48,17 @@
 }
 
 .dropdownMenu {
-  width: 100%;
-  max-height: 400px;
-  overflow: hidden;
-  overflow-y: scroll;
+  width: auto;
+  max-width: inherit;
+  //overflow: hidden;
+  //overflow-y: scroll;
 
+  z-index: 1000;
   padding: 20px;
 
   border-radius: 16px;
 
   position: absolute;
-  z-index: 10;
   top: 110%;
   border: 1px solid #e0e0e0;
   font-family: sans-serif;

@@ -1,7 +1,7 @@
 import {
     AddIcon,
-    ArrowDownIcon, ArrowRightIcon,
-    BoldIcon, CrossIcon, DynamicFieldIcon, FilterIcon,
+    ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon,
+    BoldIcon, CrossIcon, DynamicFieldIcon, ExportPdfIcon, FilterIcon,
     ItalicIcon,
     OrderedListIcon, SearchIcon,
     UnderlineIcon,
@@ -11,7 +11,9 @@ import {
 export type IconType =
     | "Arrow-down"
     | "Arrow-right"
+    | "Arrow-left"
     | "DYNAMIC_FIELD"
+    | "Export-pdf"
     | "Bold"
     | "Italic"
     | "Underline"
@@ -26,6 +28,8 @@ export type IconType =
 export enum IconEnum {
     ARROW_DOWN = "Arrow-down",
     ARROW_RIGHT = "Arrow-right",
+    ARROW_LEFT = "Arrow-left",
+    EXPORT_PDF = "Export-pdf",
     ADD = "ADD",
     SEARCH = "SEARCH",
     FILTER = "FILTER",
@@ -36,12 +40,14 @@ export enum IconEnum {
 
 export const iconTypes = new Map([
     ['ADD', <AddIcon key="add-icon" width={24} height={24}/>],
-    ['SEARCH', <SearchIcon key="add-icon" />],
-    ['FILTER', <FilterIcon key="filter-icon" width={17.5} height={13.5} color={'#8692A7'} />],
+    ['SEARCH', <SearchIcon key="add-icon"/>],
+    ['FILTER', <FilterIcon key="filter-icon" width={17.5} height={13.5} color={'#8692A7'}/>],
     ['CROSS', <CrossIcon key="cross-icon"/>],
-    ["Arrow-down", <ArrowDownIcon key="arrow-down" width={9.5} height={5.5} />],
-    ["Arrow-right", <ArrowRightIcon key="arrow-down" width={5.5} height={9.5} />],
-    ["Bold", <BoldIcon key="BoldIcon" width={9} height={12} />],
+    ["Export-pdf", <ExportPdfIcon key="export-pdf" width={15.5} height={17.5}/> ],
+    ["Arrow-down", <ArrowDownIcon key="arrow-down" width={9.5} height={5.5}/>],
+    ["Arrow-left", <ArrowLeftIcon key="arrow-left" width={5.5} height={9.5}/>],
+    ["Arrow-right", <ArrowRightIcon key="arrow-down" width={5.5} height={9.5}/>],
+    ["Bold", <BoldIcon key="BoldIcon" width={9} height={12}/>],
     ["Italic", <ItalicIcon key="ItalicIcon" width={12} height={12}/>],
     ["Underline", <UnderlineIcon key="UnderlineIcon" width={12} height={15}/>],
     ["UL", <UnorderedListIcon key="UnorderedListIcon" width={20} height={12}/>],
