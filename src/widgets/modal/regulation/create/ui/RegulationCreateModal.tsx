@@ -2,15 +2,15 @@ import React, {FC, useCallback, useEffect, useState} from "react";
 import {
     Section,
     Sections
-} from "../../../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
-import {RegulationEditor} from "../../../../pages/regulation/regulation-view/ui/regulation-view-block/editor";
-import {IRegulation, ISection} from "../../../../entities/regulation/api/types.ts";
+} from "../../../../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
+import {RegulationEditor} from "../../../../../pages/regulation/regulation-view/ui/regulation-view-block/editor";
+import {IRegulation, ISection} from "../../../../../entities/regulation/api/types.ts";
 import styles from './RegulationCreateModal.module.scss';
-import {IconButton} from "../../../../shared/ui/icon-button/icon-button.tsx";
-import {IconEnum} from "../../../../shared/ui/icon/IconType.tsx";
-import {Label} from "../../../../shared/ui/label/label.tsx";
-import {Input} from "../../../../shared/ui/input/input.tsx";
-import {Button} from "../../../../shared/ui/button";
+import {IconButton} from "../../../../../shared/ui/icon-button/icon-button.tsx";
+import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
+import {Label} from "../../../../../shared/ui/label/label.tsx";
+import {Input} from "../../../../../shared/ui/input/input.tsx";
+import {Button} from "../../../../../shared/ui/button";
 import {SaveAsModal} from "./save-as";
 import {v4 as uuid} from "uuid";
 

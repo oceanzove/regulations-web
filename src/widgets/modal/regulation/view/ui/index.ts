@@ -1,0 +1,1 @@
+export { RegulationViewModal } from './RegulationViewModal.tsx';

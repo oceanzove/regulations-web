@@ -1,8 +1,8 @@
 import styles from './SaveAsModal.module.scss';
 import React, {FC, useEffect} from "react";
-import {IconButton} from "../../../../../shared/ui/icon-button/icon-button.tsx";
-import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
-import {Button} from "../../../../../shared/ui/button";
+import {IconButton} from "../../../../../../shared/ui/icon-button/icon-button.tsx";
+import {IconEnum} from "../../../../../../shared/ui/icon/IconType.tsx";
+import {Button} from "../../../../../../shared/ui/button";
 
 type TSaveAsModalProps = {
     isOpen: boolean;

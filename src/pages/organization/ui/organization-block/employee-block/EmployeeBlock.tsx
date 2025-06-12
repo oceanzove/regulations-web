@@ -5,7 +5,7 @@ import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
 import {Icon} from "../../../../../shared/ui/icon";
 import {IEmployee} from "../../../../../entities/employee/api/types.ts";
 import {organizationApi} from "../../../../../entities/employee/api/api.ts";
-import {RegulationCreateModal} from "../../../../../widgets/modal/regulation-create";
+import {RegulationCreateModal} from "../../../../../widgets/modal/regulation/create";
 import {EmployeeCreateModal} from "../../../../../widgets/modal/employee/create";
 
 

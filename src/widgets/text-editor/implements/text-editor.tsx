@@ -1,10 +1,9 @@
 import {
     ContentBlock,
-    ContentState, convertToRaw,
-    Editor,
+    ContentState, Editor,
     EditorState, genKey,
     Modifier,
-    RichUtils, SelectionState
+    RichUtils
 } from "draft-js";
 import {type FC, memo, useCallback, useEffect, useRef, useState} from "react";
 import "draft-js/dist/Draft.css";
@@ -20,11 +19,6 @@ import {useOutsideClick} from "../../utils";
 import {SectionBlock} from "../style-control/custom-block/section-block/section-block.tsx";
 import {Section} from "../../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
 import {Map} from 'immutable';
-import stateToPdfMake from 'draft-js-export-pdfmake';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-
-pdfMake.vfs = pdfFonts.vfs;
 
 import {
     CONVERT_HTML_TO_MESSAGE,
@@ -211,64 +205,64 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
         return EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter());
     };
 
-    const replaceDynamicFieldWithList = (
-        editorState: EditorState,
-        listItems: string[]
-    ): EditorState => {
-        const contentState = editorState.getCurrentContent();
-        const selection = editorState.getSelection();
-        const blockKey = selection.getAnchorKey();
-        const block = contentState.getBlockForKey(blockKey);
-
-        let start = -1;
-        let end = -1;
-        let entityKeyToReplace: string | null = null;
-
-        block.findEntityRanges(
-            (char) => {
-                const entityKey = char.getEntity();
-                if (!entityKey) return false;
-                const entity = contentState.getEntity(entityKey);
-                return entity.getType() === 'DYNAMIC_FIELD';
-            },
-            (startOffset, endOffset) => {
-                start = startOffset;
-                end = endOffset;
-                entityKeyToReplace = block.getEntityAt(startOffset);
-            }
-        );
-
-        if (start === -1 || end === -1 || !entityKeyToReplace) {
-            return editorState;
-        }
-
-        // Удаляем старое поле
-        let newContentState = Modifier.removeRange(
-            contentState,
-            selection.merge({
-                anchorOffset: start,
-                focusOffset: end,
-            }),
-            'backward'
-        );
-
-        // Вставляем список (как обычный текст, можно улучшить до block-level)
-        const listText = listItems.map((item) => `• ${item}`).join('\n');
-
-        newContentState = Modifier.insertText(
-            newContentState,
-            newContentState.getSelectionAfter(),
-            listText
-        );
-
-        const newEditorState = EditorState.push(
-            editorState,
-            newContentState,
-            'insert-characters'
-        );
-
-        return EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter());
-    };
+    // const replaceDynamicFieldWithList = (
+    //     editorState: EditorState,
+    //     listItems: string[]
+    // ): EditorState => {
+    //     const contentState = editorState.getCurrentContent();
+    //     const selection = editorState.getSelection();
+    //     const blockKey = selection.getAnchorKey();
+    //     const block = contentState.getBlockForKey(blockKey);
+    //
+    //     let start = -1;
+    //     let end = -1;
+    //     let entityKeyToReplace: string | null = null;
+    //
+    //     block.findEntityRanges(
+    //         (char) => {
+    //             const entityKey = char.getEntity();
+    //             if (!entityKey) return false;
+    //             const entity = contentState.getEntity(entityKey);
+    //             return entity.getType() === 'DYNAMIC_FIELD';
+    //         },
+    //         (startOffset, endOffset) => {
+    //             start = startOffset;
+    //             end = endOffset;
+    //             entityKeyToReplace = block.getEntityAt(startOffset);
+    //         }
+    //     );
+    //
+    //     if (start === -1 || end === -1 || !entityKeyToReplace) {
+    //         return editorState;
+    //     }
+    //
+    //     // Удаляем старое поле
+    //     let newContentState = Modifier.removeRange(
+    //         contentState,
+    //         selection.merge({
+    //             anchorOffset: start,
+    //             focusOffset: end,
+    //         }),
+    //         'backward'
+    //     );
+    //
+    //     // Вставляем список (как обычный текст, можно улучшить до block-level)
+    //     const listText = listItems.map((item) => `• ${item}`).join('\n');
+    //
+    //     newContentState = Modifier.insertText(
+    //         newContentState,
+    //         newContentState.getSelectionAfter(),
+    //         listText
+    //     );
+    //
+    //     const newEditorState = EditorState.push(
+    //         editorState,
+    //         newContentState,
+    //         'insert-characters'
+    //     );
+    //
+    //     return EditorState.forceSelection(newEditorState, newContentState.getSelectionAfter());
+    // };
 
 
     /**
@@ -298,10 +292,10 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     //     pdfMake.createPdf(result).download('document.pdf');
     // };
 
-    const handleGenerateDOCX = () => {
-        // const html = CONVERT_MESSAGE_TO_HTML(editorState.getCurrentContent());
-        // await HTMLtoDOCX(html, headerHTMLString, documentOptions, footerHTMLString)
-    };
+    // const handleGenerateDOCX = () => {
+    //     const html = CONVERT_MESSAGE_TO_HTML(editorState.getCurrentContent());
+    //     await HTMLtoDOCX(html, headerHTMLString, documentOptions, footerHTMLString)
+    // };
 
     const handleDynamicFieldSelect = useCallback((value: string) => {
         insertDynamicField(editorState, value);

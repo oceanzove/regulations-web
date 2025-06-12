@@ -16,19 +16,6 @@ export const ProcessViewBlock = () => {
     const [ process, setProcess ] = useState<IProcess>({ id: '', title: '', description: '', responsible: '' })
     const [ steps, setSteps ] = useState<IStep[]>([])
     const [ regulations, setRegulations ] = useState<IRegulation[]>([])
-    // const {data} = processApi.useGetQuery();
-    // const [isDataLoaded, setIsDataLoaded] = useState(false);
-    //
-    // const [isModalOpen, setIsModalOpen] = useState(false);
-    //
-    // useEffect(() => {
-    //     if (data && !isDataLoaded) {
-    //         if (data.processes !== null) {
-    //             updateProcesses(data.processes);
-    //         }
-    //         setIsDataLoaded(true);
-    //     }
-    // }, [data, isDataLoaded, updateProcesses]);
 
     const { id } = useParams<{ id: string }>();
 
@@ -54,8 +41,6 @@ export const ProcessViewBlock = () => {
         }
     }, [regulationsData, setRegulations]);
 
-    console.log(processData)
-    console.log(stepsData)
     return (
         <div className={styles.processBlockWrapper}>
             <ProcessView

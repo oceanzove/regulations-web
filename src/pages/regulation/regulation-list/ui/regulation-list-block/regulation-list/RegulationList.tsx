@@ -5,7 +5,7 @@ import styles from './RegulationList.module.scss';
 import {Button} from "../../../../../../shared/ui/button";
 import {IconEnum} from "../../../../../../shared/ui/icon/IconType.tsx";
 import {Icon} from "../../../../../../shared/ui/icon";
-import {RegulationCreateModal} from "../../../../../../widgets/modal/regulation-create";
+import {RegulationCreateModal} from "../../../../../../widgets/modal/regulation/create";
 import {IProcess} from "../../../../../../entities/process/api/types.ts";
 import {IStep} from "../../../../../../entities/step/api/types.ts";
 import {notificationError, notificationSuccess} from "../../../../../../widgets/notifications/callNotification.tsx";

@@ -11,6 +11,7 @@ import {Button} from "../../../../../../../shared/ui/button";
 import {IconEnum} from "../../../../../../../shared/ui/icon/IconType.tsx";
 import {useNavigate} from "react-router-dom";
 import {organizationApi} from "../../../../../../../entities/employee/api/api.ts";
+import {RegulationViewModal} from "../../../../../../../widgets/modal/regulation/view";
 
 interface IProcessEditorProps {
     steps: IStep[],
@@ -21,7 +22,7 @@ interface IProcessEditorProps {
 }
 
 export const ProcessView = (props: IProcessEditorProps) => {
-    const { steps, process, regulations } = props;
+    const {steps, process, regulations} = props;
 
     const navigate = useNavigate();
 
@@ -29,9 +30,15 @@ export const ProcessView = (props: IProcessEditorProps) => {
     const [localDescription, setLocalDescription] = useState(process.description);
     const [localResponsible, setLocalResponsible] = useState('');
 
+    const [selectedRegulation, setSelectedRegulation] = useState<IRegulation | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const toggleModal = () => {
+        setIsModalOpen((prev) => !prev);
+    }
+
     const isChanged = localTitle !== process.title || localDescription !== process.description;
 
-    const { data: positionsData } = organizationApi.useGetPositionsQuery();
+    const {data: positionsData} = organizationApi.useGetPositionsQuery();
     const {data: departmentData} = organizationApi.useGetDepartmentByIdQuery(process.responsible!, {
         skip: !process.responsible,
     });
@@ -45,7 +52,7 @@ export const ProcessView = (props: IProcessEditorProps) => {
         }
     }, [departmentData, process]);
 
-    const [update, { isLoading }] = processApi.useUpdateMutation();
+    const [update, {isLoading}] = processApi.useUpdateMutation();
 
     const onSaveClick = () => {
         if (!isChanged) return;
@@ -58,7 +65,7 @@ export const ProcessView = (props: IProcessEditorProps) => {
         // }
         if (localTitle !== process.title || localDescription !== process.description) {
             try {
-                update({ process: process.id, title: localTitle, description: localDescription})
+                update({process: process.id, title: localTitle, description: localDescription})
                 notificationSuccess('Сохранение', 'Процесс успешно сохранен');
             } catch {
                 notificationError('Сохранение', 'Не удалось сохранить процесс');
@@ -106,9 +113,14 @@ export const ProcessView = (props: IProcessEditorProps) => {
                         {regulations.length > 0
                             ?
                             <div className={styles.regulationContainer}>
-                                { regulations
+                                {regulations
                                     .map(regulation => (
-                                        <div key={regulation?.id} className={styles.regulationTag}>
+                                        <div key={regulation?.id} className={styles.regulationTag}
+                                             onClick={() => {
+                                                 setSelectedRegulation(regulation);
+                                                 setIsModalOpen(true);
+                                             }}
+                                        >
                                             {regulation?.title}
                                         </div>
                                     ))
@@ -175,6 +187,13 @@ export const ProcessView = (props: IProcessEditorProps) => {
                 </div>
 
             </div>
+
+            <RegulationViewModal
+                isOpen={isModalOpen}
+                onClose={toggleModal}
+                process={process}
+                regulation={selectedRegulation!}
+            />
         </div>
     );
 };
