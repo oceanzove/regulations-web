@@ -12,14 +12,14 @@ import {notificationError, notificationSuccess} from "../../../../widgets/notifi
 export const SignInBlock = () => {
     const {
         signInState,
-        updateEmail,
+        updateLogin,
         updatePassword,
         resetCredentials,
     } = useSignIn();
     const navigate = useNavigate();
     
     const authorizationData: ISignInRequest = {
-        email: signInState.email,
+        login: signInState.login,
         password: signInState.password,
     };
 
@@ -58,8 +58,8 @@ export const SignInBlock = () => {
             <Label label="Почта">
                 <Input
                     placeholder="Введите почту"
-                    value={signInState.email}
-                    onChange={(e) => updateEmail(e.target.value)}
+                    value={signInState.login}
+                    onChange={(e) => updateLogin(e.target.value)}
                 />
             </Label>
             <Label label="Пароль">

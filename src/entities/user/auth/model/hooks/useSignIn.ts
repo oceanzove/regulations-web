@@ -6,8 +6,8 @@ export const useSignIn = () => {
     const dispatch = useDispatch();
     const signInState = useSelector((state: RootState) => state.signIn);
 
-    const updateEmail = (login: string) => {
-        dispatch(signInActions.setEmail(login));
+    const updateLogin = (login: string) => {
+        dispatch(signInActions.setLogin(login));
     };
 
     const updatePassword = (password: string) => {
@@ -22,7 +22,7 @@ export const useSignIn = () => {
 
     return {
         signInState,
-        updateEmail,
+        updateLogin,
         updatePassword,
         resetCredentials,
     };

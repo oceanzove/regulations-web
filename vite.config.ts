@@ -7,6 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       'immutable': resolve(__dirname, 'node_modules/immutable/dist/immutable.js'),
+      'stateToPdfMake': resolve(__dirname, 'node_modules/draft-js-export-pdfmake'),
     }
   },
   define: {

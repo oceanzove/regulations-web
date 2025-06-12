@@ -1,7 +1,7 @@
 import React, {type FC, memo} from "react";
 import styles from './format-button.module.scss';
-import {IconButton} from "../../../shared/ui/icon-button/icon-button.tsx";
-import {IconType} from "../../../shared/ui/icon/IconType.tsx";
+import {IconButton} from "../../../../shared/ui/icon-button/icon-button.tsx";
+import {IconType} from "../../../../shared/ui/icon/IconType.tsx";
 
 
 interface IFormatButtonProps {

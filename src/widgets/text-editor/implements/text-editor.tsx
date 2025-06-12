@@ -8,21 +8,21 @@ import {
 } from "draft-js";
 import {type FC, memo, useCallback, useEffect, useRef, useState} from "react";
 import "draft-js/dist/Draft.css";
-import {BlockStyleControl} from "./block-style-control";
+import {BlockStyleControl} from "../style-control/block-style-control";
 import {
     dynamicFieldTypes,
     TEXT_EDITOR_CUSTOM_STYLES,
-} from "./configuration.tsx";
-import {InlineStyleControl} from "./inline-style-control";
+} from "../configuration.tsx";
+import {InlineStyleControl} from "../style-control/inline-style-control";
 import styles from './text-editor.module.scss';
-import DropdownMenuDynamicField from "./dropdown-menu-dynamic-field.tsx";
-import {useOutsideClick} from "../utils";
-import {SectionBlock} from "./custom-block/section-block/section-block.tsx";
-import {Section} from "../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
+import DropdownMenuDynamicField from "../dropdown-menu-dynamic-field.tsx";
+import {useOutsideClick} from "../../utils";
+import {SectionBlock} from "../style-control/custom-block/section-block/section-block.tsx";
+import {Section} from "../../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
 import {Map} from 'immutable';
-import stateToPdfMake from "draft-js-export-pdfmake";
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import stateToPdfMake from 'draft-js-export-pdfmake';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -31,7 +31,7 @@ import {
     CONVERT_MESSAGE_TO_HTML,
     GET_DECORATOR,
     NORMALIZE_HTML_TEXT
-} from "./editor-utils.ts";
+} from "../editor-utils.ts";
 
 export type TTextEditorTextStyle =
     | "H1"
@@ -277,14 +277,6 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const menuItems = [
-        // {
-        //     label: 'Руководитель',
-        //     value: 'leader',
-        // },
-        // {
-        //     label: 'Подразделение',
-        //     value: 'department',
-        // },
         {
             label: 'Процесс',
             value: 'process',
@@ -296,30 +288,6 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
                 {label: 'Сотрудник', value: dynamicFieldTypes.PROCESS_EMPLOYEE},
             ],
         },
-        // {
-        //     label: 'Должность',
-        //     value: 'position',
-        // },
-        // {
-        //     label: 'Сотрудник',
-        //     value: 'employee',
-        // },
-        // {
-        //     label: 'Должность (группа)',
-        //     value: 'position-group',
-        //     children: [
-        //         {label: 'Должность А', value: 'position-a'},
-        //         {label: 'Должность Б', value: 'position-b'},
-        //     ],
-        // },
-        // {
-        //     label: 'Сотрудник (группа)',
-        //     value: 'employee-group',
-        //     children: [
-        //         {label: 'Сотрудник X', value: 'employee-x'},
-        //         {label: 'Сотрудник Y', value: 'employee-y'},
-        //     ],
-        // },
     ];
 
     const handleGeneratePDF = () => {
@@ -331,8 +299,8 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
     };
 
     const handleGenerateDOCX = () => {
-        const html = CONVERT_MESSAGE_TO_HTML(editorState.getCurrentContent());
-        await HTMLtoDOCX(html, headerHTMLString, documentOptions, footerHTMLString)
+        // const html = CONVERT_MESSAGE_TO_HTML(editorState.getCurrentContent());
+        // await HTMLtoDOCX(html, headerHTMLString, documentOptions, footerHTMLString)
     };
 
     const handleDynamicFieldSelect = useCallback((value: string) => {

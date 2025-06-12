@@ -1,7 +1,7 @@
 import {CompositeDecorator, ContentBlock, ContentState, convertToRaw, RawDraftEntity} from "draft-js";
-import {DynamicField} from "./custom-entity/dynamic-field";
+import {DynamicField} from "./style-control/custom-entity/dynamic-field";
 import {convertFromHTML, convertToHTML, IConvertFromHTMLConfig, IConvertToHTMLConfig} from "draft-convert";
-import {TTextEditorTextStyle} from "./text-editor.tsx";
+import {TTextEditorTextStyle} from "./implements/text-editor.tsx";
 import {TEXT_EDITOR_STYLE_TO_HTML} from "./configuration.tsx";
 import html2pdf from 'html2pdf.js';
 

@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import styles from './section-block.module.scss';
 import {Editor, EditorState} from "draft-js";
-import {CONVERT_HTML_TO_MESSAGE, GET_DECORATOR} from "../../editor-utils.ts";
+import {CONVERT_HTML_TO_MESSAGE, GET_DECORATOR} from "../../../editor-utils.ts";
 
 interface ISectionBlockProps {
     blockProps: {

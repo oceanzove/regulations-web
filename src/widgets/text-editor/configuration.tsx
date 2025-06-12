@@ -1,6 +1,6 @@
-import {TTextEditorTextStyle} from "./text-editor.tsx";
+import {TTextEditorTextStyle} from "./implements/text-editor.tsx";
 import {CompositeDecorator, ContentBlock, ContentState, RawDraftEntity} from "draft-js";
-import {DynamicField} from "./custom-entity/dynamic-field";
+import {DynamicField} from "./style-control/custom-entity/dynamic-field";
 import {convertFromHTML, convertToHTML, IConvertFromHTMLConfig, IConvertToHTMLConfig} from "draft-convert";
 
 export const TEXT_EDITOR_STYLE_TO_HTML = (style: TTextEditorTextStyle) => {

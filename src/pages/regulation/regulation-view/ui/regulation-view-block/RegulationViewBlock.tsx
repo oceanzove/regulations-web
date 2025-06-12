@@ -6,6 +6,9 @@ import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
 import {RegulationEditor} from "./editor";
 import {Sections} from "./section";
 import {Section} from "./section/Sections.tsx";
+import {TEXT_EDITOR_CUSTOM_STYLES} from "../../../../../widgets/text-editor";
+import {Editor} from "draft-js";
+import {TextViewer} from "../../../../../widgets/text-editor/implements/text-viewer.tsx";
 
 export const RegulationViewBlock = () => {
     // const {
@@ -44,10 +47,9 @@ export const RegulationViewBlock = () => {
 
     return (
         <div className={styles.regulationViewBlockWrapper}>
-            <RegulationEditor
-                regulation={regulation}
-                selectedSections={[]}
-                onEditorChange={() => {}}
+            <TextViewer
+                classes={{textEditor: styles.editoarViewer}}
+                htmlText={regulation.content}
             />
             {/*<ProcessView*/}
             {/*    process={process}*/}

@@ -17,3 +17,17 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.editorViewer {
+  width: 100%;
+  max-width: 880px;
+
+  padding: 15px;
+
+  border-radius: 8px;
+  border: 1px solid #EBEDEF;
+
+  overflow: scroll;
+  height: 610px;
+  min-height: 300px;
+}

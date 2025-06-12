@@ -1,6 +1,6 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {URI_REGULATION} from "./consts.ts";
-import {ICreateRegulationResponse, IGetRegulationsResponse, IRegulation, ISection} from "./types.ts";
+import {IGetRegulationsResponse, IRegulation, ISection} from "./types.ts";
 import {baseQuery} from "../../api/api.ts";
 
 export const regulationApi = createApi({

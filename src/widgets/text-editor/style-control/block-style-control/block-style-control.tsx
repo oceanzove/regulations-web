@@ -1,6 +1,6 @@
 import { type FC, memo } from "react";
 import styles from './block-style-control.module.scss'
-import { TEXT_EDITOR_BLOCK_TYPES } from "../configuration.tsx";
+import { TEXT_EDITOR_BLOCK_TYPES } from "../../configuration.tsx";
 import { FormatButton } from "../format-button";
 import type {EditorState} from "draft-js";
 

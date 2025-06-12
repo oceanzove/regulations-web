@@ -1,6 +1,6 @@
 import { type FC, memo } from "react";
 
-import { TEXT_EDITOR_INLINE_STYLES } from "../configuration.tsx";
+import { TEXT_EDITOR_INLINE_STYLES } from "../../configuration.tsx";
 import { FormatButton } from "../format-button";
 import styles from './inline-style-control.module.scss';
 import type {EditorState} from "draft-js";
