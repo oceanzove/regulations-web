@@ -25,6 +25,7 @@ export const Input = (props: IInputProps) => {
         value,
         className,
         type,
+        disabled,
         onChange,
         showCopyButton,
         readOnly,
@@ -41,6 +42,7 @@ export const Input = (props: IInputProps) => {
                 <input
                     type={type}
                     id={id}
+                    disabled={disabled}
                     className={css.inputField}
                     placeholder={placeholder}
                     style={{height}}

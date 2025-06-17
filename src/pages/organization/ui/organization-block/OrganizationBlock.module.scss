@@ -28,6 +28,10 @@
         border-radius: 8px;
         background: #FFEFF5;
       }
+
+      &:disabled {
+        background-color: white !important;
+      }
     }
   }
 }

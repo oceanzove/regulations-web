@@ -45,6 +45,30 @@
   }
 }
 
+.loaderOverlay {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 16px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #ccc;
+  border-top-color: #0BB2E7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 
 .organizationBlock {
   display: flex;
@@ -154,6 +178,16 @@
   }
 
   .label {
+    width: 100%;
+  }
+
+  .dataPicker {
+    max-width: 320px;
+    max-height: 360px;
+    overflow: hidden;
+  }
+
+  .dataPickerWrapper {
     width: 100%;
   }
 

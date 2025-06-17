@@ -35,8 +35,8 @@
   //}
 
   &.disabled {
-    background: #f4f4f4;
-    color: #999;
+    //background: #f4f4f4;
+    color: rgb(84, 84, 84) !important;
     border-color: #e0e0e0;
     cursor: not-allowed;
   }

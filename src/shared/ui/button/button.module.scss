@@ -13,4 +13,9 @@
     cursor: pointer;
   }
 
+  &:disabled {
+    background-color: #e0e0e0 !important;
+    color: #a0a0a0 !important;
+    cursor: not-allowed;
+  }
 }

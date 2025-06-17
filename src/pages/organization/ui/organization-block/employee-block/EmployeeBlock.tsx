@@ -7,12 +7,13 @@ import {IEmployee} from "../../../../../entities/employee/api/types.ts";
 import {organizationApi} from "../../../../../entities/employee/api/api.ts";
 import {RegulationCreateModal} from "../../../../../widgets/modal/regulation/create";
 import {EmployeeCreateModal} from "../../../../../widgets/modal/employee/create";
+import {EmployeeViewEditModal} from "../../../../../widgets/modal/employee/view-edit/ui/EmployeeViewEditModal.tsx";
 
 
 export const EmployeeBlock = () => {
 
 
-    const [ employees, setEmployees ] = useState<IEmployee[]>([]);
+    const [employees, setEmployees] = useState<IEmployee[]>([]);
 
     const {data: employeesData} = organizationApi.useGetEmployeesQuery();
 
@@ -22,14 +23,22 @@ export const EmployeeBlock = () => {
         }
     }, [employeesData, setEmployees]);
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const toggleModal = () => {
-        setIsModalOpen((prev) => !prev);
+
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+    const toggleCreateModal = () => {
+        setIsCreateModalOpen((prev) => !prev);
     }
+
     const onCreateEmployeeClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        toggleModal();
+        toggleCreateModal();
         event.currentTarget.blur();
     };
+
+    const [viewModalState, setViewModalState] = useState<{ isOpen: boolean, employeeId: string | null }>({ isOpen: false, employeeId: null });
+
+    const openViewModal = (id: string) => setViewModalState({ isOpen: true, employeeId: id });
+    const closeViewModal = () => setViewModalState({ isOpen: false, employeeId: null });
 
     return (
         <div className={styles.employeeBlockWrapper}>
@@ -78,7 +87,7 @@ export const EmployeeBlock = () => {
                         <div
                             key={index}
                             className={styles.employee}
-                            // onClick={() => onNavigateToRegulationClick(regulation.id)}
+                            onClick={() => openViewModal(employee.id)}
                         >
                             {employee.fullName}
                         </div>
@@ -87,8 +96,14 @@ export const EmployeeBlock = () => {
             </div>
 
             <EmployeeCreateModal
-                isOpen={isModalOpen}
-                onClose={toggleModal}
+                isOpen={isCreateModalOpen}
+                onClose={toggleCreateModal}
+            />
+
+            <EmployeeViewEditModal
+                isOpen={viewModalState.isOpen}
+                onClose={closeViewModal}
+                employeeId={viewModalState.employeeId}
             />
         </div>
     )

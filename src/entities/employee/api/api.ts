@@ -1,11 +1,11 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseQuery } from '../../api/api.ts';
 import {
-    IAccount, IDepartment,
+    IAccount, IDepartment, IEmployee,
     IEmployeeCreateRequest,
     IGetDepartmentsResponse,
     IGetEmployeesResponse,
-    IGetPositionsResponse,
+    IGetPositionsResponse, IPosition,
 } from "./types.ts";
 import {URI_DEPARTMENT, URI_EMPLOYEE, URI_ORGANIZATION, URI_POSITION} from "./consts.ts";
 import {IProcess} from "../../process/api/types.ts";
@@ -22,6 +22,12 @@ export const organizationApi = createApi({
                 method: 'GET',
             }),
         }),
+        getAccountById: builder.query<IAccount, string>({
+            query: (id) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/account/${id}`,
+                method: 'GET',
+            }),
+        }),
         getDepartments: builder.query<IGetDepartmentsResponse, void>({
             query: () => ({
                 url: `${URI_ORGANIZATION}/${URI_DEPARTMENT}`,
@@ -33,9 +39,22 @@ export const organizationApi = createApi({
                 url: `${URI_ORGANIZATION}/${URI_DEPARTMENT}/${id}`,
                 method: 'GET',
             }),
-        }),        getPositions: builder.query<IGetPositionsResponse, void>({
+        }),
+        getDepartmentByEmployeeId: builder.query<IDepartment, string>({
+            query: (id) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${URI_DEPARTMENT}/${id}`,
+                method: 'GET',
+            }),
+        }),
+        getPositions: builder.query<IGetPositionsResponse, void>({
             query: () => ({
                 url: `${URI_ORGANIZATION}/${URI_POSITION}`,
+                method: 'GET',
+            }),
+        }),
+        getPositionByEmployeeId: builder.query<IPosition, string>({
+            query: (id) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${URI_POSITION}/${id}`,
                 method: 'GET',
             }),
         }),
@@ -55,6 +74,12 @@ export const organizationApi = createApi({
                     departmentId,
                     positionId,
                 },
+            }),
+        }),
+        getEmployeeById: builder.query<IEmployee, string>({
+            query: (id) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${id}`,
+                method: 'GET',
             }),
         }),
         getEmployees: builder.query<IGetEmployeesResponse, void>({

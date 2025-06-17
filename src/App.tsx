@@ -1,16 +1,10 @@
 import React from 'react';
 import Router from './app/router/Router';
-import {useLocation} from "react-router-dom";
-import {Navbar} from "./widgets/navbar/navbar.tsx";
 import {ToastContainer} from "react-toastify";
-import {SessionGuard} from "./widgets/session-guard/ui/session-guard.tsx";
+import {SessionGuard} from "./widgets/session-guard";
+import 'react-datepicker/dist/react-datepicker.css';
 
 const App = () => {
-    // const location = useLocation();
-
-    // const hiddenNavbarRoutes = ['/', '/registration'];
-
-    // const shouldHideNavbar = hiddenNavbarRoutes.includes(location.pathname);
 
     return (
         <>

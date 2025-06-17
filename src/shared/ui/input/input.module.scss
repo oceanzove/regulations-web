@@ -32,11 +32,16 @@
   cursor: pointer;
   font-size: 16px;
   opacity: 0.6;
-  color: #999;
+  color: white;
+  background: #F91F71;
+
+  border-radius: 8px;
+  padding: 2px;
 
   &:hover {
     opacity: 1;
-    color: #666
+    color: white;
+    background: #F91F71;
   }
 }
 

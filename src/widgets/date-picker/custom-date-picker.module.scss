@@ -1,0 +1,16 @@
+.dataPicker {
+  overflow: hidden;
+
+}
+
+.dataPickerWrapper {
+  width: 100%;
+}
+
+.disabled {
+  color: rgb(84, 84, 84) !important;
+
+  svg {
+    fill: red;
+  }
+}

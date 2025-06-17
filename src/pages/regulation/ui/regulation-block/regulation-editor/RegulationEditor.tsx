@@ -3,7 +3,7 @@
 // import { FC } from "react";
 // import styles from './RegulationEditor.module.scss';
 // import {Sections} from "./sections";
-// import {RegulationEditor} from "../../../regulation-view/ui/regulation-view-block/editor";
+// import {RegulationEditor} from "../../../regulation-view-edit/ui/regulation-view-edit-block/editor";
 //
 // type TRegulationEditorProps = {
 //     activeRegulation: IRegulation;

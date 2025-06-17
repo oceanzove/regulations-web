@@ -34,7 +34,7 @@ const ButtonComponent: FC<IButtonProps> = ({
                                            }) => {
     return (
         <button
-            className={`${styles.button} ${className ? className : ''} ${isActive ? styles.active : ''}`}
+            className={`${styles.button} ${className ? className : ''} ${isActive ? styles.active : ''} ${isDisabled ? styles.disabled : ''}`}
             disabled={isDisabled}
             onClick={onClick}
             type={type}
