@@ -1,14 +1,20 @@
 import {createApi} from '@reduxjs/toolkit/query/react';
 import {baseQuery} from '../../api/api.ts';
 import {
-    IAccount, IDepartment, IEmployee,
-    IEmployeeCreateRequest, IEmployeeDepartmentUpdate, IEmployeePositionUpdate,
+    IAccount,
+    IDepartment,
+    IEmployee,
+    IEmployeeCreateRequest,
+    IEmployeeDepartmentResponse,
+    IEmployeeDepartmentUpdate,
+    IEmployeePositionResponse,
+    IEmployeePositionUpdate,
     IGetDepartmentsResponse,
     IGetEmployeesResponse,
-    IGetPositionsResponse, IPosition,
+    IGetPositionsResponse,
+    IPosition,
 } from "./types.ts";
 import {URI_DEPARTMENT, URI_EMPLOYEE, URI_ORGANIZATION, URI_POSITION} from "./consts.ts";
-import {URI_PROCESS} from "../../process/api/consts.ts";
 
 export const organizationApi = createApi({
     reducerPath: 'organizationApi',
@@ -36,6 +42,18 @@ export const organizationApi = createApi({
         getDepartmentById: builder.query<IDepartment, string>({
             query: (id) => ({
                 url: `${URI_ORGANIZATION}/${URI_DEPARTMENT}/${id}`,
+                method: 'GET',
+            }),
+        }),
+        getEmployeeDepartment: builder.query<IEmployeeDepartmentResponse, void>({
+            query: () => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${URI_DEPARTMENT}`,
+                method: 'GET',
+            }),
+        }),
+        getEmployeePosition: builder.query<IEmployeePositionResponse, void>({
+            query: () => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${URI_POSITION}`,
                 method: 'GET',
             }),
         }),

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import styles from './EmployeeBlock.module.scss';
 import {Button} from "../../../../../shared/ui/button";
 import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
@@ -16,6 +16,39 @@ export const EmployeeBlock = () => {
     const [employees, setEmployees] = useState<IEmployee[]>([]);
 
     const {data: employeesData} = organizationApi.useGetEmployeesQuery();
+    const {data: departmentsData} = organizationApi.useGetDepartmentsQuery();
+    const {data: positionsData} = organizationApi.useGetPositionsQuery();
+
+    const departmentMap = useMemo(() => {
+        const map = new Map<string, string>();
+        departmentsData?.departments.forEach((d) => map.set(d.id, d.name));
+        return map;
+    }, [departmentsData]);
+
+    const positionMap = useMemo(() => {
+        const map = new Map<string, string>();
+        positionsData?.positions.forEach((p) => map.set(p.id, p.name));
+        return map;
+    }, [positionsData]);
+
+    const {data: employeeDepartmentsData} = organizationApi.useGetEmployeeDepartmentQuery();
+    const {data: employeePositionsData} = organizationApi.useGetEmployeePositionQuery();
+
+    const employeeDepartmentMap = useMemo(() => {
+        const map = new Map<string, string>();
+        employeeDepartmentsData?.employeeDepartment.forEach(ed => {
+            map.set(ed.employeeId, ed.departmentId);
+        });
+        return map;
+    }, [employeeDepartmentsData]);
+
+    const employeePositionMap = useMemo(() => {
+        const map = new Map<string, string>();
+        employeePositionsData?.employeePosition.forEach(ep => {
+            map.set(ep.employeeId, ep.positionId);
+        });
+        return map;
+    }, [employeePositionsData]);
 
     useEffect(() => {
         if (employeesData && employeesData.employees) {
@@ -35,10 +68,13 @@ export const EmployeeBlock = () => {
         event.currentTarget.blur();
     };
 
-    const [viewModalState, setViewModalState] = useState<{ isOpen: boolean, employeeId: string | null }>({ isOpen: false, employeeId: null });
+    const [viewModalState, setViewModalState] = useState<{ isOpen: boolean, employeeId: string | null }>({
+        isOpen: false,
+        employeeId: null
+    });
 
-    const openViewModal = (id: string) => setViewModalState({ isOpen: true, employeeId: id });
-    const closeViewModal = () => setViewModalState({ isOpen: false, employeeId: null });
+    const openViewModal = (id: string) => setViewModalState({isOpen: true, employeeId: id});
+    const closeViewModal = () => setViewModalState({isOpen: false, employeeId: null});
 
     return (
         <div className={styles.employeeBlockWrapper}>
@@ -83,13 +119,15 @@ export const EmployeeBlock = () => {
                     > Задачи </Button>
                 </div>
                 <div>
-                    {employees.map((employee, index) => (
+                    {employees.map((employee) => (
                         <div
-                            key={index}
+                            key={employee.id}
                             className={styles.employee}
                             onClick={() => openViewModal(employee.id)}
                         >
-                            {employee.fullName}
+                            <div><b>{employee.fullName}</b></div>
+                            <div>{positionMap.get(employeePositionMap.get(employee.id) || '') || 'Неизвестная должность'}</div>
+                            <div>{departmentMap.get(employeeDepartmentMap.get(employee.id) || '') || 'Неизвестный отдел'}</div>
                         </div>
                     ))}
                 </div>
