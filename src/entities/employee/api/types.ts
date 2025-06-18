@@ -41,6 +41,16 @@ export interface IEmployeeCreateRequest {
     positionId: string;
 }
 
+export interface IEmployeePositionUpdate {
+    employeeId: string;
+    positionId: string;
+}
+
+export interface IEmployeeDepartmentUpdate {
+    employeeId: string;
+    departmentId: string;
+}
+
 export interface IGetEmployeesResponse {
     employees: IEmployee[]
 }

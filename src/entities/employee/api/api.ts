@@ -1,14 +1,13 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQuery } from '../../api/api.ts';
+import {createApi} from '@reduxjs/toolkit/query/react';
+import {baseQuery} from '../../api/api.ts';
 import {
     IAccount, IDepartment, IEmployee,
-    IEmployeeCreateRequest,
+    IEmployeeCreateRequest, IEmployeeDepartmentUpdate, IEmployeePositionUpdate,
     IGetDepartmentsResponse,
     IGetEmployeesResponse,
     IGetPositionsResponse, IPosition,
 } from "./types.ts";
 import {URI_DEPARTMENT, URI_EMPLOYEE, URI_ORGANIZATION, URI_POSITION} from "./consts.ts";
-import {IProcess} from "../../process/api/types.ts";
 import {URI_PROCESS} from "../../process/api/consts.ts";
 
 export const organizationApi = createApi({
@@ -65,7 +64,7 @@ export const organizationApi = createApi({
             }),
         }),
         createEmployee: builder.mutation<void, IEmployeeCreateRequest>({
-            query: ({ employee, account, departmentId, positionId }) => ({
+            query: ({employee, account, departmentId, positionId}) => ({
                 url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}`,
                 method: 'POST',
                 body: {
@@ -73,6 +72,54 @@ export const organizationApi = createApi({
                     account,
                     departmentId,
                     positionId,
+                },
+            }),
+        }),
+        updateEmployee: builder.mutation<void, IEmployee>({
+            query: ({
+                        id,
+                        fullName,
+                        phoneNumber,
+                        birthDate,
+                        employmentDate,
+                        residentialAddress,
+                        maritalStatus,
+                        email
+                    }) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${id}`,
+                method: 'PUT',
+                body: {
+                    fullName,
+                    phoneNumber,
+                    birthDate,
+                    employmentDate,
+                    residentialAddress,
+                    maritalStatus,
+                    email,
+                },
+            }),
+        }),
+        updateEmployeePosition: builder.mutation<void, IEmployeePositionUpdate>({
+            query: ({
+                        employeeId,
+                        positionId,
+                    }) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${URI_POSITION}/${employeeId}`,
+                method: 'PUT',
+                body: {
+                    positionId,
+                },
+            }),
+        }),
+        updateEmployeeDepartment: builder.mutation<void, IEmployeeDepartmentUpdate>({
+            query: ({
+                        employeeId,
+                        departmentId,
+                    }) => ({
+                url: `${URI_ORGANIZATION}/${URI_EMPLOYEE}/${URI_DEPARTMENT}/${employeeId}`,
+                method: 'PUT',
+                body: {
+                    departmentId,
                 },
             }),
         }),

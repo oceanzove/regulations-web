@@ -9,6 +9,7 @@ import {CustomDatePicker} from "../../../../date-picker";
 import React, {FC, useEffect, useState} from "react";
 import styles from './EmployeeViewEditModal.module.scss';
 import {organizationApi} from "../../../../../entities/employee/api/api.ts";
+import {notificationError, notificationSuccess} from "../../../../notifications/callNotification.tsx";
 
 type TEmployeeViewModalProps = {
     isOpen: boolean;
@@ -39,13 +40,6 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
     });
 
     const {data: departmentsData} = organizationApi.useGetDepartmentsQuery();
-
-    const {data: positionsData} = organizationApi.useGetPositionsByDepartmentQuery(
-        departmentData?.id ?? '',
-        {
-            skip: !departmentData?.id,
-        }
-    );
 
     const [isDropdownDepartmentOpen, setIsDropdownDepartmentOpen] = useState(false);
     const [isDropdownPositionOpen, setIsDropdownPositionOpen] = useState(false);
@@ -124,12 +118,6 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
     const [password, setPassword] = useState('');
     // const [role, setRole] = useState('');
 
-    const isLoading =
-        !employeeData ||
-        !accountData ||
-        !departmentData ||
-        !positionData;
-
     useEffect(() => {
         if (employeeData) {
             setFullName(employeeData.fullName);
@@ -157,6 +145,18 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
             setSelectedDepartmentId(departmentData.id);
         }
 
+        setEmailError(null);
+        setPhoneError(null);
+    }, [employeeData, accountData, departmentData, departmentsData]);
+
+    const {data: positionsData} = organizationApi.useGetPositionsByDepartmentQuery(
+        selectedDepartmentId ?? '',
+        {
+            skip: !selectedDepartmentId,
+        }
+    );
+
+    useEffect(() => {
         if (positionsData) {
             setPositions([...positionsData.positions]);
         }
@@ -164,7 +164,60 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
         if (positionData) {
             setSelectedPositionId(positionData.id)
         }
-    }, [employeeData, accountData, departmentData, departmentsData, positionData, positionsData]);
+    }, [positionData, positionsData]);
+
+    const isLoading =
+        !employeeData ||
+        !accountData ||
+        !departmentData ||
+        !positionData;
+
+    const [updateEmployee] = organizationApi.useUpdateEmployeeMutation();
+    const [updateEmployeePosition] = organizationApi.useUpdateEmployeePositionMutation();
+    const [updateEmployeeDepartment] = organizationApi.useUpdateEmployeeDepartmentMutation();
+    // const [updateAccount] = organizationApi.up();
+    const onSaveClick = async (closeAfter: boolean = false) => {
+        if (!isFormValid() || !employeeId) return;
+
+        try {
+            await updateEmployee({
+                id: employeeId,
+                fullName,
+                phoneNumber,
+                birthDate: birthDate!,
+                employmentDate: employmentDate!,
+                residentialAddress,
+                email,
+                maritalStatus: EmployeeMaritalStatusEnum[selectedMaritalStatus!],
+            }).unwrap();
+
+            await updateEmployeePosition({
+                employeeId,
+                positionId: selectedPositionId!,
+            }).unwrap();
+
+            await updateEmployeeDepartment({
+                employeeId,
+                departmentId: selectedDepartmentId!,
+            }).unwrap();
+
+            // await updateAccount({
+            //     id: employeeId,
+            //     login,
+            //     password,
+            // }).unwrap();
+
+            setEditMode(false);
+            if (closeAfter) {
+                onClose();
+            }
+
+            notificationSuccess("Сохранение", "Данные успешно сохранены");
+        } catch (error) {
+            notificationError("Ошибка при сохранении сотрудника")
+            console.error("Ошибка при сохранении сотрудника", error);
+        }
+    };
 
     const setDefault = () => {
         if (employeeData) {
@@ -200,11 +253,29 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
         if (positionData) {
             setSelectedPositionId(positionData.id)
         }
+
+        setEmailError(null);
+        setPhoneError(null);
     };
 
     const onCloseClick = () => {
         onClose();
         // clearStates();
+    };
+
+    const isFormValid = () => {
+        return (
+            fullName.trim().split(' ').length >= 3 &&
+            selectedDepartmentId !== null &&
+            selectedPositionId !== null &&
+            selectedMaritalStatus !== null &&
+            birthDate !== null &&
+            employmentDate !== null &&
+            email.trim() !== '' &&
+            isValidEmail(email) &&
+            phoneNumber.trim() !== '' &&
+            isValidPhone(phoneNumber)
+        );
     };
 
     useEffect(() => {
@@ -399,9 +470,9 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
                                         name: string;
                                     }>
                                         label="Семейное положение"
-                                        isOpen={false}
+                                        isOpen={isDropdownMaritalOpen}
                                         toggleOpen={() => {
-                                            // setIsDropdownMaritalOpen(prev => !prev)
+                                            setIsDropdownMaritalOpen(prev => !prev)
                                         }}
                                         selectedId={selectedMaritalStatus}
                                         items={maritalStatusItems}
@@ -461,12 +532,14 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
                         :
                         <div className={styles.control}>
                             <Button className={styles.saveButton}
-                                    onClick={() => setEditMode(true)}
+                                    onClick={() => onSaveClick(false)}
+                                    disabled={!isFormValid()}
                             >
                                 Сохранить
                             </Button>
                             <Button className={styles.saveButton}
-                                    onClick={() => setEditMode(true)}
+                                    onClick={() => onSaveClick(true)}
+                                    disabled={!isFormValid()}
                             >
                                 Сохранить и закрыть
                             </Button>

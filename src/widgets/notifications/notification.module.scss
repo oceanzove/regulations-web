@@ -1,6 +1,6 @@
 .wrapper {
-  //display: flex;
-  align-items: start;
+  display: flex;
+
   padding: 4px;
 }
 
@@ -25,6 +25,5 @@
 .title, .description {
   font-family: Inter, sans-serif;
   word-wrap: break-word;
-  width: 350px;
   line-height: 1.3;
 }
