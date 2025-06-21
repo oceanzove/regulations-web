@@ -5,7 +5,6 @@ import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
 import {Icon} from "../../../../../shared/ui/icon";
 import {IEmployee} from "../../../../../entities/employee/api/types.ts";
 import {organizationApi} from "../../../../../entities/employee/api/api.ts";
-import {RegulationCreateModal} from "../../../../../widgets/modal/regulation/create";
 import {EmployeeCreateModal} from "../../../../../widgets/modal/employee/create";
 import {EmployeeViewEditModal} from "../../../../../widgets/modal/employee/view-edit/ui/EmployeeViewEditModal.tsx";
 
@@ -13,7 +12,7 @@ import {EmployeeViewEditModal} from "../../../../../widgets/modal/employee/view-
 export const EmployeeBlock = () => {
 
 
-    const [employees, setEmployees] = useState<IEmployee[]>([]);
+    // const [employees, setEmployees] = useState<IEmployee[]>([]);
 
     const {data: employeesData} = organizationApi.useGetEmployeesQuery();
     const {data: departmentsData} = organizationApi.useGetDepartmentsQuery();
@@ -49,14 +48,7 @@ export const EmployeeBlock = () => {
         });
         return map;
     }, [employeePositionsData]);
-
-    useEffect(() => {
-        if (employeesData && employeesData.employees) {
-            setEmployees(employeesData.employees as IEmployee[]);
-        }
-    }, [employeesData, setEmployees]);
-
-
+    
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
     const toggleCreateModal = () => {
@@ -99,7 +91,7 @@ export const EmployeeBlock = () => {
                     />
                 </div>
             </div>
-            <div className={styles.employees}>
+            <div className={styles.employeesBlock}>
                 <div className={styles.filter}>
                     <Button
                         typeIcon={IconEnum.FILTER}
@@ -118,16 +110,28 @@ export const EmployeeBlock = () => {
                         className={styles.filterButton}
                     > Задачи </Button>
                 </div>
-                <div>
-                    {employees.map((employee) => (
+                <div className={styles.employees}>
+                    {employeesData && employeesData.employees.map((employee) => (
                         <div
                             key={employee.id}
                             className={styles.employee}
                             onClick={() => openViewModal(employee.id)}
                         >
-                            <div><b>{employee.fullName}</b></div>
-                            <div>{positionMap.get(employeePositionMap.get(employee.id) || '') || 'Неизвестная должность'}</div>
-                            <div>{departmentMap.get(employeeDepartmentMap.get(employee.id) || '') || 'Неизвестный отдел'}</div>
+                            <div className={styles.employeeFullName}>
+                                <div className={styles.icon}>
+                                    <Icon type={IconEnum.ITEM_OPTION} />
+                                </div>
+                                {employee.fullName}
+                            </div>
+                            <div className={styles.employeePosition}>
+                                {positionMap.get(employeePositionMap.get(employee.id) || '') || ''}
+                            </div>
+                            <div className={styles.employeeDepartment}>
+                                {departmentMap.get(employeeDepartmentMap.get(employee.id) || '') || ''}
+                            </div>
+                            <div className={styles.employeeTask}>
+
+                            </div>
                         </div>
                     ))}
                 </div>

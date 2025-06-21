@@ -172,6 +172,20 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
         !departmentData ||
         !positionData;
 
+    const [deleteEmployee] = organizationApi.useDeleteEmployeeByIdMutation();
+
+    const onDeleteClick = async () => {
+
+        try {
+            await deleteEmployee(employeeId!);
+            onClose();
+            notificationSuccess("Удаление", "Сотрудник успешно удален");
+        } catch (error) {
+            notificationError("Ошибка при удаление сотрудника")
+            console.error("Ошибка при удаление сотрудника", error);
+        }
+    };
+
     const [updateEmployee] = organizationApi.useUpdateEmployeeMutation();
     const [updateEmployeePosition] = organizationApi.useUpdateEmployeePositionMutation();
     const [updateEmployeeDepartment] = organizationApi.useUpdateEmployeeDepartmentMutation();
@@ -517,16 +531,31 @@ export const EmployeeViewEditModal: FC<TEmployeeViewModalProps> = (props) => {
                 }
                 {
                     !editMode ?
-                        <div className={styles.control}>
-                            <Button className={styles.saveButton}
-                                    onClick={() => setEditMode(true)}
-                            >
-                                Редактировать
-                            </Button>
+                        <div className={styles.control}
+                             style={{
+                                 justifyContent: "space-between",
+                             }}
+                        >
+                            <div style={{
+                                display: "flex",
+                                flexDirection: "row",
+                                gap: "5px",
+                            }}>
+                                <Button className={styles.saveButton}
+                                        onClick={() => setEditMode(true)}
+                                >
+                                    Редактировать
+                                </Button>
+                                <Button className={styles.closeButton}
+                                        onClick={onCloseClick}
+                                >
+                                    Закрыть
+                                </Button>
+                            </div>
                             <Button className={styles.closeButton}
-                                    onClick={onCloseClick}
+                                    onClick={onDeleteClick}
                             >
-                                Закрыть
+                                Удалить
                             </Button>
                         </div>
                         :

@@ -1,0 +1,74 @@
+.modalWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.3);
+
+  .modalContent {
+    width: 100%;
+    max-width: 900px;
+    border-radius: 12px;
+
+    padding: 10px 20px 20px 20px;
+
+    background: #FFFFFF;
+
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+
+  font-size: 24px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid #EEF2F8;
+
+  .iconButtonContainer {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+}
+
+
+.control {
+  width: 100%;
+  padding-top: 20px;
+  border-top: 1px solid #EEF2F8;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  .saveButton {
+    padding: 10px 15px;
+    color: #FFFFFF;
+    background: #F91F71;
+    font-size: 16px;
+    border-radius: 8px;
+
+  }
+
+  .closeButton {
+    padding: 10px 15px;
+    color: #000000;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #C9D4E7;
+  }
+}

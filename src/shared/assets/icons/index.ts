@@ -17,3 +17,4 @@ export * from './cross-icon';
 export * from './arrow-left-icon';
 export * from './export-pdf-icon';
 export * from './date-picker-icon';
+export * from './item-option-icon';

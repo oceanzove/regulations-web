@@ -102,7 +102,7 @@ export const EmployeeCreateModal: FC<TEmployeeCreateModalProps> = (props) => {
         return '+' + chunks.filter(Boolean).join('-');
     };
 
-    const isFormValid = () => {
+    const isFormValid = useCallback(() => {
         return (
             fullName.trim().split(' ').length >= 3 &&
             selectedDepartmentId !== null &&
@@ -115,7 +115,7 @@ export const EmployeeCreateModal: FC<TEmployeeCreateModalProps> = (props) => {
             phoneNumber.trim() !== '' &&
             isValidPhone(phoneNumber)
         );
-    };
+    }, [email, fullName, phoneNumber, selectedBirthDate, selectedDepartmentId, selectedEmploymentDate, selectedMaritalStatus, selectedPositionId]);
 
     const {data: departmentsData} = organizationApi.useGetDepartmentsQuery();
     const {data: positionData} = organizationApi.useGetPositionsByDepartmentQuery(selectedDepartmentId!, {

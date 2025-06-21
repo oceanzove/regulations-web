@@ -79,7 +79,7 @@
     }
   }
 
-  .departments {
+  .departmentsBlock {
     background: var(--default-bg-color);
     border-radius: 12px;
 
@@ -113,10 +113,39 @@
       }
     }
 
-    .department {
-      padding: 15px;
+    .departments {
+      .department {
+        display: grid;
+        grid-template-columns: 342px 312px 312px 312px;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #EEF2F8;
+        cursor: pointer;
 
-      border-bottom: 1px solid #EEF2F8;
+        transition: background 0.2s ease, color 0.2s ease;
+
+        border-bottom: 1px solid #EEF2F8;
+
+        &:hover {
+          background: #FFEFF5;
+        }
+
+        .departmentName {
+          display: flex;
+
+          flex-direction: row;
+          align-items: center;
+          gap: 5px;
+
+          .icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
     }
   }
 }

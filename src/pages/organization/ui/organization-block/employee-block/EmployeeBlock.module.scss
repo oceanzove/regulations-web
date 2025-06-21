@@ -79,7 +79,7 @@
     }
   }
 
-  .employees {
+  .employeesBlock {
     background: var(--default-bg-color);
     border-radius: 12px;
 
@@ -89,12 +89,14 @@
     display: flex;
     flex-direction: column;
 
+
     .filter {
-      display: flex;
-      flex-direction: row;
+      display: grid;
 
       width: 100%;
       height: 54px;
+
+      grid-template-columns: 342px 312px 312px 312px;
 
       border-bottom: 1px solid #EEF2F8;
 
@@ -105,23 +107,46 @@
         flex-direction: row;
         gap: 5px;
 
-        flex-grow: 1;
         padding: 15px;
+
       }
-      .filterButton:first-child {
-        width: 342px;
-      }
+
     }
 
-    .employee {
-      display: flex;
-      flex-direction: row;
+    .employees {
+      .employee {
+        display: grid;
+        grid-template-columns: 342px 312px 312px 312px;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #EEF2F8;
+        cursor: pointer;
 
-      gap: 30px;
-      padding: 15px;
+        transition: background 0.2s ease, color 0.2s ease;
 
-      cursor: pointer;
-      border-bottom: 1px solid #EEF2F8;
+        border-bottom: 1px solid #EEF2F8;
+
+        &:hover {
+          background: #FFEFF5;
+        }
+
+        .employeeFullName {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 5px;
+
+          .icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+
     }
+
   }
 }

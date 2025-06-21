@@ -2,7 +2,7 @@ import {
     AddIcon,
     ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon,
     BoldIcon, CrossIcon, DatePickerIcon, DynamicFieldIcon, ExportPdfIcon, FilterIcon,
-    ItalicIcon,
+    ItalicIcon, ItemOptionIcon,
     OrderedListIcon, SearchIcon,
     UnderlineIcon,
     UnorderedListIcon
@@ -24,11 +24,13 @@ export type IconType =
     | "FILTER"
     | "CROSS"
     | "DATE_PICKER"
+    | "ITEM_OPTION"
     ;
 
 export enum IconEnum {
     ARROW_DOWN = "Arrow-down",
     ARROW_RIGHT = "Arrow-right",
+    ITEM_OPTION = "ITEM_OPTION",
     ARROW_LEFT = "Arrow-left",
     EXPORT_PDF = "Export-pdf",
     ADD = "ADD",
@@ -43,6 +45,7 @@ export enum IconEnum {
 export const iconTypes = new Map([
     ['ADD', <AddIcon key="add-icon" width={24} height={24}/>],
     ['SEARCH', <SearchIcon key="add-icon"/>],
+    [ 'ITEM_OPTION', <ItemOptionIcon key="item-option"/>],
     ['DATE_PICKER', <DatePickerIcon key={'date-picker'} width={18} height={17}/> ],
     ['FILTER', <FilterIcon key="filter-icon" width={17.5} height={13.5} color={'#8692A7'}/>],
     ['CROSS', <CrossIcon key="cross-icon"/>],
