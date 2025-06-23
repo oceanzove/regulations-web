@@ -95,6 +95,17 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
         clearStates();
     }, [onClose, title, description, selectedDepartmentId, steps, onProcessCreate, selectedRegulations]);
 
+    const {data: accountData} = organizationApi.useGetAccountQuery();
+    const {data: employeeDepartmentData} = organizationApi.useGetEmployeeDepartmentQuery();
+
+    const isAdmin = accountData?.role === 'administrator';
+    useEffect(() => {
+        const departmentId = employeeDepartmentData?.employeeDepartment.filter(e => e.employeeId === accountData?.id) || [];
+        if (!isAdmin && departmentId.length > 0) {
+            setSelectedDepartmentId(departmentId[0].departmentId || null);
+        }
+    }, [isAdmin, accountData, employeeDepartmentData?.employeeDepartment]);
+
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter') {
@@ -198,7 +209,7 @@ export const ProcessCreateModal: FC<TProcessCreateModalProps> = (props) => {
                                 onSelectDepartment(id)
                             }}
                             placeholder="Выбрать подразделения"
-                            disabled={false}
+                            disabled={!isAdmin}
                             classes={{
                                 dropdownContainer: styles.dropdownDepartment
                             }}

@@ -1,8 +1,11 @@
 import {FC, memo, useEffect, useState} from "react";
 import {Section} from "../../../pages/regulation/regulation-view/ui/regulation-view-block/section/Sections.tsx";
-import {ContentBlock, Editor, EditorState} from "draft-js";
+import {ContentBlock, DefaultDraftBlockRenderMap, Editor, EditorState} from "draft-js";
 import {CONVERT_HTML_TO_MESSAGE, GET_DECORATOR} from "../editor-utils.ts";
 import {SectionBlock} from "../style-control/custom-block/section-block/section-block.tsx";
+import {TEXT_EDITOR_CUSTOM_STYLES} from "../configuration.tsx";
+import Immutable from 'immutable';
+
 
 interface IClasses {
     textEditor?: string;
@@ -45,16 +48,34 @@ const TextViewerComponent: FC<ITextViewerProps> = (props: ITextViewerProps) => {
                 },
             };
         }
+
+        if (block.getType() === 'unordered-list-item') {
+            // подавить отображение
+            return {
+                component: () => null,
+                editable: false,
+            };
+        }
+
         return null;
     };
 
+    const customBlockRenderMap = DefaultDraftBlockRenderMap.merge(
+        Immutable.Map({
+            'unordered-list-item': {
+                element: 'div',
+            },
+        })
+    );
     return (
         <div className={`${classes?.textEditor}`}>
             <Editor
                 editorState={editorState}
                 onChange={() => {}}
                 readOnly={true}
+                customStyleMap={TEXT_EDITOR_CUSTOM_STYLES}
                 blockRendererFn={blockRendererFn}
+                blockRenderMap={customBlockRenderMap}
             />
         </div>
     )

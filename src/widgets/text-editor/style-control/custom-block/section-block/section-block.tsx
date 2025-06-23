@@ -13,7 +13,10 @@ interface ISectionBlockProps {
 export const SectionBlock: FC<ISectionBlockProps> = (props) => {
     const {title, content} = props.blockProps;
 
-    const [editorState, setEditorState] = useState(EditorState.createWithContent(CONVERT_HTML_TO_MESSAGE(content), GET_DECORATOR()));
+    const [editorState, setEditorState] = useState(() => {
+        const contentState = CONVERT_HTML_TO_MESSAGE(content);
+        return EditorState.createWithContent(contentState, GET_DECORATOR());
+    });
 
     return (
         <div>

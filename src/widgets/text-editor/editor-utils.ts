@@ -65,7 +65,11 @@ const fromHTMLOptions: IConvertFromHTMLConfig = {
 
             return {
                 type: "section",
-                data: {sectionId: node.getAttribute("data-section-id") || "", title, content}
+                data: {
+                    sectionId: node.getAttribute("data-section-id") || "",
+                    title,
+                    content
+                }
             };
         }
         return undefined;

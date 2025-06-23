@@ -90,8 +90,8 @@
     flex-direction: column;
 
     .filter {
-      display: flex;
-      flex-direction: row;
+      display: grid;
+      grid-template-columns: 342px 312px 312px 312px;
 
       width: 100%;
       height: 54px;
@@ -105,11 +105,8 @@
         flex-direction: row;
         gap: 5px;
 
-        flex-grow: 1;
+        //flex-grow: 1;
         padding: 15px;
-      }
-      .filterButton:first-child {
-        width: 342px;
       }
     }
 

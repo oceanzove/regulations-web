@@ -2,16 +2,6 @@
 
   display: flex;
   flex-direction: column;
-
-  gap: 10px;
-
-  border-radius: 12px;
-
-  width: 100%;
-  max-width: 1170px;
-  margin-left: auto;
-  margin-right: auto;
-
 }
 
 .container {
@@ -53,6 +43,13 @@
 
       gap: 5px;
     }
+
+    .noRegulation {
+      text-align: center;
+      padding: 10px;
+      color: #8692A7;
+    }
+
     .regulationTag {
       background: #FFEFF5;
       color: #F91F71;
@@ -113,10 +110,36 @@
           grid-template-columns: 40px 1fr 2fr 2fr;
 
           border-bottom: 1px solid #D8E1EF;
+
+          .moveButtons {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+
+            button {
+              padding: 2px 6px;
+              cursor: pointer;
+            }
+          }
+
+          .dropdownPosition {
+            border: 0 solid #FFFFFF;
+            padding: 10px;
+          }
+
+          .dropdownContainer {
+            gap: 0;
+          }
         }
 
         .stepBlock:last-child {
           border-bottom: 0;
+        }
+
+        .notStep {
+          text-align: center;
+          padding: 10px;
+          color: #8692A7;
         }
 
         .step {
@@ -126,7 +149,7 @@
 
           color: #8692A7;
 
-          gap: 5px;
+          //gap: 5px;
 
           padding: 5px;
 
@@ -144,26 +167,85 @@
     }
   }
 
-  .controlBlock {
+
+  .control {
+    width: 100%;
+    padding: 20px 10px 10px 10px;
+    border-top: 1px solid #EEF2F8;
+
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    gap: 10px;
 
-    padding: 10px;
-
-    .controlButton {
+    .saveButton {
+      padding: 10px 15px;
+      color: #FFFFFF;
+      background: #F91F71;
+      font-size: 16px;
       border-radius: 8px;
-      color: white;
-      background: #0BB2E7;
-      padding: 10px 80px;
 
-      &.disabled {
-        color: #8692A7;
-        background: #D8E1EF;
-      }
+    }
+
+    .closeButton {
+      padding: 10px 15px;
+      color: #000000;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #C9D4E7;
     }
   }
+
   .label {
     width: 100%;
+  }
+}
+
+.addStepButton {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  color: white;
+  border-radius: 8px;
+  padding: 10px 15px;
+  margin-top: 10px;
+  background: #0BB2E7;
+}
+
+.removeRegulation {
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 2px;
+  &:hover { color: #ff1f56; }
+}
+
+.loaderOverlay {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  border-radius: 16px;
+
+  padding: 100px;
+}
+
+.spinner {
+  width: 96px;
+  height: 96px;
+  border: 5px solid #ccc;
+  border-top-color: #0BB2E7;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

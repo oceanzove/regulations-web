@@ -83,14 +83,14 @@ export function DropdownMenuSingle<T>({
                 onClick={() => {
                     if (!disabled) {
                         toggleOpen();
-                        setTimeout(() => update?.(), 0); // 🛠 Пересчет позиции popper
+                        setTimeout(() => update?.(), 0);
                     }
                 }}
                 className={`${styles.dropdownMenuButton} ${isOpen ? styles.active : ''} ${disabled ? styles.disabled : ''} ${classes?.dropdownButton}`}
                 disabled={disabled}
             >
                 {selectedLabel}
-                <span className={styles.arrow}>{isOpen ? '▴' : '▾'}</span>
+                {!disabled ? <span className={styles.arrow}>{isOpen ? '▴' : '▾'}</span> : ''}
             </button>
 
             {isOpen && !disabled && createPortal(

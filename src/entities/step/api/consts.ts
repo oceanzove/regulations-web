@@ -1,1 +1,1 @@
-export const URI_STEP = '/step';
+export const URI_STEP = 'step';

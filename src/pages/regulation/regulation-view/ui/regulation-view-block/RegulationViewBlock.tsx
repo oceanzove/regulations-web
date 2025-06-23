@@ -3,7 +3,7 @@ import styles from './RegulationViewBlock.module.scss';
 import React, {useEffect, useState} from "react";
 import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
 import {regulationApi} from "../../../../../entities/regulation/api/api.ts";
-import {convertToRaw, Editor, EditorState} from "draft-js";
+import {ContentBlock, convertToRaw, EditorState} from "draft-js";
 import {TextViewer} from "../../../../../widgets/text-editor/implements/text-viewer.tsx";
 import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
 import {IconButton} from "../../../../../shared/ui/icon-button/icon-button.tsx";
@@ -61,6 +61,7 @@ export const RegulationViewBlock = () => {
         }
     }, [regulationData, setRegulation]);
 
+    console.log(regulation.content);
     return (
         <div className={styles.regulationViewBlockWrapper}>
             <div className={styles.controls}>

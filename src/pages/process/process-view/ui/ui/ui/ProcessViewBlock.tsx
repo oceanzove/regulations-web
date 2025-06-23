@@ -1,11 +1,13 @@
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import styles from './ProcessViewBlock.module.scss';
 import {processApi} from "../../../../../../entities/process/api/api.ts";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {IProcess} from "../../../../../../entities/process/api/types.ts";
 import {ProcessView} from "./ProcessView";
 import {IStep} from "../../../../../../entities/step/api/types.ts";
 import {IRegulation} from "../../../../../../entities/regulation/api/types.ts";
+import {IconButton} from "../../../../../../shared/ui/icon-button/icon-button.tsx";
+import {IconEnum} from "../../../../../../shared/ui/icon/IconType.tsx";
 
 export const ProcessViewBlock = () => {
     // const {
@@ -13,6 +15,8 @@ export const ProcessViewBlock = () => {
     //     updateProcesses,
     // } = useProcess()
     //
+    const navigate = useNavigate();
+
     const [ process, setProcess ] = useState<IProcess>({ id: '', title: '', description: '', responsible: '' })
     const [ steps, setSteps ] = useState<IStep[]>([])
     const [ regulations, setRegulations ] = useState<IRegulation[]>([])
@@ -43,6 +47,17 @@ export const ProcessViewBlock = () => {
 
     return (
         <div className={styles.processBlockWrapper}>
+            <div className={styles.controls}>
+                <IconButton typeIcon={IconEnum.ARROW_LEFT}
+                            className={styles.button}
+                            onClick={() => navigate(-1)}
+                />
+                <IconButton typeIcon={IconEnum.EXPORT_PDF}
+                            className={styles.button}
+                            disabled={true}
+                            onClick={() => {}}
+                />
+            </div>
             <ProcessView
                 process={process}
                 steps={steps}

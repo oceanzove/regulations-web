@@ -1,6 +1,33 @@
 .processBlockWrapper {
-
   display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  border-radius: 12px;
 
   width: 100%;
+  max-width: 1170px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-between;
+
+  height: 44px;
+
+  .button {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 8px;
+    background: #FFFFFF;
+
+  }
 }
