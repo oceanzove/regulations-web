@@ -120,7 +120,7 @@ export const DepartmentModal: FC<TPositionModalProps> = (props) => {
                 <Label label={"Название должности"}>
                     <Input
                         value={name}
-                        disabled={!editMode}
+                        disabled={!editMode && !createMode}
                         onChange={(e) => setName(e.target.value)}
                     />
                 </Label>
