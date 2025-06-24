@@ -14,3 +14,15 @@ export interface ISection {
     title: string,
     content: string,
 }
+
+export interface ILinkSectionToRegulationRequest {
+    id: string,
+    sectionId: string,
+    regulationId: string,
+    order: number,
+}
+
+export interface IUnlinkSectionToRegulationRequest {
+    sectionId: string,
+    regulationId: string,
+}

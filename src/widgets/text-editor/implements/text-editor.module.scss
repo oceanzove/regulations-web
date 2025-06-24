@@ -147,3 +147,10 @@
   //  overflow-y: scroll;
   //}
 }
+
+.editor {
+  display: flex;
+  flex-direction: row;
+
+  gap: 10px;
+}

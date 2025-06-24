@@ -13,6 +13,7 @@ import {organizationApi} from "../../entities/employee/api/api.ts";
 import {DepartmentBlock} from "../../pages/organization/ui/organization-block/department-block";
 import {PositionBlock} from "../../pages/organization/ui/organization-block/position-block";
 import {EmployeeBlock} from "../../pages/organization/ui/organization-block/employee-block";
+import styles from './Router.module.scss';
 
 const Router = () => {
     const token = localStorage.getItem('access_token');
@@ -48,12 +49,32 @@ const Router = () => {
 
                             <Route path="nothing" element={<div></div>}/>
 
+                            <Route
+                                path="/"
+                                element={
+                                    <div className={styles.filler}>
+                                        Добро пожаловать в сервис регламентов. <br />
+                                        Перейдите в рабочую вкладку, чтобы начать работу.
+                                    </div>
+                                }
+
+                            />
                             {
                                 account?.role === AccountRoleEnum.ADMIN ?
                                     <Route path="organization" element={<OrganizationPage/>}>
                                         <Route path="department" element={<DepartmentBlock/>}/>
                                         <Route path="position" element={<PositionBlock/>}/>
                                         <Route path="employee" element={<EmployeeBlock/>}/>
+                                        <Route
+                                            path=""
+                                            element={
+                                                <div className={styles.filler}>
+                                                    Раздел организационной структуры. <br />
+                                                    Здесь можно создавать отделы, должности и сотрудников.
+                                                </div>
+                                            }
+
+                                        />
                                     </Route>
                                     :
                                     ''
@@ -61,7 +82,6 @@ const Router = () => {
                         </Route>
                     </Routes>
                 </>
-
                 :
                 <Routes>
                     {/*<Route path="/" element={<RegulationPage />} />*/}

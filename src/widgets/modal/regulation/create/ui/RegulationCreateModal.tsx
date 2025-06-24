@@ -18,7 +18,7 @@ type TRegulationCreateModalProps = {
     isOpen: boolean;
     onClose: () => void;
     sections: ISection[];
-    onRegulationCreate: (regulation: IRegulation) => void;
+    onRegulationCreate: (regulation: IRegulation, section: ISection[]) => void;
     onSectionCreate: (section: ISection) => void;
 }
 
@@ -39,11 +39,7 @@ export const RegulationCreateModal: FC<TRegulationCreateModalProps> = (props) =>
         setSections(convertedSections);
     }, [props.sections]);
 
-    const handleRegulationCreate = useCallback(() => {
-        const regulationID = uuid();
 
-        onRegulationCreate({...template, id: regulationID});
-    }, [onRegulationCreate, template]);
 
     const handleSectionCreate = useCallback(() => {
         const sectionID = uuid();
@@ -59,7 +55,11 @@ export const RegulationCreateModal: FC<TRegulationCreateModalProps> = (props) =>
 
     const selectedSections = sections.filter(sec => sec.checked);
 
+    const handleRegulationCreate = useCallback(() => {
+        const regulationID = uuid();
 
+        onRegulationCreate({...template, id: regulationID}, selectedSections);
+    }, [onRegulationCreate, selectedSections, template]);
 
     const onRegulationChange = (field: keyof IRegulation, value: string) => {
         setTemplate(prev => ({
@@ -142,6 +142,7 @@ export const RegulationCreateModal: FC<TRegulationCreateModalProps> = (props) =>
                                     setIsSaveModalOpen((prev) => !prev);
                                     event.currentTarget.blur();
                                 }}
+                                disabled={template.title.length < 3 || template.content.length < 10}
                         >
                             Сохранить как
                         </Button>

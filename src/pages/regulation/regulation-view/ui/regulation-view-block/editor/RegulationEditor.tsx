@@ -4,7 +4,7 @@ import {Section} from "../section/Sections.tsx";
 import React from "react";
 
 interface IRegulationEditorProps {
-    regulation: IRegulation,
+    htmlText: string,
     selectedSections: Section[],
     onEditorChange: (htmlText: string) => void;
     // updateTitle: (id: string, title: string) => void,
@@ -12,7 +12,7 @@ interface IRegulationEditorProps {
 }
 
 export const RegulationEditor: React.FC<IRegulationEditorProps> = (props) => {
-    const { regulation, selectedSections, onEditorChange } = props
+    const { htmlText, selectedSections, onEditorChange } = props
 
     const handleEditorChange = (value: string) => {
         onEditorChange(value);
@@ -21,7 +21,7 @@ export const RegulationEditor: React.FC<IRegulationEditorProps> = (props) => {
 
     return (
         <TextEditor
-            htmlText={regulation.content}
+            htmlText={htmlText}
             sections={selectedSections}
             onChangeHTMLText={handleEditorChange}
         />

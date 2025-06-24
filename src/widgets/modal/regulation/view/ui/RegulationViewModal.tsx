@@ -3,7 +3,7 @@ import styles from './RegulationViewModal.module.scss';
 import {IconButton} from "../../../../../shared/ui/icon-button/icon-button.tsx";
 import {IconEnum} from "../../../../../shared/ui/icon/IconType.tsx";
 import {TextViewer} from "../../../../text-editor/implements/text-viewer.tsx";
-import {IRegulation} from "../../../../../entities/regulation/api/types.ts";
+import {IRegulation, ISection} from "../../../../../entities/regulation/api/types.ts";
 import {IProcess} from "../../../../../entities/process/api/types.ts";
 import {organizationApi} from "../../../../../entities/employee/api/api.ts";
 import {IDepartment} from "../../../../../entities/employee/api/types.ts";
@@ -12,6 +12,7 @@ import stateToPdfMake from 'draft-js-export-pdfmake';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
 import {CONVERT_HTML_TO_MESSAGE, GET_DECORATOR} from "../../../../../widgets/text-editor/editor-utils.ts";
+import {Viewer} from "./Viewer.tsx";
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -40,7 +41,7 @@ export const RegulationViewModal: FC<TRegulationCreateModalProps> = (props) => {
     } = props;
 
 
-    const [ department, setDepartment ] = useState<IDepartment>();
+    const [department, setDepartment] = useState<IDepartment>();
     const {data: departmentData} = organizationApi.useGetDepartmentByIdQuery(process.responsible);
 
     useEffect(() => {
@@ -58,11 +59,11 @@ export const RegulationViewModal: FC<TRegulationCreateModalProps> = (props) => {
 
     const handleGeneratePDF = () => {
         const contentState = CONVERT_HTML_TO_MESSAGE(replacedContent);
-        const state  = EditorState.createWithContent(contentState, GET_DECORATOR());
+        const state = EditorState.createWithContent(contentState, GET_DECORATOR());
         const rawContent = convertToRaw(state.getCurrentContent());
         const pdfState = new stateToPdfMake(rawContent);
 
-        const result = pdfState.generate({ download: true, fileName: `${regulation.title}.pdf` });
+        const result = pdfState.generate({download: true, fileName: `${regulation.title}.pdf`});
         pdfMake.createPdf(result).download(`${regulation.title}.pdf`);
     };
 
@@ -112,7 +113,7 @@ export const RegulationViewModal: FC<TRegulationCreateModalProps> = (props) => {
                     <div className={styles.title}>
                         {regulation.title}
                     </div>
-                    <TextViewer
+                    <Viewer
                         classes={{textEditor: styles.editoarViewer}}
                         htmlText={replacedContent}
                     />

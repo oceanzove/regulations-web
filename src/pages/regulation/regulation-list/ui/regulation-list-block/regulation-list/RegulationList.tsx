@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {Dispatch, SetStateAction, useCallback, useEffect, useState} from "react";
 import {IRegulation, ISection} from "../../../../../../entities/regulation/api/types.ts";
 import styles from './RegulationList.module.scss';
 import {Button} from "../../../../../../shared/ui/button";
@@ -10,11 +10,10 @@ import {IProcess} from "../../../../../../entities/process/api/types.ts";
 import {IStep} from "../../../../../../entities/step/api/types.ts";
 import {notificationError, notificationSuccess} from "../../../../../../widgets/notifications/callNotification.tsx";
 import {regulationApi} from "../../../../../../entities/regulation/api/api.ts";
+import {v4 as uuid} from "uuid";
 
 interface IRegulationList {
     regulations: IRegulation[];
-    updateRegulations: (regulations: IRegulation[]) => void;
-
     isModalOpen: boolean;
     toggleModal: () => void;
 }
@@ -22,7 +21,6 @@ interface IRegulationList {
 export const RegulationList = (props: IRegulationList) => {
     const {
         regulations,
-        updateRegulations,
         isModalOpen,
         toggleModal,
     } = props;
@@ -32,20 +30,24 @@ export const RegulationList = (props: IRegulationList) => {
     const [ sections, setSections ] = useState<ISection[]>([])
 
     const [ createRegulation ] = regulationApi.useCreateMutation();
+    const [ linkSectionToRegulation ] = regulationApi.useLinkRegulationMutation();
 
     const handleRegulationCreate = useCallback(async (
-        regulation: IRegulation,
+        regulation: IRegulation, sections: ISection[]
     ) => {
         try {
             await createRegulation(regulation);
 
-            updateRegulations([regulation, ...regulations]);
+            await Promise.all(sections.map((section, index) =>
+                linkSectionToRegulation({ id: uuid(), sectionId: section.id, regulationId: regulation.id, order: index}).unwrap()
+            ));
+
             notificationSuccess('Создание', 'Регламент успешно создан');
         } catch (error) {
             notificationError('Создание', 'Не удалось создать регламент');
             console.error("Error creating regulation:", error);
         }
-    }, [createRegulation, regulations, updateRegulations]);
+    }, [createRegulation, linkSectionToRegulation]);
 
     const [ createSection ] = regulationApi.useCreateSectionMutation();
 
@@ -106,6 +108,7 @@ export const RegulationList = (props: IRegulationList) => {
                     <textarea
                         className={styles.searchArea}
                         placeholder={'Поиск'}
+                        disabled={true}
                         // value={value}
                         // onChange={handleChange}
                     />

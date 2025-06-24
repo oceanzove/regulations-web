@@ -7,13 +7,43 @@
   border-radius: 12px;
 
   width: 100%;
-  max-width: 1170px;
-  margin-left: auto;
-  margin-right: auto;
 
-  padding: 114px 0 25px 0;
 
+  padding: 0 0 25px 0;
+
+  .nav {
+    background: #FFFFFF;
+
+    padding: 20px;
+    border-radius: 0 0 12px 12px;
+    width: 100%;
+
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+
+    .exitButton {
+      transition: background 0.2s ease, color 0.2s ease;
+
+      padding: 5px 10px;
+
+      border-radius: 8px;
+      &:hover {
+        color: #F91F71;
+        background: #FFEFF5;
+      }
+    }
+  }
+  .block {
+    width: 100%;
+    max-width: 1170px;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .workspaceTitle {
+
+    padding-top: 30px;
     font-size: 48px;
     font-weight: 700;
     color: #000000;

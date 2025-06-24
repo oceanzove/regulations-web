@@ -14,6 +14,35 @@
   margin-right: auto;
 }
 
+.control {
+  width: 100%;
+  padding: 10px 10px 10px 10px;
+  border-top: 1px solid #EEF2F8;
+  border-radius: 12px;
+  background: #FFFFFF;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+  .saveButton {
+    padding: 10px 15px;
+    color: #FFFFFF;
+    background: #F91F71;
+    font-size: 16px;
+    border-radius: 8px;
+
+  }
+
+  .closeButton {
+    padding: 10px 15px;
+    color: #000000;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #C9D4E7;
+  }
+}
+
 .controls {
   display: flex;
   flex-direction: row;
@@ -76,6 +105,23 @@
     }
 
     border-bottom: 1px solid #EBEDEF;
+  }
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+
+  font-size: 24px;
+
+  border-bottom: 1px solid #EEF2F8;
+
+  .iconButtonContainer {
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    box-sizing: border-box;
   }
 }
 

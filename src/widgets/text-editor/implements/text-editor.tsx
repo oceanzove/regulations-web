@@ -1,6 +1,6 @@
 import {
     ContentBlock,
-    ContentState, Editor,
+    ContentState, DefaultDraftBlockRenderMap, Editor,
     EditorState, genKey,
     Modifier,
     RichUtils
@@ -145,7 +145,7 @@ const TextEditorComponent: FC<ITextEditorProps> = (props: ITextEditorProps) => {
             }
             prevSectionsRef.current = sections;
         }
-    }, [decorator, htmlText, insertAllSections, sections]);
+    }, [decorator, editorState, handleChangeText, htmlText, insertAllSections, sections]);
 
     const blockRendererFn = (block: ContentBlock) => {
         if (block.getType() === 'section') {
