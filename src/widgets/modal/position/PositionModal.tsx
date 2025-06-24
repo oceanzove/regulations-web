@@ -147,7 +147,7 @@ export const PositionModal: FC<TPositionModalProps> = (props) => {
                 <Label label={"Название должности"}>
                     <Input
                         value={position}
-                        disabled={!editMode}
+                        disabled={!editMode && !createMode}
                         onChange={(e) => setPosition(e.target.value)}
                     />
                 </Label>
@@ -166,7 +166,7 @@ export const PositionModal: FC<TPositionModalProps> = (props) => {
                         onSelectDepartment(id)
                     }}
                     placeholder="Выбрать подразделения"
-                    disabled={!editMode}
+                    disabled={!editMode && !createMode}
                     classes={{
                         dropdownContainer: styles.dropdownDepartment
                     }}
